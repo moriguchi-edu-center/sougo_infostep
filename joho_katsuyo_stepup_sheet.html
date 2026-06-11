@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>情報活用能力育成ステップアップシート（統合版）</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:    #1a1916;
+  --ink2:   #4a4843;
+  --ink3:   #888580;
+  --rule:   #dedad4;
+  --bg:     #faf9f6;
+  --bg2:    #f2f0eb;
+  --bg3:    #e8e5de;
+  --teal:   #0f6e56;
+  --teal-l: #e1f5ee;
+  --teal-m: #1d9e75;
+  --blue:   #185fa5;
+  --blue-l: #e6f1fb;
+  --amber:  #854f0b;
+  --amber-l:#faeeda;
+  --amber-m:#ba7517;
+  --serif:  'Noto Serif JP', serif;
+  --sans:   'Noto Sans JP', sans-serif;
+  --cyc-1-bg: #e1f5ee; --cyc-1-border: #1d9e75; --cyc-1-text: #085041; --cyc-1-solid: #1d9e75;
+  --cyc-2-bg: #e6f1fb; --cyc-2-border: #185fa5; --cyc-2-text: #0c447c; --cyc-2-solid: #185fa5;
+  --cyc-3-bg: #faeeda; --cyc-3-border: #ba7517; --cyc-3-text: #633806; --cyc-3-solid: #ba7517;
+  --cyc-4-bg: #eeedfe; --cyc-4-border: #5b4bb4; --cyc-4-text: #3c3489; --cyc-4-solid: #5b4bb4;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.75;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* ── ヘッダー ── */
+.top-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: #e8f4f0;
+  border-bottom: 1.5px solid #9dd0c0;
+  padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.top-bar-title {
+  font-family: var(--serif);
+  font-size: 12px; font-weight: 600; color: #2a6b58;
+  padding: 14px 0;
+}
+.top-bar a {
+  font-size: 11px; color: #3a8a72; text-decoration: none;
+}
+.top-bar a:hover { color: var(--teal); }
+
+.cover {
+  background: linear-gradient(135deg, #d4eee6 0%, #c8e6f0 60%, #ddeaf8 100%);
+  padding: 3rem 2.5rem 2.5rem;
+  border-bottom: 1.5px solid #9dd0c0;
+}
+.cover-label {
+  font-size: 11px; letter-spacing: .12em;
+  color: var(--teal); font-weight: 600; margin-bottom: .6rem;
+}
+.cover h1 {
+  font-family: var(--serif);
+  font-size: clamp(20px, 3vw, 28px);
+  font-weight: 600; line-height: 1.45;
+  color: #1a3a30; margin-bottom: .75rem;
+}
+.cover-sub { font-size: 13px; color: #3a6858; margin-bottom: 1.25rem; }
+.cover-meta { display: flex; flex-wrap: wrap; gap: 1.5rem; }
+.cover-meta span { font-size: 11px; color: #4a7868; }
+.cover-meta strong { color: #1a4a3a; }
+
+.container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 3rem; }
+
+h2.section {
+  font-family: var(--serif);
+  font-size: 17px; font-weight: 600;
+  padding: 2rem 0 .75rem;
+  border-bottom: 0.5px solid var(--rule);
+  margin-bottom: 1rem;
+}
+h3.sub {
+  font-size: 13px; font-weight: 700;
+  margin: 1.25rem 0 .5rem;
+  padding-left: .75rem;
+  border-left: 3px solid var(--teal-m);
+}
+
+.lead {
+  font-size: 14px; color: var(--ink2); line-height: 1.8;
+  margin-bottom: 1rem; max-width: 720px;
+}
+
+/* ── 比較・凡例 ── */
+.compare-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0; border: 0.5px solid var(--rule);
+  border-radius: 8px; overflow: hidden; margin-bottom: 1rem;
+}
+.compare-col { padding: 1rem 1.25rem; }
+.compare-col.left { border-right: 0.5px solid var(--rule); }
+.compare-col h4 {
+  font-size: 12px; font-weight: 700; margin-bottom: .6rem;
+  padding-bottom: .35rem; border-bottom: 0.5px solid #eceae5;
+}
+.compare-col.left h4 { color: var(--ink2); }
+.compare-col.right h4 { color: var(--teal); }
+.compare-col ul { list-style: none; }
+.compare-col ul li {
+  font-size: 12px; color: var(--ink2); line-height: 1.7;
+  padding: .15rem 0; display: flex; gap: 6px;
+}
+.compare-col ul li::before { content: '·'; color: var(--ink3); }
+
+.layer-legend {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px; margin-bottom: 1rem;
+}
+.layer-item {
+  padding: .6rem .85rem; border-radius: 0 4px 4px 0;
+  font-size: 12px; line-height: 1.6;
+}
+.layer-item .li-title { font-weight: 700; margin-bottom: .2rem; }
+.layer-blk  { border-left: 3px solid var(--blue);  background: var(--blue-l);  color: var(--blue); }
+.layer-mini { border-left: 3px solid var(--teal-m); background: var(--teal-l);  color: var(--teal); }
+.layer-hon  { border-left: 3px solid var(--amber-m);background: var(--amber-l); color: var(--amber);}
+
+.tag-row {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  align-items: center; margin-bottom: .75rem;
+}
+.tag-row span.label { font-size: 11px; color: var(--ink3); }
+
+.note {
+  border-radius: 4px; padding: .65rem 1rem;
+  font-size: 13px; line-height: 1.7; margin: .75rem 0;
+}
+.note-teal  { background: var(--teal-l);  color: var(--teal);  border-left: 3px solid var(--teal-m); }
+.note-amber { background: var(--amber-l); color: var(--amber); border-left: 3px solid var(--amber-m); }
+.note strong { font-weight: 700; }
+
+/* ── メイン表 ── */
+.stepup-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 12px; margin-bottom: 1.25rem;
+}
+.stepup-table th, .stepup-table td {
+  padding: 8px 9px; border: 0.5px solid var(--rule);
+  vertical-align: top; line-height: 1.6;
+}
+.stepup-table thead th {
+  font-size: 11px; font-weight: 700;
+  background: var(--bg2); color: var(--ink2);
+  text-align: left;
+}
+.stepup-table thead th .sub {
+  font-weight: 400; display: block; margin-top: 1px;
+}
+.stepup-table .gcell {
+  font-weight: 700; text-align: center;
+  background: var(--bg2); white-space: nowrap;
+  font-size: 12px;
+}
+.stepup-table .gcell.life-col,
+.stepup-table td.life-col { background: #f0faf4; }
+.stepup-table .gcell.jhs-col,
+.stepup-table td.jhs-col { background: #f5f3ff; }
+.stepup-table .dim-cell {
+  font-weight: 700; text-align: left;
+  background: var(--bg2); vertical-align: top;
+  font-size: 11px; width: 13%; min-width: 100px;
+}
+.stepup-table .dim-cell .sub {
+  font-weight: 400; display: block; margin-top: 2px;
+  color: var(--ink3); font-size: 10px;
+}
+.stepup-table tr.row-inq td { background: #faf8f4; }
+.stepup-table tr.row-blk td { background: #f8fbff; }
+.stepup-table tr.row-mini td { background: #f6fcfa; }
+.stepup-table tr.row-hon td { background: #fffcf6; }
+
+.depth-badge {
+  display: inline-block; font-size: 11px; font-weight: 700;
+  padding: 1px 6px; border-radius: 2px; white-space: nowrap;
+}
+.d0 { background: #f0faf4; color: #1a6b4a; border: 0.5px solid #9fd4b8; }
+.d1 { background: #e1f5ee; color: #085041; }
+.d2 { background: #e6f1fb; color: #0c447c; }
+.d3 { background: #faeeda; color: #633806; }
+
+.skill-tag {
+  display: inline-block; font-size: 11px;
+  padding: 1px 5px; border-radius: 2px; margin: 1px;
+  background: var(--bg3); color: var(--ink2);
+  border: 0.5px solid var(--rule);
+}
+.skill-tag.new {
+  background: var(--amber-l); color: var(--amber);
+  border-color: rgba(186,117,23,.3); font-weight: 500;
+}
+
+.col-blk  { background: #f8fbff; }
+.col-mini { background: #f6fcfa; }
+.col-hon  { background: #fffcf6; }
+.col-level { font-size: 11px; color: var(--ink2); line-height: 1.65; }
+.col-inq  { background: #faf8f4; }
+
+/* ── 探究サイクル（4段階の色を統一） ── */
+.cycle-legend {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 6px; margin-bottom: .75rem;
+}
+.cycle-legend-item {
+  font-size: 11px; padding: .45rem .6rem; border-radius: 4px;
+  line-height: 1.5; border-left: 3px solid;
+}
+.cycle-legend-item.cyc-1 { border-color: var(--cyc-1-border); background: var(--cyc-1-bg); color: var(--cyc-1-text); }
+.cycle-legend-item.cyc-2 { border-color: var(--cyc-2-border); background: var(--cyc-2-bg); color: var(--cyc-2-text); }
+.cycle-legend-item.cyc-3 { border-color: var(--cyc-3-border); background: var(--cyc-3-bg); color: var(--cyc-3-text); }
+.cycle-legend-item.cyc-4 { border-color: var(--cyc-4-border); background: var(--cyc-4-bg); color: var(--cyc-4-text); }
+.cyc-row {
+  margin-bottom: .35rem; padding: 3px 5px 3px 6px;
+  border-radius: 3px; border-left: 3px solid; line-height: 1.55;
+}
+.cyc-row:last-child { margin-bottom: 0; }
+.cyc-row.cyc-1 { background: var(--cyc-1-bg); border-color: var(--cyc-1-border); color: var(--cyc-1-text); }
+.cyc-row.cyc-2 { background: var(--cyc-2-bg); border-color: var(--cyc-2-border); color: var(--cyc-2-text); }
+.cyc-row.cyc-3 { background: var(--cyc-3-bg); border-color: var(--cyc-3-border); color: var(--cyc-3-text); }
+.cyc-row.cyc-4 { background: var(--cyc-4-bg); border-color: var(--cyc-4-border); color: var(--cyc-4-text); }
+.cyc-deepen-tag { font-size: 10px; color: var(--ink3); font-weight: 600; }
+.cyc-badge {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  padding: 1px 5px; border-radius: 2px; margin-right: 4px;
+  vertical-align: middle; white-space: nowrap; color: #fff;
+  border: none;
+}
+.cyc-badge.cyc-1 { background: var(--cyc-1-solid); }
+.cyc-badge.cyc-2 { background: var(--cyc-2-solid); }
+.cyc-badge.cyc-3 { background: var(--cyc-3-solid); }
+.cyc-badge.cyc-4 { background: var(--cyc-4-solid); }
+.cyc-mini {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  padding: 0 4px; border-radius: 2px; margin-right: 3px;
+  color: #fff; vertical-align: middle;
+}
+.cyc-mini.cyc-1 { background: var(--cyc-1-solid); }
+.cyc-mini.cyc-2 { background: var(--cyc-2-solid); }
+.cyc-mini.cyc-3 { background: var(--cyc-3-solid); }
+.cyc-mini.cyc-4 { background: var(--cyc-4-solid); }
+
+/* ── 学年別・探究サイクル重点ガイド ── */
+.cyc-grade-guide {
+  width: 100%; border-collapse: collapse;
+  font-size: 11px; margin-bottom: .65rem;
+}
+.cyc-grade-guide th, .cyc-grade-guide td {
+  padding: 4px 5px; border: 0.5px solid var(--rule);
+  text-align: center; vertical-align: middle;
+}
+.cyc-grade-guide thead th {
+  font-size: 11px; font-weight: 700; background: var(--bg2);
+}
+.cyc-grade-guide .gg-label {
+  text-align: left; font-weight: 600; white-space: nowrap;
+  background: var(--bg2); font-size: 11px;
+}
+.cyc-grade-guide .gg-life { background: #f0faf4; }
+.cyc-grade-guide .gg-jhs { background: #faf9ff; }
+.cyc-focus { font-weight: 700; color: var(--teal); }
+.cyc-prep { font-weight: 600; color: var(--amber); }
+.cyc-defer { color: var(--ink3); }
+.cyc-grade-guide-caption {
+  font-size: 12px; color: var(--ink2); margin-bottom: .35rem; line-height: 1.6;
+}
+.cyc-defer-note {
+  font-size: 11px; color: var(--ink3); margin-top: .35rem;
+  padding: .3rem .45rem; background: var(--bg2); border-radius: 3px;
+  line-height: 1.45; border-left: 2px solid var(--rule);
+}
+
+.stepup-read-caption {
+  font-size: 12px; color: var(--ink2); line-height: 1.7;
+  margin-bottom: .5rem; padding: .5rem .65rem;
+  background: var(--bg2); border-radius: 4px;
+  border-left: 3px solid var(--teal-m);
+}
+.stepup-overview {
+  width: 100%; border-collapse: collapse;
+  font-size: 11px; margin-bottom: .85rem;
+}
+.stepup-overview th, .stepup-overview td {
+  padding: 5px 6px; border: 0.5px solid var(--rule);
+  vertical-align: top; line-height: 1.5;
+}
+.stepup-overview thead th {
+  font-size: 11px; font-weight: 700; background: var(--bg2);
+  text-align: center;
+}
+.stepup-overview .so-grade {
+  font-weight: 700; white-space: nowrap; background: var(--bg2);
+  text-align: center; font-size: 11px;
+}
+.stepup-overview .so-life { background: #f0faf4; }
+.stepup-overview .so-jhs { background: #faf9ff; }
+.stepup-overview .so-pillar {
+  font-weight: 700; color: var(--teal); text-align: center;
+  font-size: 11px; white-space: nowrap;
+}
+.stepup-overview .so-step { font-size: 11px; color: var(--ink2); }
+.stepup-overview .so-depth { text-align: center; }
+.stepup-table .step-kw {
+  display: block; font-size: 10px; font-weight: 600;
+  color: var(--teal); margin-top: 2px; line-height: 1.35;
+}
+
+/* ── テーマ×学年 探究スキル表 ── */
+.theme-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 11px; margin-bottom: 1rem;
+}
+.theme-table th, .theme-table td {
+  padding: 6px 7px; border: 0.5px solid var(--rule);
+  vertical-align: top; line-height: 1.5;
+}
+.theme-table thead th {
+  font-size: 11px; font-weight: 700;
+  background: var(--bg2); color: var(--ink2);
+  text-align: center;
+}
+.theme-table .cat-cell {
+  font-weight: 600; background: var(--bg2);
+  white-space: nowrap; font-size: 10px;
+}
+.theme-table .theme-name { font-weight: 500; font-size: 10px; }
+.theme-table .skill-cell { min-width: 90px; }
+.theme-table .skill-cell.empty {
+  text-align: center; color: var(--ink3);
+  vertical-align: middle; background: var(--bg);
+}
+.theme-table .jhs-col { background: #faf9ff; }
+.theme-table .theme-example {
+  font-size: 10px; font-weight: 600; color: var(--ink);
+  margin-bottom: 4px; padding-bottom: 3px;
+  border-bottom: 0.5px dashed var(--rule); line-height: 1.4;
+}
+.theme-table .theme-depth { margin-bottom: 4px; text-align: center; }
+.theme-table .theme-skill-line { margin-bottom: 2px; font-size: 10px; }
+.theme-table .theme-skill-line:last-child { margin-bottom: 0; }
+.theme-table .cyc-deepen-tag { font-size: 10px; color: var(--ink3); font-weight: 600; }
+.theme-table .skill-cell.clickable {
+  cursor: pointer; position: relative;
+  transition: background .15s, box-shadow .15s;
+}
+.theme-table .skill-cell.clickable:hover,
+.theme-table .skill-cell.clickable:focus {
+  background: #f0faf6; outline: none;
+  box-shadow: inset 0 0 0 1.5px var(--teal-m);
+}
+.theme-moriguchi {
+  font-size: 9px; font-weight: 500; color: #1a5c48;
+  margin-bottom: 4px; padding: 3px 5px;
+  background: #edf8f3; border-left: 2px solid var(--teal-m);
+  border-radius: 0 3px 3px 0; line-height: 1.45;
+}
+.theme-moriguchi::before {
+  content: '守口実例　'; font-weight: 700; font-size: 8px;
+  color: var(--teal); letter-spacing: .04em;
+}
+.moriguchi-series {
+  margin-bottom: 1rem; padding: .75rem 1rem;
+  background: var(--bg2); border: 0.5px solid var(--rule);
+  border-radius: 6px; font-size: 11px; line-height: 1.7;
+}
+.moriguchi-series h4 {
+  font-size: 12px; font-weight: 700; color: var(--teal);
+  margin-bottom: .4rem;
+}
+.moriguchi-series .ms-row {
+  display: grid; grid-template-columns: 3.5rem 1fr;
+  gap: .25rem .5rem; margin-bottom: .2rem;
+  font-size: 10px;
+}
+.moriguchi-series .ms-grade { font-weight: 700; color: var(--ink2); }
+.theme-table .skill-cell.clickable::after {
+  content: '詳細 ▸'; display: block;
+  font-size: 8px; color: var(--teal); font-weight: 600;
+  margin-top: 4px; text-align: right; opacity: .75;
+}
+.theme-table .skill-cell.clickable:hover::after { opacity: 1; }
+
+/* ── テーマ詳細モーダル ── */
+body.modal-open { overflow: hidden; }
+.theme-modal {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+}
+.theme-modal[hidden] { display: none; }
+.theme-modal-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(26, 25, 22, .45);
+}
+.theme-modal-panel {
+  position: relative; z-index: 1;
+  background: #fff; border-radius: 8px;
+  max-width: 640px; width: 100%;
+  max-height: 88vh; overflow-y: auto;
+  padding: 1.25rem 1.5rem 1.5rem;
+  box-shadow: 0 12px 40px rgba(0,0,0,.18);
+  border: 0.5px solid var(--rule);
+}
+.theme-modal-close {
+  position: absolute; top: .6rem; right: .75rem;
+  background: none; border: none; font-size: 22px;
+  line-height: 1; color: var(--ink3); cursor: pointer;
+  padding: .25rem .4rem; border-radius: 4px;
+}
+.theme-modal-close:hover { color: var(--ink); background: var(--bg2); }
+#modal-title {
+  font-family: var(--serif); font-size: 15px;
+  font-weight: 600; margin-bottom: .35rem; padding-right: 2rem;
+}
+#modal-meta { font-size: 11px; color: var(--ink2); margin-bottom: .65rem; }
+.modal-hon-hero {
+  margin-bottom: 1rem;
+  padding: .85rem 1rem;
+  background: linear-gradient(135deg, var(--amber-l) 0%, #fff 100%);
+  border: 1.5px solid var(--amber-m);
+  border-radius: 8px;
+}
+.modal-hon-hero-label {
+  font-size: 9px; font-weight: 700; letter-spacing: .08em;
+  color: var(--amber); margin-bottom: .4rem;
+}
+.modal-hero-theme {
+  font-family: var(--serif); font-size: 15px; font-weight: 600;
+  color: var(--ink); line-height: 1.45; margin-bottom: .5rem;
+}
+.modal-hero-theme::before {
+  content: '本探究テーマ例　'; font-family: var(--sans);
+  font-size: 10px; font-weight: 700; color: var(--amber);
+  display: block; margin-bottom: .15rem;
+}
+.modal-hero-question {
+  font-size: 13px; font-weight: 600; line-height: 1.55;
+  color: #5a3a08; margin-bottom: .45rem;
+  padding: .5rem .65rem; background: #fff;
+  border-left: 3px solid var(--amber-m); border-radius: 0 4px 4px 0;
+}
+.modal-hero-question::before {
+  content: '探究課題（問い）　'; display: block;
+  font-size: 9px; font-weight: 700; color: var(--amber);
+  letter-spacing: .04em; margin-bottom: .2rem;
+}
+.modal-hero-summary {
+  font-size: 10px; color: var(--ink2); line-height: 1.55;
+}
+.modal-section { margin-bottom: 1rem; }
+.modal-section h4 {
+  font-size: 11px; font-weight: 700; margin-bottom: .4rem;
+  padding-bottom: .25rem; border-bottom: 0.5px solid var(--rule);
+}
+#modal-hon-theme,
+.modal-hon-theme-line {
+  font-size: 12px; font-weight: 600; color: var(--ink);
+  margin-bottom: .35rem;
+}
+.modal-hon-theme-line::before {
+  content: 'テーマ例：'; font-weight: 500; color: var(--ink2); font-size: 10px;
+}
+#modal-hon-summary {
+  font-size: 11px; color: var(--ink2); line-height: 1.6;
+  padding: .45rem .6rem; background: var(--amber-l); border-radius: 4px;
+}
+.modal-hon-ex {
+  display: block; font-size: 11px; margin-bottom: 3px;
+}
+.modal-grade-skill {
+  display: block; font-size: 9px; margin-top: 3px; opacity: .85;
+}
+.modal-cyc-row {
+  font-size: 11px; line-height: 1.55;
+  padding: 5px 8px; margin-bottom: 4px;
+  border-radius: 4px; border: 0.5px solid transparent;
+}
+.modal-cyc-row.cyc-1 { background: var(--cyc-1-bg); border-color: var(--cyc-1-border); color: var(--cyc-1-text); }
+.modal-cyc-row.cyc-2 { background: var(--cyc-2-bg); border-color: var(--cyc-2-border); color: var(--cyc-2-text); }
+.modal-cyc-row.cyc-3 { background: var(--cyc-3-bg); border-color: var(--cyc-3-border); color: var(--cyc-3-text); }
+.modal-cyc-row.cyc-4 { background: var(--cyc-4-bg); border-color: var(--cyc-4-border); color: var(--cyc-4-text); }
+.modal-cyc-row .cyc-deepen-tag { font-size: 10px; color: var(--ink3); font-weight: 600; }
+.modal-defer-text { color: var(--ink3); }
+.modal-cyc-row .cyc-badge { margin-right: 6px; }
+.modal-theme-skill { display: block; font-size: 10px; margin-top: 2px; opacity: .9; }
+#modal-block { font-size: 11px; color: var(--ink); line-height: 1.6; }
+#modal-block-use {
+  font-size: 10px; color: var(--ink2); margin-top: .4rem;
+  padding: .4rem .6rem; background: var(--blue-l); border-radius: 4px;
+}
+.modal-mini-title { font-size: 11px; font-weight: 600; margin-bottom: .35rem; }
+.modal-mini-steps {
+  font-size: 10px; color: var(--ink2);
+  margin: 0 0 .4rem 1.1rem; line-height: 1.55;
+}
+.modal-mini-note {
+  font-size: 10px; color: var(--ink3);
+  padding: .35rem .5rem; background: var(--teal-l); border-radius: 4px;
+}
+
+/* ── モーダル内・年間の時間軸 ── */
+.modal-flow {
+  margin-bottom: 1.1rem;
+  padding: .65rem .75rem;
+  background: var(--bg2); border-radius: 6px;
+  border: 0.5px solid var(--rule);
+}
+.modal-flow-caption {
+  font-size: 9px; font-weight: 700; letter-spacing: .06em;
+  color: var(--ink3); margin-bottom: .45rem; text-align: center;
+}
+.modal-flow-steps {
+  display: flex; align-items: stretch; justify-content: center;
+  gap: .25rem; flex-wrap: wrap;
+}
+.modal-flow-step {
+  flex: 1 1 100px; min-width: 90px;
+  text-align: center; padding: .4rem .35rem;
+  border-radius: 5px; border: 1.5px solid transparent;
+  line-height: 1.35;
+}
+.modal-flow-step .flow-num {
+  display: block; font-size: 9px; font-weight: 700; opacity: .85;
+}
+.modal-flow-step .flow-name {
+  display: block; font-size: 10px; font-weight: 700;
+}
+.modal-flow-step .flow-time {
+  display: block; font-size: 8px; opacity: .8; margin-top: 1px;
+}
+.modal-flow-step.step-block {
+  background: var(--blue-l); border-color: var(--blue); color: var(--blue);
+}
+.modal-flow-step.step-mini {
+  background: var(--teal-l); border-color: var(--teal-m); color: var(--teal);
+}
+.modal-flow-step.step-hon {
+  background: var(--amber-l); border-color: var(--amber-m); color: var(--amber);
+}
+.modal-flow-arrow {
+  display: flex; align-items: center; font-size: 14px;
+  color: var(--ink3); font-weight: 700; padding: 0 .1rem;
+}
+.modal-flow-bridge {
+  font-size: 10px; color: var(--ink2); line-height: 1.55;
+  margin-top: .5rem; padding-top: .45rem;
+  border-top: 0.5px dashed var(--rule); text-align: center;
+}
+.modal-timeline-body { position: relative; }
+.modal-step-card {
+  position: relative; margin-bottom: 0;
+  padding-left: 1.6rem;
+}
+.modal-step-card::before {
+  content: ''; position: absolute; left: .55rem; top: 0; bottom: 0;
+  width: 2px; background: var(--rule);
+}
+.modal-step-card:last-child::before { bottom: auto; height: 1.2rem; }
+.modal-step-marker {
+  position: absolute; left: 0; top: .15rem;
+  width: 1.2rem; height: 1.2rem; border-radius: 50%;
+  font-size: 9px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; z-index: 1;
+}
+.modal-step-card.step-block .modal-step-marker { background: var(--blue); }
+.modal-step-card.step-mini .modal-step-marker { background: var(--teal-m); }
+.modal-step-card.step-hon .modal-step-marker { background: var(--amber-m); }
+.modal-step-head {
+  font-size: 10px; font-weight: 700; margin-bottom: .35rem;
+  padding-bottom: .2rem;
+}
+.modal-step-card.step-block .modal-step-head { color: var(--blue); }
+.modal-step-card.step-mini .modal-step-head { color: var(--teal); }
+.modal-step-card.step-hon .modal-step-head { color: var(--amber); }
+.modal-step-transition {
+  position: relative; padding: .35rem 0 .35rem 1.6rem;
+  font-size: 9px; font-weight: 600; color: var(--teal);
+  line-height: 1.45;
+}
+.modal-step-transition::before {
+  content: '↓'; position: absolute; left: .42rem; top: 50%;
+  transform: translateY(-50%); font-size: 11px; color: var(--ink3);
+}
+.modal-step-transition strong { color: var(--amber); }
+.modal-cycle-sub {
+  font-size: 10px; font-weight: 700; color: var(--ink2);
+  margin: .5rem 0 .25rem;
+}
+.modal-cycle-note {
+  font-size: 9px; color: var(--ink2); line-height: 1.55;
+  margin-bottom: .4rem; padding: .4rem .55rem;
+  background: var(--bg2); border-radius: 4px;
+  border-left: 2px solid var(--amber-m);
+}
+.modal-cycle-note strong { color: var(--amber); }
+.modal-cycle-legend-inline {
+  font-size: 8px; color: var(--ink3); margin-bottom: .35rem;
+}
+
+@media print {
+  .theme-modal, .theme-table .skill-cell.clickable::after { display: none !important; }
+}
+
+/* ── A4印刷用（読みやすさ優先） ── */
+@page {
+  size: A4 portrait;
+  margin: 10mm 8mm;
+}
+
+@media print {
+  html { font-size: 11pt; }
+  body {
+    background: #fff !important;
+    font-size: 11pt !important;
+    line-height: 1.7 !important;
+  }
+  .no-print, .print-btn, .top-bar { display: none !important; }
+  .container { max-width: none !important; padding: 0 !important; }
+  .page-break { page-break-before: always; }
+  table { page-break-inside: avoid; }
+
+  h2.section { font-size: 14pt !important; }
+  h3.sub { font-size: 12pt !important; }
+  .lead, .note, .compare-col ul li, .layer-item,
+  .cyc-grade-guide-caption, .stepup-read-caption, .cyc-defer-note {
+    font-size: 10.5pt !important;
+    line-height: 1.65 !important;
+  }
+
+  .stepup-table, .theme-table, .cyc-grade-guide, .stepup-overview,
+  .skill-map-table, .map-table, .cyc-row, .col-level {
+    font-size: 10pt !important;
+  }
+  .stepup-table th, .stepup-table td,
+  .theme-table th, .theme-table td,
+  .cyc-grade-guide th, .cyc-grade-guide td,
+  .stepup-overview th, .stepup-overview td,
+  .skill-map-table th, .skill-map-table td,
+  .map-table th, .map-table td {
+    font-size: 10pt !important;
+    padding: 5px 6px !important;
+    line-height: 1.55 !important;
+  }
+  .stepup-table .dim-cell,
+  .stepup-table .dim-cell .sub,
+  .cyc-deepen-tag, .cyc-badge, .cyc-mini,
+  .depth-badge, .skill-tag, .stepup-table .step-kw,
+  .theme-table .theme-example, .theme-table .theme-skill-line,
+  .theme-table .cyc-deepen-tag, .cycle-legend-item {
+    font-size: 9pt !important;
+  }
+  .cover { padding: 1.5rem 0 1rem !important; }
+  .cover h1 { font-size: 20pt !important; }
+  .cover-sub { font-size: 12pt !important; }
+  .cover-label, .cover-meta span { font-size: 10pt !important; }
+  .footer p { font-size: 9pt !important; }
+  p[style*="font-size:11px"],
+  p[style*="font-size:10px"],
+  span[style*="font-size:10px"] {
+    font-size: 10pt !important;
+  }
+}
+
+/* ── スキル蓄積表 ── */
+.skill-map-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 11px; margin-bottom: 1rem;
+}
+.skill-map-table th, .skill-map-table td {
+  padding: 5px 6px; border: 0.5px solid var(--rule);
+  text-align: center; vertical-align: middle;
+}
+.skill-map-table thead th {
+  font-size: 10px; font-weight: 700;
+  background: var(--bg2); color: var(--ink2);
+}
+.skill-map-table .skill-name {
+  text-align: left; font-weight: 500;
+  background: var(--bg2); white-space: nowrap;
+  font-size: 10px;
+}
+.skill-map-table .lv-prep { background: #f0faf4; color: #1a6b4a; font-weight: 600; }
+.skill-map-table .lv-new  { background: var(--amber-l); color: var(--amber); font-weight: 700; }
+.skill-map-table .lv-use  { background: var(--teal-l);  color: var(--teal);  font-weight: 600; }
+.skill-map-table .lv-none { color: var(--ink3); }
+
+.skill-map-legend .skill-map-legend-item {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 11px; color: var(--ink2); line-height: 1.5;
+}
+.skill-map-legend .sym {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 1.25em; padding: 1px 6px; border-radius: 2px;
+  font-weight: 600; font-size: 11px; flex-shrink: 0;
+}
+.skill-map-legend .sym.lv-prep { background: #f0faf4; color: #1a6b4a; }
+.skill-map-legend .sym.lv-new  { background: var(--amber-l); color: var(--amber); }
+.skill-map-legend .sym.lv-use  { background: var(--teal-l);  color: var(--teal); }
+.skill-map-legend .sym.lv-none { background: var(--bg3); color: var(--ink3); }
+
+/* ── 三分野対応表 ── */
+.dim-badge {
+  display: inline-block; font-size: 9px; font-weight: 700;
+  padding: 1px 5px; border-radius: 2px; margin: 1px;
+  white-space: nowrap;
+}
+.dim-1 { background: var(--teal-l);  color: var(--teal); }
+.dim-2 { background: var(--blue-l);  color: var(--blue); }
+.dim-3 { background: var(--amber-l); color: var(--amber); }
+.dim-mix { background: var(--bg3); color: var(--ink2); }
+
+.map-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 11px; margin-bottom: 1rem;
+}
+.map-table th, .map-table td {
+  padding: 6px 8px; border: 0.5px solid var(--rule);
+  vertical-align: top; line-height: 1.55;
+}
+.map-table thead th {
+  font-size: 10px; font-weight: 700;
+  background: var(--bg2); color: var(--ink2);
+}
+.map-table .skill-name {
+  font-weight: 600; background: var(--bg2);
+  white-space: nowrap; font-size: 10px;
+}
+.map-table .primary { font-weight: 700; }
+.map-table .sub { color: var(--ink3); font-size: 10px; }
+
+.layer-dim-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px; margin-bottom: 1rem;
+}
+.layer-dim-card {
+  border: 0.5px solid var(--rule); border-radius: 6px;
+  padding: .65rem .85rem; font-size: 11px; line-height: 1.6;
+}
+.layer-dim-card .ldc-title {
+  font-size: 11px; font-weight: 700; margin-bottom: .35rem;
+}
+
+.footer {
+  border-top: 0.5px solid var(--rule);
+  padding: 1.5rem 0; text-align: center;
+}
+.footer p { font-size: 11px; color: var(--ink3); line-height: 1.8; }
+
+.print-btn {
+  position: fixed; bottom: 2rem; right: 2rem;
+  background: var(--ink); color: #fff;
+  border: none; border-radius: 4px;
+  padding: .6rem 1.2rem; font-size: 12px; font-family: var(--sans);
+  cursor: pointer; z-index: 200;
+}
+.print-btn:hover { background: var(--teal); }
+</style>
+</head>
+<body>
+
+<div class="top-bar no-print">
+  <span class="top-bar-title">情報活用能力育成ステップアップシート（統合版）</span>
+  <a href="#theme-skill">テーマ一覧</a>
+  <a href="school_joho_ichiran.html">各校一覧</a>
+  <a href="sougou_gakunen_framework.html">← 設計フレームワークへ</a>
+</div>
+
+<div class="cover">
+  <div class="cover-label">守口市教育センター　総合的な学習の時間　情報の領域（仮称）</div>
+  <h1>情報活用能力育成<br>ステップアップシート（統合版）</h1>
+  <p class="cover-sub">総合探究の課題設定から逆算したスキル規定　／　情報ブロック → ミニ探究ユニット → 本探究</p>
+  <div class="cover-meta">
+    <span><strong>対象</strong>　小学校第3〜6学年・中学校第1〜3学年</span>
+    <span><strong>用途</strong>　年間計画立案・校内研修・中学校区合同会議</span>
+    <span><strong>改訂</strong>　2026年度</span>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ══ 設計の考え方 ══ -->
+<h2 class="section">設計の考え方</h2>
+
+<p class="lead">
+  本シートの出発点は、これまで各校で実践してきた<strong>総合探究活動で求められてきた探究スキル</strong>（④）を、<strong>課題設定→情報収集→整理・分析→まとめ・表現・振り返り</strong>の探究サイクルに紐づけて整理したものである。情報活用能力のスキル（⑥）は、その探究スキルをデジタル環境で実現するために<strong>連動して必要となるもの</strong>として位置づける。情報ブロック（⑦）はミニ探究ユニット内の<strong>情報提供部分</strong>、ミニ探究（⑦⑧合算1〜2h）と本探究（約1か月）が、⑥を本探究の直前から本番まで支える三層として配置する。
+</p>
+
+<div class="compare-grid">
+  <div class="compare-col left">
+    <h4>従来のステップアップシート</h4>
+    <ul>
+      <li>レイアウト：<strong>横軸＝学年</strong>、縦軸＝スキル・項目</li>
+      <li>出発点：情報活用能力の段階的習得</li>
+      <li>スキル一覧を先に作り、単元に当てはめる</li>
+      <li>情報ブロック・ミニ探究ユニットの区分なし</li>
+      <li>総合探究の課題設定との対応が弱い</li>
+    </ul>
+  </div>
+  <div class="compare-col right">
+    <h4>統合版（本シート）</h4>
+    <ul>
+      <li>レイアウト：大阪府形式と同じ<strong>横軸＝学年</strong>、縦軸＝項目（②〜⑨）</li>
+      <li>出発点：探究サイクル4段階に紐づく総合探究スキル（④）</li>
+      <li>情報活用スキル（⑥）は④に連動して必要となるもの</li>
+      <li>情報ブロック・ミニ探究・本探究の三層を明示</li>
+      <li>ミニ探究は本探究テーマの助走として設計</li>
+    </ul>
+  </div>
+</div>
+
+<div class="layer-legend">
+  <div class="layer-item layer-blk">
+    <div class="li-title">🔷 情報ブロック　— ミニ探究内の情報提供部分（⑦）</div>
+    ②適切な取扱い・③特性の理解が中心。ミニ探究ユニットの<strong>冒頭で必要な知識を提供</strong>する場面。別途の時数は取らない。
+  </div>
+  <div class="layer-item layer-mini">
+    <div class="li-title">🔶 ミニ探究ユニット　1〜2時間（⑦⑧合算）</div>
+    ①活用が中核。本探究の直前に置く「スキルの練習台」。情報提供（⑦）→短い探究実践（⑧）を<strong>一体</strong>で1〜2コマ。
+  </div>
+  <div class="layer-item layer-hon">
+    <div class="li-title">◆ 本探究　約1か月（小4〜6h／中8〜12h）</div>
+    探究の領域。子どもの切実な問いから出発し、情報活用能力を「必要だから使う」文脈で深める。
+  </div>
+</div>
+
+<div class="tag-row">
+  <span class="label">スキル区分：</span>
+  <span class="skill-tag new">新規　その学年で初めて本格要求</span>
+  <span class="skill-tag">深化　前学年習得スキルの使いこなし</span>
+  <span class="label" style="margin-left:.5rem">探究深度：</span>
+  <span class="depth-badge d1">Ⅰ 体験・気づき</span>
+  <span class="depth-badge d2">Ⅱ 調査・整理・発信</span>
+  <span class="depth-badge d3">Ⅲ 分析・提案・評価</span>
+  <span class="label" style="margin-left:.5rem">年間配置順：⑦→⑧（合算1〜2hのミニ探究）→ 本探究</span>
+</div>
+
+
+<!-- ══ 統合ステップアップ表 ══ -->
+<h2 class="section" id="stepup-main">統合ステップアップ表　小1〜中3</h2>
+
+<p class="stepup-read-caption">
+  <strong>表の読み方：</strong>
+  <strong>横に読む（→）</strong>＝同じ項目が学年とともにどう深まるか（ステップアップ）。
+  <strong>縦に読む（↓）</strong>＝その学年の本探究の全体像（②課題→③深度→④スキル→⑤⑥⑦⑧）。
+  まず下の<strong>学年別ステップの見取り図</strong>で各学年の「柱」と前学年からの上がりを把握し、本表の列見出しと照らし合わせて読む。
+</p>
+
+<div class="cycle-legend">
+  <div class="cycle-legend-item cyc-1"><strong>①課題の設定</strong><br>問い・課題・計画を立てる</div>
+  <div class="cycle-legend-item cyc-2"><strong>②情報の収集</strong><br>観察・調査・データを集める</div>
+  <div class="cycle-legend-item cyc-3"><strong>③整理・分析</strong><br>比較・構造化・仮説・分析</div>
+  <div class="cycle-legend-item cyc-4"><strong>④まとめ・表現・振り返り</strong><br>発信・提言・自己評価</div>
+</div>
+
+<p class="cyc-grade-guide-caption">
+  <strong>④の読み方：</strong>探究サイクル4段階は毎年すべてを同じ深さで扱うわけではない。④行では<strong>課題→収集→整理→表現の順を常に並べ</strong>、4段階とも同色で示す。重点外の段階は文末の注釈（<span class="cyc-deepen-tag">前学年までの深化</span>・<span class="cyc-deepen-tag">小4以降で本格化</span>等）で読み分ける。
+</p>
+<table class="cyc-grade-guide">
+  <thead>
+    <tr>
+      <th style="text-align:left">学年</th>
+      <th>課題の設定</th><th>情報の収集</th><th>整理・分析</th><th>まとめ・表現</th>
+      <th style="text-align:left;font-weight:400">読み方（要点）</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td class="gg-label gg-life">小1</td><td class="cyc-focus">●</td><td class="cyc-focus">●</td><td class="cyc-defer">—</td><td class="cyc-focus">●</td><td class="gg-label" style="font-weight:400">感じる・記録・伝える（生活科）</td></tr>
+    <tr><td class="gg-label gg-life">小2</td><td class="cyc-focus">●</td><td class="cyc-focus">●</td><td class="cyc-prep">△</td><td class="cyc-focus">●</td><td class="gg-label" style="font-weight:400">整理・分析は準備段階（並べ比較）。小4で本格化</td></tr>
+    <tr><td class="gg-label">小3</td><td class="cyc-focus">●</td><td class="cyc-focus">●</td><td class="cyc-defer">—</td><td class="cyc-focus">●</td><td class="gg-label" style="font-weight:400">深度Ⅰ。整理・分析は<strong>小4以降</strong>で本格化</td></tr>
+    <tr><td class="gg-label">小4</td><td class="cyc-focus">●</td><td class="cyc-focus">●</td><td class="cyc-focus">●</td><td class="cyc-focus">●</td><td class="gg-label" style="font-weight:400">4段階を一通り。調べてまとめる</td></tr>
+    <tr><td class="gg-label">小5</td><td class="cyc-defer">—</td><td class="cyc-focus">●</td><td class="cyc-focus">●</td><td class="cyc-defer">—</td><td class="gg-label" style="font-weight:400">収集・整理・分析に<strong>重点</strong>。課題・表現は<strong>設定</strong>として扱う</td></tr>
+    <tr><td class="gg-label">小6</td><td class="cyc-focus">●</td><td class="cyc-focus">●</td><td class="cyc-focus">●</td><td class="cyc-focus">●</td><td class="gg-label" style="font-weight:400">提言型。4段階を統合</td></tr>
+    <tr><td class="gg-label gg-jhs">中1</td><td class="cyc-focus">●</td><td class="cyc-focus">●</td><td class="cyc-focus">●</td><td class="cyc-focus">●</td><td class="gg-label" style="font-weight:400">発信意識。4段階＋相手・目的</td></tr>
+    <tr><td class="gg-label gg-jhs">中2</td><td class="cyc-defer">—</td><td class="cyc-focus">●</td><td class="cyc-focus">●</td><td class="cyc-focus">●</td><td class="gg-label" style="font-weight:400">倫理・信頼性の収集・分析に重点</td></tr>
+    <tr><td class="gg-label gg-jhs">中3</td><td class="cyc-focus">●</td><td class="cyc-defer">—</td><td class="cyc-focus">●</td><td class="cyc-focus">●</td><td class="gg-label" style="font-weight:400">問い直し・立場構築。収集は9年間の蓄積を活用</td></tr>
+  </tbody>
+</table>
+<p style="font-size:9px;color:var(--ink3);margin-bottom:.75rem">
+  <span class="cyc-focus">●</span>＝その学年の重点段階　
+  <span class="cyc-prep">△</span>＝準備段階（次学年で本格化する前の体験）　
+  <span class="cyc-defer">—</span>＝独立段階としては置かない（次学年以降で本格化、または前学年までの深化）
+</p>
+
+<table class="stepup-overview">
+  <thead>
+    <tr>
+      <th>学年</th><th>この年の柱</th><th style="text-align:left">前学年からのステップアップ</th><th>深度</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td class="so-grade so-life">小1</td><td class="so-pillar so-life">感じる・伝える</td><td class="so-step so-life">生活科の起点。興味・記録・伝えるの土台</td><td class="so-depth so-life"><span class="depth-badge d0">準Ⅰ</span></td></tr>
+    <tr><td class="so-grade so-life">小2</td><td class="so-pillar so-life">気づく・調べる</td><td class="so-step so-life">小1＋「なぜ？」の問い・観察記録の入門</td><td class="so-depth so-life"><span class="depth-badge d0">準Ⅰ</span></td></tr>
+    <tr><td class="so-grade">小3</td><td class="so-pillar">問いのはじまり</td><td class="so-step">小2の生活科を<strong>総合探究へ</strong>。デジタル記録・発表の本格化</td><td class="so-depth"><span class="depth-badge d1">Ⅰ</span></td></tr>
+    <tr><td class="so-grade">小4</td><td class="so-pillar">調べてまとめる</td><td class="so-step">整理・分析が<strong>本格化</strong>。検索・引用・発表の型が成立</td><td class="so-depth"><span class="depth-badge d2">Ⅱ</span></td></tr>
+    <tr><td class="so-grade">小5</td><td class="so-pillar">データで考える</td><td class="so-step">小4の調査に<strong>データ・グラフ・仮説</strong>を加え、分析に重点</td><td class="so-depth"><span class="depth-badge d2">Ⅱ</span></td></tr>
+    <tr><td class="so-grade">小6</td><td class="so-pillar">提言する</td><td class="so-step">小5の分析を<strong>提言・提案</strong>へ。4段階を統合（深度Ⅲ）</td><td class="so-depth"><span class="depth-badge d3">Ⅲ</span></td></tr>
+    <tr><td class="so-grade so-jhs">中1</td><td class="so-pillar so-jhs">社会へ発信</td><td class="so-step so-jhs">小6＋<strong>相手・目的</strong>。学校外への発信</td><td class="so-depth so-jhs"><span class="depth-badge d2">Ⅱ</span></td></tr>
+    <tr><td class="so-grade so-jhs">中2</td><td class="so-pillar so-jhs">信頼できる調査</td><td class="so-step so-jhs">小6の提言に<strong>倫理・信頼性の検証</strong>を加える</td><td class="so-depth so-jhs"><span class="depth-badge d3">Ⅲ</span></td></tr>
+    <tr><td class="so-grade so-jhs">中3</td><td class="so-pillar so-jhs">問い直して統合</td><td class="so-step so-jhs"><strong>9年間の蓄積</strong>を問い直し・立場構築・自己評価へ</td><td class="so-depth so-jhs"><span class="depth-badge d3">Ⅲ</span></td></tr>
+  </tbody>
+</table>
+
+<table class="stepup-table">
+  <thead>
+    <tr>
+      <th class="dim-cell">項目</th>
+      <th class="gcell life-col">小1<br><span style="font-size:8px;font-weight:400">生活科</span><span class="step-kw">感じる・伝える</span></th>
+      <th class="gcell life-col">小2<br><span style="font-size:8px;font-weight:400">生活科</span><span class="step-kw">気づく・調べる</span></th>
+      <th class="gcell">小3<span class="step-kw">問いのはじまり</span></th>
+      <th class="gcell">小4<span class="step-kw">調べてまとめる</span></th>
+      <th class="gcell">小5<span class="step-kw">データで考える</span></th>
+      <th class="gcell">小6<span class="step-kw">提言する</span></th>
+      <th class="gcell jhs-col">中1<span class="step-kw">社会へ発信</span></th>
+      <th class="gcell jhs-col">中2<span class="step-kw">信頼できる調査</span></th>
+      <th class="gcell jhs-col">中3<span class="step-kw">問い直して統合</span></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th class="dim-cell">②総合探究の課題設定・問いの特徴<span class="sub">小1〜2は生活科・小3〜は総合探究水準</span></th>
+      <td class="life-col"><strong>感じる・伝える</strong>（生活科）。身近な人・物への関心をもち、見たこと・感じたことを言葉で伝え合う。</td>
+      <td class="life-col"><strong>気づく・調べる</strong>（生活科での準備）。地域・自然への関心をもち、観察や簡単な調べを通して共有する。</td>
+      <td>身近な現象との<strong>出会い</strong>。観察・体験を記録し「なぜ？」という問いのはじまりを共有する。</td>
+      <td><strong>調べ始める</strong>。複数の情報源・立場から「なぜそうなっているか」を調査し発信する。</td>
+      <td><strong>データで裏付ける</strong>。自分ごとのデータを集め、比較・グラフ化し仮説を立てる。</td>
+      <td><strong>提案する</strong>。アンケート等の一次データで地域課題を捉え、解決策を提言する。</td>
+      <td class="jhs-col">地域・社会への<strong>情報発信</strong>。取材素材を編集し、対象に応じた媒体で外部へ届ける。</td>
+      <td class="jhs-col"><strong>多角的に分析・検証</strong>。一次データと複数ソースを批判的に読み、倫理に配慮して提言する。</td>
+      <td class="jhs-col"><strong>問い直す・構造を変える</strong>。社会構造・価値観を問い、自己の生き方と統合して提言・発信する。</td>
+    </tr>
+    <tr>
+      <th class="dim-cell">③深度</th>
+      <td class="life-col" style="text-align:center"><span class="depth-badge d0">準Ⅰ</span></td>
+      <td class="life-col" style="text-align:center"><span class="depth-badge d0">準Ⅰ</span></td>
+      <td style="text-align:center"><span class="depth-badge d1">Ⅰ</span></td>
+      <td style="text-align:center"><span class="depth-badge d2">Ⅱ</span></td>
+      <td style="text-align:center"><span class="depth-badge d2">Ⅱ</span></td>
+      <td style="text-align:center"><span class="depth-badge d3">Ⅲ</span></td>
+      <td class="jhs-col" style="text-align:center"><span class="depth-badge d2">Ⅱ</span></td>
+      <td class="jhs-col" style="text-align:center"><span class="depth-badge d3">Ⅲ</span></td>
+      <td class="jhs-col" style="text-align:center"><span class="depth-badge d3">Ⅲ</span></td>
+    </tr>
+    <tr class="row-inq">
+      <th class="dim-cell">④どんなスキルがどの程度できればいいか<span class="sub">探究サイクル4段階を常に同順・同色で表示（重点外は注釈で示す）</span></th>
+      <td class="col-level life-col"><div class="cyc-row cyc-1"><span class="cyc-badge cyc-1">課題の設定</span>身近なものに<strong>興味をもち</strong>、気になることを伝えられる</div>
+        <div class="cyc-row cyc-2"><span class="cyc-badge cyc-2">情報の収集</span>見た・聞いたことを<strong>絵や言葉で残せる</strong></div>
+        <div class="cyc-row cyc-3"><span class="cyc-badge cyc-3">整理・分析</span>見た・聞いた記録を<strong>並べて比較できる</strong><span class="cyc-deepen-tag">（小2で準備段階→小4以降で本格化）</span></div>
+        <div class="cyc-row cyc-4"><span class="cyc-badge cyc-4">まとめ・表現・振り返り</span>感じたことを<strong>自分の言葉で話し</strong>、友達の話を<strong>聞ける</strong></div></td>
+      <td class="col-level life-col"><div class="cyc-row cyc-1"><span class="cyc-badge cyc-1">課題の設定</span>「<strong>なぜ？</strong>」と思える</div>
+        <div class="cyc-row cyc-2"><span class="cyc-badge cyc-2">情報の収集</span>観察・聞き取りで<strong>情報を集められる</strong>（絵・メモ・写真記録の入門）</div>
+        <div class="cyc-row cyc-3"><span class="cyc-badge cyc-3">整理・分析</span>集めたことを<strong>並べて比較できる</strong>（準備段階）</div>
+        <div class="cyc-row cyc-4"><span class="cyc-badge cyc-4">まとめ・表現・振り返り</span>調べたことを<strong>共有</strong>し、友達の考えを聞ける</div></td>
+      <td class="col-level"><div class="cyc-row cyc-1"><span class="cyc-badge cyc-1">課題の設定</span>身近なものに<strong>気づき</strong>、「なぜ？」と<strong>問いを立てられる</strong></div>
+        <div class="cyc-row cyc-2"><span class="cyc-badge cyc-2">情報の収集</span>観察・体験を<strong>言葉や記録で残せる</strong></div>
+        <div class="cyc-row cyc-3"><span class="cyc-badge cyc-3">整理・分析</span>観察・体験の記録を<strong>並べて比較できる</strong><span class="cyc-deepen-tag">（小4以降で本格化）</span></div>
+        <div class="cyc-row cyc-4"><span class="cyc-badge cyc-4">まとめ・表現・振り返り</span>感じたことを<strong>自分の言葉で話せる</strong>。クラスで<strong>発表し、聞き手の問いに応じられる</strong></div></td>
+      <td class="col-level"><div class="cyc-row cyc-1"><span class="cyc-badge cyc-1">課題の設定</span><strong>調べたいことを自分で決められる</strong></div>
+        <div class="cyc-row cyc-2"><span class="cyc-badge cyc-2">情報の収集</span>本・インターネット・聞き取りなど<strong>複数の方法で情報を集められる</strong>。人に聞くときの<strong>礼儀・配慮</strong>ができる</div>
+        <div class="cyc-row cyc-3"><span class="cyc-badge cyc-3">整理・分析</span>集めた情報を<strong>整理してまとめられる</strong></div>
+        <div class="cyc-row cyc-4"><span class="cyc-badge cyc-4">まとめ・表現・振り返り</span>相手に伝わる形で<strong>発表できる</strong></div></td>
+      <td class="col-level"><div class="cyc-row cyc-1"><span class="cyc-badge cyc-1">課題の設定</span>調査の問い・テーマを<strong>設定</strong>できる<span class="cyc-deepen-tag">（前学年までの深化）</span></div>
+        <div class="cyc-row cyc-2"><span class="cyc-badge cyc-2">情報の収集</span>自分ごとのデータを<strong>集められる</strong></div>
+        <div class="cyc-row cyc-3"><span class="cyc-badge cyc-3">整理・分析</span>表やグラフで<strong>整理</strong>し、データから<strong>傾向を読み取れる</strong>。「なぜそうなったか」<strong>仮説を立て</strong>、複数の情報を<strong>比較して考えを深められる</strong></div>
+        <div class="cyc-row cyc-4"><span class="cyc-badge cyc-4">まとめ・表現・振り返り</span>提言・発信の<strong>相手・目的・構成を設定</strong>できる<span class="cyc-deepen-tag">（小6で本格化）</span></div>
+        <div class="cyc-row" style="font-size:10px;color:var(--ink3)">小3〜4の記録・調査の力を<strong>データに基づく考え</strong>に使える</div></td>
+      <td class="col-level"><div class="cyc-row cyc-1"><span class="cyc-badge cyc-1">課題の設定</span><strong>調査の計画を立てられる</strong></div>
+        <div class="cyc-row cyc-2"><span class="cyc-badge cyc-2">情報の収集</span>アンケートや聞き取りで<strong>データを集められる</strong></div>
+        <div class="cyc-row cyc-3"><span class="cyc-badge cyc-3">整理・分析</span>集めたデータを<strong>分析し、課題の構造を捉えられる</strong></div>
+        <div class="cyc-row cyc-4"><span class="cyc-badge cyc-4">まとめ・表現・振り返り</span><strong>根拠を持って提言・提案</strong>できる。小5までのデータ整理を<strong>地域・社会への提案</strong>に統合できる</div></td>
+      <td class="col-level jhs-col"><div class="cyc-row cyc-1"><span class="cyc-badge cyc-1">課題の設定</span>届けたい<strong>相手・目的</strong>を意識して活動できる</div>
+        <div class="cyc-row cyc-2"><span class="cyc-badge cyc-2">情報の収集</span>取材・観察で<strong>素材を集められる</strong></div>
+        <div class="cyc-row cyc-3"><span class="cyc-badge cyc-3">整理・分析</span>伝えたい形に<strong>編集・まとめられる</strong>。相手・目的に応じて<strong>表現を選べる</strong></div>
+        <div class="cyc-row cyc-4"><span class="cyc-badge cyc-4">まとめ・表現・振り返り</span>学校外への<strong>発信という意識</strong>を持てる。小4の「調べて伝える」を<strong>社会への発信</strong>へ深化できる</div></td>
+      <td class="col-level jhs-col"><div class="cyc-row cyc-1"><span class="cyc-badge cyc-1">課題の設定</span>届けたい<strong>相手・目的</strong>を意識して問いを継続できる<span class="cyc-deepen-tag">（前学年までの深化）</span></div>
+        <div class="cyc-row cyc-2"><span class="cyc-badge cyc-2">情報の収集</span><strong>倫理に配慮した調査・取材</strong>ができる</div>
+        <div class="cyc-row cyc-3"><span class="cyc-badge cyc-3">整理・分析</span>複数の情報源を<strong>比較し、信頼できるか考えられる</strong></div>
+        <div class="cyc-row cyc-4"><span class="cyc-badge cyc-4">まとめ・表現・振り返り</span>分析結果をもとに<strong>提言・提案</strong>できる。小6の提言力を<strong>より複雑な社会課題</strong>の分析に応用できる</div></td>
+      <td class="col-level jhs-col"><div class="cyc-row cyc-1"><span class="cyc-badge cyc-1">課題の設定</span>社会課題を<strong>多角的な視点から問い直せる</strong></div>
+        <div class="cyc-row cyc-2"><span class="cyc-badge cyc-2">情報の収集</span>これまで培った調査・取材・記録を<strong>本探究で活用</strong>できる<span class="cyc-deepen-tag">（前学年までの深化）</span></div>
+        <div class="cyc-row cyc-3"><span class="cyc-badge cyc-3">整理・分析</span>自分の<strong>立場と根拠を構築</strong>できる</div>
+        <div class="cyc-row cyc-4"><span class="cyc-badge cyc-4">まとめ・表現・振り返り</span><strong>討論・発信</strong>できる。<strong>探究全体を振り返り</strong>、学びの強み・課題を述べられる。9年間の探究スキルを<strong>自己の生き方と統合</strong>して提言できる</div></td>
+    </tr>
+    <tr class="row-hon">
+      <th class="dim-cell">⑤本探究テーマ例<span class="sub">小1〜2は生活科の学習題材例</span></th>
+      <td class="life-col">学校・家庭の様子／身近な生き物・季節の変化</td>
+      <td class="life-col">地域の様子・自然・仕事／伝統行事</td>
+      <td>地域のよさ・まちたんけん／身近な環境・動植物</td>
+      <td>福祉・バリアフリー／地域の伝統・産業</td>
+      <td>環境・SDGs・食と農／国際理解・多文化共生</td>
+      <td>地域課題・地域活性化（提案型）／職業・自己の将来</td>
+      <td class="jhs-col">地域の魅力発見・情報発信／環境・防災（地域連携）</td>
+      <td class="jhs-col">職業・社会参加・職場体験／国際理解・SDGs（グローバル）</td>
+      <td class="jhs-col">地域課題解決（提言・実行）／平和・人権・自己の将来</td>
+    </tr>
+    <tr>
+      <th class="dim-cell">⑥④に連動して必要となる情報活用スキル<span class="sub">小1〜2は紙・対話中心。小3〜で本格化</span></th>
+      <td class="life-col"><span class="skill-tag">観察の記録（紙・絵）</span>
+        <span class="skill-tag">伝え合い（対話）</span></td>
+      <td class="life-col"><span class="skill-tag new">写真記録（入門）</span>
+        <span class="skill-tag">メモ・絵の整理</span>
+        <span class="skill-tag">伝え合い（対話）</span></td>
+      <td><span class="skill-tag new">撮影・記録</span>
+        <span class="skill-tag new">デジタルメモ</span>
+        <span class="skill-tag new">ファイル保存・整理</span>
+        <span class="skill-tag new">発表（型通り）</span></td>
+      <td><span class="skill-tag new">検索・情報収集</span>
+        <span class="skill-tag new">引用・出典記載</span>
+        <span class="skill-tag new">メディア選択</span>
+        <span class="skill-tag">撮影・記録（深化）</span>
+        <span class="skill-tag new">インタビュー同意</span></td>
+      <td><span class="skill-tag new">AND/OR検索</span>
+        <span class="skill-tag new">表・グラフ整理</span>
+        <span class="skill-tag new">出典・信頼性確認</span>
+        <span class="skill-tag new">情報の偏り認識</span>
+        <span class="skill-tag">引用（深化）</span></td>
+      <td><span class="skill-tag new">アンケート設計</span>
+        <span class="skill-tag new">一次データ収集・集計</span>
+        <span class="skill-tag new">グラフの誠実な提示</span>
+        <span class="skill-tag new">AI批判的比較</span>
+        <span class="skill-tag">検索・グラフ（深化）</span></td>
+      <td class="jhs-col"><span class="skill-tag new">著作権・肖像権の実践判断</span>
+        <span class="skill-tag new">SNS発信リスク管理</span>
+        <span class="skill-tag new">クラウド協働</span>
+        <span class="skill-tag">メディア選択（深化）</span></td>
+      <td class="jhs-col"><span class="skill-tag new">個人情報保護の実践</span>
+        <span class="skill-tag new">ファクトチェック</span>
+        <span class="skill-tag new">データ匿名化</span>
+        <span class="skill-tag new">AI出力の検証</span>
+        <span class="skill-tag">一次データ収集（深化）</span></td>
+      <td class="jhs-col"><span class="skill-tag new">データバイアス認識</span>
+        <span class="skill-tag new">AI責任ある利用</span>
+        <span class="skill-tag new">メディアリテラシー実践</span>
+        <span class="skill-tag new">情報活用自己評価</span>
+        <span class="skill-tag">論拠の構造化（深化）</span></td>
+    </tr>
+    <tr class="row-blk">
+      <th class="dim-cell">⑦情報ブロック<span class="sub">ミニ内の情報提供・本探究直前</span></th>
+      <td class="life-col" style="color:var(--ink3)">生活科活動内で対話・観察が中心。端末は必要に応じて<strong>基本操作・マナー</strong>のみ</td>
+      <td class="life-col">写真を撮るときの<strong>マナー</strong>・端末の<strong>基本操作</strong>（生活科の観察記録と連動）</td>
+      <td>端末の正しい使い方・ファイルの保存と呼び出し・肖像権（初歩）</td>
+      <td>著作権・引用の基礎・インタビュー時の個人情報と同意・メディアの特性</td>
+      <td>AND/OR検索・データの著作権と出典・グラフの読み方と誤用・翻訳AIの限界</td>
+      <td>アンケート設計の倫理・グラフの見せ方と印象操作・情報推薦AIの仕組み</td>
+      <td class="jhs-col">著作権法の基礎・肖像権の範囲・SNS発信リスクの事例</td>
+      <td class="jhs-col">個人情報保護法と職場事例・ファクトチェック手順・AIが生成する情報の特性</td>
+      <td class="jhs-col">データバイアスと対処・生成AIの責任ある利用・情報と権力の関係</td>
+    </tr>
+    <tr class="row-mini">
+      <th class="dim-cell">⑧ミニ探究ユニット<span class="sub">合計1〜2h（⑦含む）・小1〜2は生活科内の例</span></th>
+      <td class="life-col"><strong>生活科例：</strong>「校庭で見つけた虫を観察し、絵と言葉で1枚に」<br><span style="color:var(--ink3)">※小3総合探究「気づき・記録」の助走</span></td>
+      <td class="life-col"><strong>生活科例：</strong>「近くを歩いて、気になるものを写真3枚・言葉3つで紹介」<br><span style="color:var(--ink3)">※小3「まちたんけん」の助走</span></td>
+      <td><strong>助走例：</strong>「見つけた『いいな』を写真1枚で紹介」（1か所・1枚・1文）<br><span style="color:var(--ink3)">※本探究「まちたんけん」の小スケール版</span></td>
+      <td><strong>助走例：</strong>「校区内1か所だけ調べ、Web情報1件を引用してレポートに」<br><span style="color:var(--ink3)">※本探究「バリアフリー調査」の小スケール版</span></td>
+      <td><strong>助走例：</strong>「家庭の1週間の電気使用量を記録・グラフ化しクラスで比較」<br><span style="color:var(--ink3)">※本探究「環境・SDGs」の小スケール版</span></td>
+      <td><strong>助走例：</strong>「本探究テーマでクラス内アンケートを設計・実施・改善」<br><span style="color:var(--ink3)">※本探究「地域課題提言」の小スケール版</span></td>
+      <td class="jhs-col"><strong>助走例：</strong>「取材候補地1か所でSNS投稿文と著作権チェックリストを作成」<br><span style="color:var(--ink3)">※本探究「地域PR発信」の小スケール版</span></td>
+      <td class="jhs-col"><strong>助走例：</strong>「本探究テーマのニュース2本をファクトチェックし情報源選定基準を決定」<br><span style="color:var(--ink3)">※本探究「国際課題探究」の小スケール版</span></td>
+      <td class="jhs-col"><strong>助走例：</strong>「本探究で使うオープンデータ1つを選びバイアスを注記した図にまとめる」<br><span style="color:var(--ink3)">※本探究「地域課題提言」の小スケール版</span></td>
+    </tr>
+    <tr>
+      <th class="dim-cell">⑨教科との親和性<span class="sub">同水準スキルの活用場面</span></th>
+      <td class="life-col">生活科「身近な人」「身近な物」の<strong>観察と伝え合い</strong></td>
+      <td class="life-col">生活科「地域」「自然」「仕事」の<strong>観察・簡単な調べ</strong></td>
+      <td>生活科で育った観察・記録を、理科の観察記録・社会のフィールドワーク記録と同水準の「記録・整理」へ</td>
+      <td>社会科資料の引用、道徳のインタビュー活動と同水準の「出典・同意」</td>
+      <td>算数の資料整理・グラフ、英語での情報検索と同水準の「データ読解」</td>
+      <td>算数の統計的活用、社会科の調査・提言活動と同水準の「データに基づく提案」</td>
+      <td class="jhs-col">技術科「情報通信ネットワーク」と連動。美術・国語のメディア表現と同水準の「発信設計」</td>
+      <td class="jhs-col">技術科「情報セキュリティ」「AIの仕組み」と連動。社会科の史料批判と同水準の「信頼性評価」</td>
+      <td class="jhs-col">技術科「プログラミングによる問題解決」と連動。全教科の探究の集大成として自己評価</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note note-teal" style="margin-bottom:.75rem">
+  <strong>小1〜2（生活科）の位置づけ：</strong>総合的な学習の時間は小3からであるが、探究スキルの土台は<strong>生活科の観察・伝え合い・簡単な調べ</strong>で育つ。本表の小1〜2列は、小3以降の総合探究・情報の領域に<strong>連続する助走</strong>として読む。⑦⑧の三層（情報ブロック・ミニ探究）は小3から本格運用とし、小1〜2では生活科の学習活動の中で④⑥の基礎を育てる。
+</div>
+
+<div class="note note-amber">
+  <strong>④と⑥の関係：</strong>④は探究サイクル各段階で求められる<strong>探究活動のスキル</strong>（紙・対話・観察でも成立）。⑥は④をデジタル環境で実現するために<strong>連動して必要となる情報活用スキル</strong>。年間計画では「小5④でデータを集め表に整理できる → ⑥のグラフ・検索スキルを⑦⑧のミニ探究（合算1〜2h）で助走 → 本探究（約1か月）の環境調査で統合」という流れで記述する。
+</div>
+
+
+<!-- ══ テーマ×学年 探究スキル表 ══ -->
+<h2 class="section page-break" id="theme-skill">総合的な学習の時間　テーマと探究スキル水準一覧</h2>
+
+<p class="lead">
+  統合ステップアップ表（学年軸）とは別に、<strong>よく扱われるテーマ分類</strong>ごとに、各学年でどのような<strong>学習例</strong>があり、どの<strong>探究深度・探究サイクル</strong>が求められるかをまとめた表である。同じテーマ分野は学年を重ねて深めていく。<strong>守口実例</strong>は守口市内17校の全体計画（2026年度）から抽出した取組の一例。各校の年間系列・テーマ名はそのまま当てはまるとは限らない。
+</p>
+
+<div class="moriguchi-series">
+  <h4>守口市でよく見られる年間系列の型（例：さくら小）</h4>
+  <p style="font-size:10px;color:var(--ink2);margin-bottom:.5rem">「学ぼう私たちの町」シリーズと「つながる・つなげる」「紡いで繋いで」の三層で、学年・時期ごとにテーマを重ねる構成。</p>
+  <div class="ms-row"><span class="ms-grade">小3</span><span>学ぼう私たちの町1（校区探検）／つながる・つなげる（人とつながろう）／紡いで繋いで（防災・林間準備）</span></div>
+  <div class="ms-row"><span class="ms-grade">小4</span><span>学ぼう私たちの町2（施設見学・社会見学）／日本全国旅物語</span></div>
+  <div class="ms-row"><span class="ms-grade">小5</span><span>環境にやさしいまち物語（SDGs）／つながる・つなげる（社会とつながろう）</span></div>
+  <div class="ms-row"><span class="ms-grade">小6</span><span>学ぼう私たちの町3／人にやさしいまち物語（福祉・バリアフリー）／紡いで繋いで（キャリア）</span></div>
+  <p style="font-size:9px;color:var(--ink3);margin-top:.4rem">ほか守口小型（小3地域→小4福祉→小5環境→小6平和）、さつき「ふるさと学×SDGs」など各校で系列名は異なるが、<strong>テーマの縦断深化</strong>の考え方は共通。</p>
+</div>
+
+<div class="cycle-legend" style="margin-bottom:.5rem">
+  <div class="cycle-legend-item cyc-1"><strong>課題の設定</strong></div>
+  <div class="cycle-legend-item cyc-2"><strong>情報の収集</strong></div>
+  <div class="cycle-legend-item cyc-3"><strong>整理・分析</strong></div>
+  <div class="cycle-legend-item cyc-4"><strong>まとめ・表現・振り返り</strong></div>
+</div>
+
+<p style="font-size:11px;color:var(--ink3);margin-bottom:.75rem">
+  各セル：<strong>学習例</strong> → 探究深度 → 探究サイクル別スキル（<strong>課題→収集→整理→表現の4段階を常に同順・同色</strong>。重点外の段階は文末の注釈で深化・本格化を示す）。探究深度は<span class="depth-badge d1">Ⅰ</span><span class="depth-badge d2">Ⅱ</span><span class="depth-badge d3">Ⅲ</span>。<strong>セルをクリック</strong>すると、<strong>①→②→③</strong>の時間軸と本探究の具体例が表示される。読み方は<a href="#stepup-main">統合ステップアップ表</a>の重点ガイドを参照。
+</p>
+
+<table class="theme-table">
+  <thead>
+    <tr>
+      <th style="width:10%;text-align:left">テーマ分類</th>
+      <th>小3</th><th>小4</th><th>小5</th><th>小6</th>
+      <th class="jhs-col">中1</th><th class="jhs-col">中2</th><th class="jhs-col">中3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="cat-cell">地域・まちづくり</td>
+      <td class="skill-cell">
+        <div class="theme-example">例：まちたんけん</div>
+        <div class="theme-moriguchi">さくら小「学ぼう私たちの町1」校区探検</div>
+        <div class="theme-depth"><span class="depth-badge d1">Ⅰ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>気づき・問い</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>観察・記録</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>発表・対話</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：伝統・産業・農</div>
+        <div class="theme-moriguchi">さくら小「学ぼう私たちの町2」施設見学／さつき 土居商店街応援隊</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>調べることを決める</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>取材・Web・聞き取り</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>情報をまとめる</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>新聞・ポスター</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：地域資源・まちの魅力</div>
+        <div class="theme-moriguchi">守口小 郷土のよさと人々の願い／さつき 今昔物語・米作り</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>データ・資料収集</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>比較・グラフ化</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>提案・発表</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：地域課題・活性化</div>
+        <div class="theme-moriguchi">さくら小「学ぼう私たちの町3」／守口小 地域課題への提言</div>
+        <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>調査計画</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>アンケート・聞き取り</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>分析・構造化</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>提言・提案</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：地域PR・魅力発信</div>
+        <div class="theme-moriguchi">さつき 地域盆踊りプロジェクト／さつき 応援隊CM作成・披露</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>相手・目的</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>取材・観察</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>編集・表現選択</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>SNS・動画発信</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：まちづくり・社会参加</div>
+        <div class="theme-moriguchi">庭窪中 守口と戦争・空襲の歴史調査</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>地域調査・取材</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>多面的比較</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>提言・発表</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：地域課題の解決・実行</div>
+        <div class="theme-moriguchi">さつき「For our future」／八雲中 校外学習・地域連携</div>
+        <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>問い直し</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>立場・根拠構築</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>提言・実行・振り返り</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-cell">環境・自然・SDGs</td>
+      <td class="skill-cell">
+        <div class="theme-example">例：校庭・身近な動植物</div>
+        <div class="theme-moriguchi">よつば小 地域理解・環境・防災（計画上の学習内容）</div>
+        <div class="theme-depth"><span class="depth-badge d1">Ⅰ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>気づき・問い</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>継続観察・記録</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>変化の共有</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：身近な環境・ごみ</div>
+        <div class="theme-moriguchi">さつき ふるさと学×SDGs「水×SDGs」「ごみ×SDGs」</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>観察・調査</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>原因を整理</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>改善案の発表</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：環境・食と農・SDGs</div>
+        <div class="theme-moriguchi">さくら小「環境にやさしいまち物語」／守口小 SDGs・環境／佐太小 米づくり</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>自分ごとデータ</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>グラフ・仮説</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>根拠ある提案</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：持続可能なまち</div>
+        <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>課題の設定</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>アンケート・調査</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>データ分析</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>地域への提言</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：防災・地域安全</div>
+        <div class="theme-moriguchi">さくら小「紡いで繋いで」防災・防災バッグ／さつき「防災×SDGs」</div>
+        <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>行政データ・調査</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>リスク分析</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>自治会等へ提言</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：気候・エネルギー</div>
+        <div class="theme-moriguchi">八雲東小 防災・福祉・環境の横断学習</div>
+        <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>多源データ</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>信頼性検証</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>政策提言</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：環境と社会の構造</div>
+        <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>構造を問う</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>多角的分析</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>討論・発信</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-cell">福祉・共生</td>
+      <td class="skill-cell">
+        <div class="theme-example">例：いろいろな人のくらし</div>
+        <div class="theme-depth"><span class="depth-badge d1">Ⅰ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>関心・共感</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>観察・聞く</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>伝え合い</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：バリアフリー・高齢者</div>
+        <div class="theme-moriguchi">守口小 バリアフリー・UD／さくら小 校区バリアフリー調査</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>誰が困るか</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>観察・聞き取り</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>立場を整理</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>ポスター発信</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：多様性・共生</div>
+        <div class="theme-moriguchi">さつき ふるさと学×SDGs「福祉×SDGs」／さくら小「人にやさしいまち物語」</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>事例・データ</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>比較・考察</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>提案・発表</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：福祉と地域社会</div>
+        <div class="theme-moriguchi">佐太小 福祉・ボランティア／八雲小 福祉・ボランティア</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>調査・取材</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>課題の構造化</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>提言</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：共生社会の発信</div>
+        <div class="theme-moriguchi">さつき・八雲中 障がい理解学習／錦中 福祉体験実習</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>取材・事例</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>編集・構成</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>メディア発信</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：社会参加・包摂</div>
+        <div class="theme-moriguchi">八雲中 多文化共生・障がい者理解（手話・アイマスク体験）</div>
+        <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>倫理的調査</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>制度・課題分析</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>提言</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：人権・差別と社会</div>
+        <div class="theme-moriguchi">錦中 人権学習（同和・進学就職）／八雲中 部落問題学習</div>
+        <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>問い直し</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>立場・根拠</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>討論・発信</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-cell">国際理解</td>
+      <td class="skill-cell">
+        <div class="theme-example">例：世界の子ども・文化</div>
+        <div class="theme-depth"><span class="depth-badge d1">Ⅰ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>興味・関心</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>資料・紹介</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>共有・発表</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：外国との交流</div>
+        <div class="theme-moriguchi">さくら小「つながる・つなげる」世界とつながろう</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>調べ・聞く</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>違いを整理</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>紹介・発表</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：多文化共生</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>多言語検索</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>比較・偏り</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>共通点の発信</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：国際協力・SDGs</div>
+        <div class="theme-moriguchi">藤田小 国際理解／佐太小 在日外国人の文化／錦小 日本と世界の産業・文化</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>国際データ</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>比較・分析</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>提案・発表</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：グローバルな友人</div>
+        <div class="theme-moriguchi">さつき 国際理解・大阪FW・多文化共生</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>交流・調査</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>文化比較</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>発信</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：国際課題・ニュース</div>
+        <div class="theme-moriguchi">庭窪中 国際理解（在日外国人・ルーツ）／生野コリアタウン見学</div>
+        <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>多源・倫理</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>ファクト検証</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>根拠ある発信</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：グローバル課題と自己</div>
+        <div class="theme-moriguchi">さつき For our future（国際理解・交流の振り返り）</div>
+        <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>問い直し</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>立場構築</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>討論・提言</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-cell">職業・キャリア</td>
+      <td class="skill-cell">
+        <div class="theme-example">例：仕事とくらし</div>
+        <div class="theme-depth"><span class="depth-badge d1">Ⅰ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>興味・関心</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>聞く・見る</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>紹介・共有</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：地域の仕事</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>取材・調査</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>魅力を整理</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>紹介・発表</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：食・農と仕事</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>調査・データ</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>つながりを分析</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>提案</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：職業・自己の将来</div>
+        <div class="theme-moriguchi">さくら小「紡いで繋いで」キャリア教育／錦小 未来をつくるのはわたしたち</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>調査・インタビュー</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>AIと比較</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>ポートフォリオ</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：地域の仕事と魅力</div>
+        <div class="theme-moriguchi">八雲中 キャリア学習・職場体験の準備</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>取材</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>編集</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>発信</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：職場体験・働く</div>
+        <div class="theme-moriguchi">さつき 職場体験・キャリア探究学習／八雲中 職場体験学習</div>
+        <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>倫理取材</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>分析</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>提言</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：自己の将来・進路</div>
+        <div class="theme-moriguchi">錦中・八雲中 進路学習／第一中 進路に関する学習（三分野の一つ）</div>
+        <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>生き方と統合</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>根拠構築</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>振り返り・提言</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-cell">平和・人権・社会</td>
+      <td class="skill-cell">
+        <div class="theme-example">例：仲間・いじめ防止</div>
+        <div class="theme-depth"><span class="depth-badge d1">Ⅰ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>気づき</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>話し合い</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>共有</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：公正さ・ルール</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>事例調査</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>比較</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>提案</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：公平・格差</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>データ・調査</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>分析</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>発表</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：社会の課題</div>
+        <div class="theme-moriguchi">守口小 戦争の惨禍・核兵器・世界平和／さつき 平和学習・広島修学旅行</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>ニュース・調査</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>多面的視点</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>提言</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：安全・防災と社会</div>
+        <div class="theme-moriguchi">庭窪中 平和教育（ピースおおさか・大阪空襲）／八雲中 人権学習</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>調査</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>分析</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>発信</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：社会問題の検証</div>
+        <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>多源調査</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>批判的検討</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>提言</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：平和・人権・問い直し</div>
+        <div class="theme-moriguchi">八雲中 満蒙開拓平和祈念館・沖縄南部戦跡見学／錦中 修学旅行（沖縄）平和学習</div>
+        <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>構造を問う</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>立場・検証</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>討論・自己評価</div>
+      </td>
+    </tr>
+    <tr>
+      <td class="cat-cell">情報・メディア<br>リテラシー</td>
+      <td class="skill-cell">
+        <div class="theme-example">例：記録・伝え合い</div>
+        <div class="theme-moriguchi">八雲小 タブレットで伝え合う学び（研究主題）</div>
+        <div class="theme-depth"><span class="depth-badge d1">Ⅰ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>撮影・デジタル記録</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>型通りの発表</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：検索・引用の基礎</div>
+        <div class="theme-moriguchi">よつば小 情報の集め方・コンピュータ活用／八雲東小 情報に関する学習</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>検索・情報収集</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>引用・出典</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>レポート・発表</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：データ・グラフ</div>
+        <div class="theme-moriguchi">錦小 プログラミング教育・論理的思考／金田小 情報に関する取り組み</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>データ収集</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>表・グラフ</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>誠実な提示</div>
+      </td>
+      <td class="skill-cell">
+        <div class="theme-example">例：アンケート・一次データ</div>
+        <div class="theme-moriguchi">守口小 アンケート・インタビュー実施／錦小 地域人材データベース活用</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>一次データ</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>集計・分析</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>提言資料</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：情報モラル・発信</div>
+        <div class="theme-moriguchi">錦中・八雲中 情報モラル教室／第一中 情報活用（スキル学習）</div>
+        <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>ICT・図書室活用</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>著作権・肖像権判断</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>プレゼン・新聞</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：ファクトチェック</div>
+        <div class="theme-moriguchi">第一中 ICTで情報収集・ポートフォリオ／梶中 iPad・情報リテラシー</div>
+        <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>倫理的調査</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>信頼性検証</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>提言・発表</div>
+      </td>
+      <td class="skill-cell jhs-col">
+        <div class="theme-example">例：AI・メディアリテラシー</div>
+        <div class="theme-moriguchi">八雲中 いのちの学習（LGBTQ+・性の多様性）と情報倫理／さつき 性の多様性</div>
+        <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>問い直し</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>AI出力検証</div>
+        <div class="theme-skill-line"><span class="cyc-mini cyc-4">表現</span>自己評価・振り返り</div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note note-teal">
+  <strong>読み方：</strong>縦にテーマ分類を読むと、同じ領域が<strong>学年を重ねてどう深まるか</strong>（例：地域＝まちたんけん→伝統調査→提言→PR発信→解決実行）がわかる。横に学年を読むと、その年に扱いやすい<strong>学習例と探究サイクル</strong>の水準がわかる。<span class="theme-moriguchi" style="display:inline-block;margin:0 2px">守口実例</span>は市内各校計画からの引用例。<strong>各セルをクリック</strong>すると、①→②→③の年間配置の流れと助走から本探究への移行が確認できる。<a href="school_joho_ichiran.html">各校一覧</a>と照合可。情報活用の三層は<strong>統合ステップアップ表</strong>・<a href="sougou_gakunen_framework.html#ch3">第3章</a>を参照。
+</div>
+
+<div id="theme-modal" class="theme-modal no-print" hidden>
+  <div class="theme-modal-backdrop" aria-hidden="true"></div>
+  <div class="theme-modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button type="button" class="theme-modal-close" aria-label="閉じる">×</button>
+    <h3 id="modal-title"></h3>
+    <div id="modal-meta"></div>
+    <div id="modal-hon-hero" class="modal-hon-hero">
+      <div class="modal-hon-hero-label">本探究の課題設定 — 年間探究の出発点</div>
+      <p id="modal-hero-theme" class="modal-hero-theme"></p>
+      <p id="modal-hero-question" class="modal-hero-question"></p>
+      <p id="modal-hero-summary" class="modal-hero-summary"></p>
+    </div>
+    <div class="modal-flow">
+      <div class="modal-flow-caption">年間配置の流れ（時間軸）　⑦⑧は合算1〜2h。ブロックはミニ内の情報提供部分</div>
+      <div class="modal-flow-steps">
+        <div class="modal-flow-step step-block">
+          <span class="flow-num">①</span>
+          <span class="flow-name">情報ブロック</span>
+          <span class="flow-time">情報提供（ミニ内）</span>
+        </div>
+        <div class="modal-flow-arrow" aria-hidden="true">→</div>
+        <div class="modal-flow-step step-mini">
+          <span class="flow-num">②</span>
+          <span class="flow-name">ミニ探究</span>
+          <span class="flow-time">合計1〜2h</span>
+        </div>
+        <div class="modal-flow-arrow" aria-hidden="true">→</div>
+        <div class="modal-flow-step step-hon">
+          <span class="flow-num">③</span>
+          <span class="flow-name">本探究</span>
+          <span class="flow-time">約1か月</span>
+        </div>
+      </div>
+      <p id="modal-flow-bridge" class="modal-flow-bridge"></p>
+    </div>
+    <div class="modal-timeline-body">
+      <section class="modal-section modal-step-card step-block">
+        <span class="modal-step-marker">①</span>
+        <div class="modal-step-head">情報ブロック — ミニ探究内の情報提供部分（⑦）</div>
+        <p id="modal-block"></p>
+        <p id="modal-block-use"></p>
+      </section>
+      <p id="modal-trans-1" class="modal-step-transition"></p>
+      <section class="modal-section modal-step-card step-mini">
+        <span class="modal-step-marker">②</span>
+        <div class="modal-step-head">ミニ探究ユニット（合計1〜2h）— 情報提供のあと短い探究実践（⑧）</div>
+        <div id="modal-mini"></div>
+      </section>
+      <p id="modal-trans-2" class="modal-step-transition"></p>
+      <section class="modal-section modal-step-card step-hon">
+        <span class="modal-step-marker">③</span>
+        <div class="modal-step-head">本探究 — 約1か月（小4〜6h／中8〜12h）で本格展開</div>
+        <p class="modal-cycle-sub">探究サイクル（本探究の一例）</p>
+        <p id="modal-cycle-note" class="modal-cycle-note"></p>
+        <p class="modal-cycle-legend-inline">上：そのテーマでの具体例　／　下：到達水準（統合表④列・その学年の重点段階）</p>
+        <div id="modal-cycle"></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ 三分野との対応 ══ -->
+<h2 class="section page-break">情報活用能力三分野とスキル領域の対応</h2>
+
+<p class="lead">
+  学習指導要領上の情報活用能力は、<strong>①情報技術の活用　②情報技術の特性の理解　③情報技術の適切な取り扱い</strong>の三つに整理される。本シートの「スキル領域」は探究の課題設定から逆算した<strong>実践単位</strong>であり、三分野と1対1ではなく<strong>交差する</strong>。一つのスキル領域の中に①②③が混在し、指導の場面（情報ブロック／ミニ探究／本探究）によってどの分野が前面に出るかが変わる。
+</p>
+
+<div class="layer-dim-grid">
+  <div class="layer-dim-card" style="border-top:3px solid var(--blue)">
+    <div class="ldc-title" style="color:var(--blue)">🔷 情報ブロックで前面化（ミニ内・情報提供）</div>
+    <span class="dim-badge dim-2">②特性の理解</span>
+    <span class="dim-badge dim-3">③適切な取扱い</span><br>
+    ミニ探究ユニットの<strong>冒頭の情報提供部分</strong>。メディアの仕組み、AIの限界、著作権・個人情報のルールなど、探究に入る前に必要な知識を短く示す。
+  </div>
+  <div class="layer-dim-card" style="border-top:3px solid var(--teal-m)">
+    <div class="ldc-title" style="color:var(--teal)">🔶 ミニ探究ユニットで前面化（合計1〜2h）</div>
+    <span class="dim-badge dim-1">①活用</span>
+    <span class="dim-badge dim-mix">②③の適用</span><br>
+    情報提供（⑦）のあと、探究プロセス（課題→収集→整理→発信）を<strong>1〜2コマで意図的に体験</strong>。⑦⑧は合算でこの時間内に収める。
+  </div>
+  <div class="layer-dim-card" style="border-top:3px solid var(--amber-m)">
+    <div class="ldc-title" style="color:var(--amber)">◆ 本探究で統合</div>
+    <span class="dim-badge dim-1">①活用</span>
+    <span class="dim-badge dim-2">②特性の理解</span>
+    <span class="dim-badge dim-3">③適切な取扱い</span><br>
+    切実な問いの文脈で<strong>三つが不可分に機能</strong>。「必要だから使う」①の中で、②の視点が批判的検討を、③の視点が倫理判断を支える。
+  </div>
+</div>
+
+<h3 class="sub">スキル領域 × 情報活用能力三分野　対応表</h3>
+
+<p style="font-size:11px;color:var(--ink3);margin-bottom:.6rem">
+  <span class="dim-badge dim-1">①活用</span>＝操作・収集・整理・発信として技術を使う　
+  <span class="dim-badge dim-2">②特性の理解</span>＝仕組み・限界・加工の見方を知る　
+  <span class="dim-badge dim-3">③適切な取扱い</span>＝権利・倫理・安全の判断をする　
+  （<strong>主</strong>＝その領域の核、<span style="color:var(--ink3)">副</span>＝伴って育つ）
+</p>
+
+<table class="map-table">
+  <thead>
+    <tr>
+      <th>スキル領域</th>
+      <th>①情報技術の活用</th>
+      <th>②特性の理解</th>
+      <th>③適切な取り扱い</th>
+      <th>主に育つ場面</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="skill-name">記録・整理</td>
+      <td class="primary">主　撮影・保存・メモ操作</td>
+      <td><span class="sub">副</span>　ファイル構造・データ形式</td>
+      <td><span class="sub">副</span>　肖像権・撮影同意</td>
+      <td>小3：①を情報ブロック＋ミニで習得 → 以降は本探究で深化</td>
+    </tr>
+    <tr>
+      <td class="skill-name">検索・情報収集</td>
+      <td class="primary">主　検索・ブックマーク・資料収集</td>
+      <td><span class="sub">副</span>　AND/OR・検索結果の仕組み</td>
+      <td>—</td>
+      <td>小4①新規 → 小5で②（検索の仕組み）を情報ブロックで補強</td>
+    </tr>
+    <tr>
+      <td class="skill-name">引用・出典・著作権</td>
+      <td><span class="sub">副</span>　引用操作・出典表記</td>
+      <td>—</td>
+      <td class="primary">主　著作権・引用ルールの判断</td>
+      <td>小4：③を情報ブロック → ミニ探究で引用実践 → 中1で③を深化</td>
+    </tr>
+    <tr>
+      <td class="skill-name">メディア選択・発信設計</td>
+      <td class="primary">主　制作・投稿・発信操作</td>
+      <td class="primary">主　メディア特性・届き方の違い</td>
+      <td><span class="sub">副</span>　SNSリスク・表現の配慮</td>
+      <td>小4：②を情報ブロック → ①をミニ・本探究 → 中1で③を追加</td>
+    </tr>
+    <tr>
+      <td class="skill-name">表・グラフ・データ読解</td>
+      <td class="primary">主　表計算・グラフ作成</td>
+      <td class="primary">主　グラフの誤用・印象操作の仕組み</td>
+      <td><span class="sub">副</span>　誠実な見せ方の選択</td>
+      <td>小5：②③を情報ブロック → ①をミニ探究 → 小6・中以降で三つ統合</td>
+    </tr>
+    <tr>
+      <td class="skill-name">一次データ収集</td>
+      <td class="primary">主　アンケート実施・取材・集計</td>
+      <td>—</td>
+      <td class="primary">主　設問倫理・同意・匿名化</td>
+      <td>小4③（同意）→ 小6③（設問倫理）を情報ブロック → ①をミニ・本探究</td>
+    </tr>
+    <tr>
+      <td class="skill-name">信頼性・批判的検討</td>
+      <td><span class="sub">副</span>　複数ソースの照合操作</td>
+      <td class="primary">主　情報の加工・立場性・操作の仕組み</td>
+      <td><span class="sub">副</span>　出典・根拠の誠実な提示</td>
+      <td>小5②（偏り）→ 中2②（ファクトチェック）を情報ブロック → 本探究で統合</td>
+    </tr>
+    <tr>
+      <td class="skill-name">個人情報・倫理的判断</td>
+      <td>—</td>
+      <td><span class="sub">副</span>　個人情報の仕組み・漏洩リスク</td>
+      <td class="primary">主　同意・保護法・匿名化の判断</td>
+      <td>小3③（肖像権）→ 中2③（個人情報保護法）を情報ブロックで段階深化</td>
+    </tr>
+    <tr>
+      <td class="skill-name">AI批判的活用</td>
+      <td><span class="sub">副</span>　AIへの問い合わせ・補完利用</td>
+      <td class="primary">主　出力の仕組み・限界・バイアス</td>
+      <td class="primary">主　検証・引用表記・責任ある利用</td>
+      <td>小5②（翻訳AI）→ 小6①③ → 中2②③ → 中3で三つを統合</td>
+    </tr>
+    <tr>
+      <td class="skill-name">情報活用自己評価</td>
+      <td class="primary">主　探究過程の振り返り</td>
+      <td class="primary">主　活用の限界・不足の自覚</td>
+      <td class="primary">主　倫理・根拠の質の自己点検</td>
+      <td>中3：①②③すべてを本探究の振り返り・提言場面で統合</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note note-teal">
+  <strong>読み方の要点：</strong>
+  スキル領域は「何ができるか」の縦断的な積み上げ軸。三分野は「そのスキルをどの視点で扱うか」の横断的な分類軸。従来のステップアップシートが①のみを積み上げていたのに対し、統合版では<strong>②③を情報ブロックで先に置き、①をミニ探究・本探究で必然として使う</strong>ことで、三つが探究の文脈で結びつく。
+</div>
+
+
+<!-- ══ スキル蓄積マップ ══ -->
+<h2 class="section">スキル蓄積マップ　— 小1〜中3の段階的習得</h2>
+
+<p class="lead">
+  統合ステップアップ表をスキル軸で読み替えたもの。各領域が①②③のどれを主に含むかは上の対応表を参照。
+</p>
+
+<div class="tag-row skill-map-legend" style="margin-bottom:.65rem">
+  <span class="label">凡例：</span>
+  <span class="skill-map-legend-item"><span class="sym lv-prep">△</span>＝生活科での準備段階（入門・たたき台）</span>
+  <span class="skill-map-legend-item"><span class="sym lv-new">●</span>＝その学年で新規習得</span>
+  <span class="skill-map-legend-item"><span class="sym lv-use">○</span>＝前学年からの深化・使いこなし</span>
+  <span class="skill-map-legend-item"><span class="sym lv-none">—</span>＝未着手</span>
+</div>
+
+<table class="skill-map-table">
+  <thead>
+    <tr>
+      <th style="text-align:left">スキル領域</th>
+      <th style="background:#f0faf4">小1</th><th style="background:#f0faf4">小2</th>
+      <th>小3</th><th>小4</th><th>小5</th><th>小6</th>
+      <th>中1</th><th>中2</th><th>中3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="skill-name">記録・整理（撮影・ファイル・メモ）</td>
+      <td class="lv-prep">△</td><td class="lv-prep">△</td>
+      <td class="lv-new">●</td><td class="lv-use">○</td><td class="lv-use">○</td><td class="lv-use">○</td>
+      <td class="lv-use">○</td><td class="lv-use">○</td><td class="lv-use">○</td>
+    </tr>
+    <tr>
+      <td class="skill-name">検索・情報収集</td>
+      <td class="lv-none">—</td><td class="lv-none">—</td>
+      <td class="lv-none">—</td><td class="lv-new">●</td><td class="lv-use">○</td><td class="lv-use">○</td>
+      <td class="lv-use">○</td><td class="lv-use">○</td><td class="lv-use">○</td>
+    </tr>
+    <tr>
+      <td class="skill-name">引用・出典・著作権</td>
+      <td class="lv-none">—</td><td class="lv-none">—</td>
+      <td class="lv-none">—</td><td class="lv-new">●</td><td class="lv-use">○</td><td class="lv-use">○</td>
+      <td class="lv-new">●</td><td class="lv-use">○</td><td class="lv-use">○</td>
+    </tr>
+    <tr>
+      <td class="skill-name">メディア選択・発信設計</td>
+      <td class="lv-none">—</td><td class="lv-none">—</td>
+      <td class="lv-none">—</td><td class="lv-new">●</td><td class="lv-use">○</td><td class="lv-use">○</td>
+      <td class="lv-new">●</td><td class="lv-use">○</td><td class="lv-use">○</td>
+    </tr>
+    <tr>
+      <td class="skill-name">表・グラフ・データ読解</td>
+      <td class="lv-none">—</td><td class="lv-none">—</td>
+      <td class="lv-none">—</td><td class="lv-none">—</td><td class="lv-new">●</td><td class="lv-use">○</td>
+      <td class="lv-use">○</td><td class="lv-use">○</td><td class="lv-new">●</td>
+    </tr>
+    <tr>
+      <td class="skill-name">一次データ収集（アンケート・取材）</td>
+      <td class="lv-none">—</td><td class="lv-prep">△</td>
+      <td class="lv-none">—</td><td class="lv-new">●</td><td class="lv-use">○</td><td class="lv-new">●</td>
+      <td class="lv-use">○</td><td class="lv-use">○</td><td class="lv-use">○</td>
+    </tr>
+    <tr>
+      <td class="skill-name">信頼性・批判的検討（ファクトチェック）</td>
+      <td class="lv-none">—</td><td class="lv-none">—</td>
+      <td class="lv-none">—</td><td class="lv-none">—</td><td class="lv-new">●</td><td class="lv-use">○</td>
+      <td class="lv-use">○</td><td class="lv-new">●</td><td class="lv-use">○</td>
+    </tr>
+    <tr>
+      <td class="skill-name">個人情報・倫理的判断</td>
+      <td class="lv-none">—</td><td class="lv-prep">△</td>
+      <td class="lv-new">●</td><td class="lv-use">○</td><td class="lv-use">○</td><td class="lv-new">●</td>
+      <td class="lv-use">○</td><td class="lv-new">●</td><td class="lv-use">○</td>
+    </tr>
+    <tr>
+      <td class="skill-name">AI批判的活用・出力検証</td>
+      <td class="lv-none">—</td><td class="lv-none">—</td>
+      <td class="lv-none">—</td><td class="lv-none">—</td><td class="lv-new">●</td><td class="lv-new">●</td>
+      <td class="lv-use">○</td><td class="lv-new">●</td><td class="lv-new">●</td>
+    </tr>
+    <tr>
+      <td class="skill-name">情報活用自己評価</td>
+      <td class="lv-none">—</td><td class="lv-none">—</td>
+      <td class="lv-none">—</td><td class="lv-none">—</td><td class="lv-none">—</td><td class="lv-none">—</td>
+      <td class="lv-none">—</td><td class="lv-none">—</td><td class="lv-new">●</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="note note-teal">
+  <strong>このシートの使い方：</strong>
+  ①統合ステップアップ表で学年ごとの到達水準と三層配置を確認する。
+  ②<a href="#theme-skill">テーマと探究スキル水準一覧</a>で、よく扱うテーマごとの学年別要求水準を確認する。
+  ③本校の本探究テーマに合わせてミニ探究の助走テーマを具体化する（テーマ例は各校で置き換え可）。
+  ④スキル蓄積マップと三分野対応表で、①②③のどこをいつ育てるかを年間計画に記述する。
+  ⑤テーマ別の詳細単元例は「設計フレームワーク」第3章を参照。
+</div>
+
+</div>
+
+<footer class="footer container">
+  <p>
+    情報活用能力育成ステップアップシート（統合版）<br>
+    関連資料：<a href="sougou_gakunen_framework.html" style="color:var(--teal)">総合的な学習の時間　設計フレームワーク</a><br>
+    参考：令和7年10月・11月　中教審教育課程部会 生活・総合的な学習探究の時間WG／情報技術WG合同資料
+  </p>
+</footer>
+
+<button class="print-btn no-print" onclick="window.print()">印刷・PDF保存</button>
+
+<script src="theme_popup_data.js"></script>
+<script src="hon_inquiry_data.js"></script>
+<script src="theme_popup.js"></script>
+</body>
+</html>
