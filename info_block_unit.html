@@ -1,0 +1,3075 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>情報ブロック　ミニ探究ユニット</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+/* 基本 */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+  background: linear-gradient(165deg, #f0f4f8 0%, #e2e8f0 100%);
+  min-height: 100vh;
+  color: #1e293b;
+}
+
+/* ── サイト共通ナビ ── */
+.top-bar {
+  position: sticky; top: 0; z-index: 200;
+  background: #e8f4f0;
+  border-bottom: 1.5px solid #9dd0c0;
+  padding: 0 1.25rem;
+  display: flex; align-items: center; gap: 1rem;
+  flex-wrap: wrap;
+}
+.top-bar-title {
+  font-family: "Noto Serif JP", "Hiragino Mincho ProN", serif;
+  font-size: 12px; font-weight: 600; color: #2a6b58;
+  padding: 12px 0;
+  margin-right: .25rem;
+}
+.top-bar a {
+  font-size: 11px; color: #3a8a72; text-decoration: none;
+  white-space: nowrap;
+}
+.top-bar a:hover { color: #0f6e56; }
+.top-bar a.is-current {
+  font-weight: 700; color: #0f6e56;
+  pointer-events: none;
+}
+
+/* ヘッダー */
+.header {
+  padding: 1.5rem 1rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.header h1 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.print-btn {
+  display: inline-block;
+  margin-top: 0.75rem;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  background: #3b82f6;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+}
+.print-btn:hover {
+  background: #2563eb;
+}
+
+/* ヘッダー：マイカード配置モードの切り替え */
+.header-mode-row {
+  margin-top: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+.header-placement-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  background: #0d9488;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(13, 148, 136, 0.35);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+.header-placement-toggle:hover {
+  background: #0f766e;
+}
+.header-placement-toggle[aria-pressed="true"] {
+  background: #475569;
+  box-shadow: 0 2px 6px rgba(71, 85, 105, 0.35);
+}
+.header-placement-toggle[aria-pressed="true"]:hover {
+  background: #334155;
+}
+.header-mode-hint {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #64748b;
+  width: 100%;
+  text-align: center;
+}
+body.is-my-card-placement-mode .header-mode-hint {
+  display: none;
+}
+
+/* メイン・ギャラリー */
+.main {
+  padding: 1.5rem 1rem 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+/* 単元計画（マイカード配置）モード時：下部固定バー分の余白 */
+body.is-my-card-placement-mode .main {
+  padding-bottom: 9rem;
+}
+/* 閲覧モード：マイカード置き場・下部ドラッグバーを非表示 */
+body:not(.is-my-card-placement-mode) #planner,
+body:not(.is-my-card-placement-mode) #bottomDragArea {
+  display: none !important;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+
+.gallery-item {
+  flex: 0 0 auto;
+  width: 120px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border: 2px solid transparent;
+  /* 縦スクロールはブラウザのネイティブ処理に任げる（カード上でページが滑らかに動く） */
+  touch-action: pan-y pinch-zoom;
+}
+.gallery-item.gallery-item-draggable-div {
+  -webkit-user-drag: element;
+  user-drag: element;
+}
+
+.gallery-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* マウスダウン直後の見た目（ドラッグ発火前でも「つかんだ」と分かるように） */
+.gallery-item-drag-pending {
+  opacity: 0.85;
+  transform: scale(0.98);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* ドラッグ中にマウスについてくるゴースト（setDragImage 用） */
+.gallery-item-drag-ghost {
+  position: fixed;
+  left: -9999px;
+  top: 0;
+  width: 120px;
+  opacity: 0.95;
+  transform: scale(1.08);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* タブレット用：タッチドラッグ中の見た目 */
+.gallery-item.is-touch-dragging {
+  opacity: 0.85;
+  transform: scale(1.05);
+  z-index: 100;
+  position: relative;
+}
+
+.gallery-item:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.gallery-thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  touch-action: pan-y pinch-zoom;
+  pointer-events: none;
+}
+
+.gallery-thumb-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 0.65rem;
+  text-align: center;
+  padding: 0.25rem;
+  line-height: 1.3;
+  touch-action: pan-y pinch-zoom;
+}
+
+.gallery-label {
+  display: block;
+  padding: 0.5rem 0.4rem;
+  font-size: 0.7rem;
+  line-height: 1.3;
+  text-align: center;
+  color: #475569;
+  background: #fff;
+}
+
+/* ポップアップ */
+.popup {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.popup.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popup-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  cursor: pointer;
+}
+
+.popup-content {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  overflow: auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  border-left: 6px solid transparent;
+}
+.popup-content.cat-big-katsuyo { border-left-color: #fca5a5; }
+.popup-content.cat-big-appropriate { border-left-color: #86efac; }
+.popup-content.cat-big-characteristic { border-left-color: #93c5fd; }
+.popup-content.cat-big-katsuyo .popup-extra-block { border-left-color: #fca5a5; }
+.popup-content.cat-big-appropriate .popup-extra-block { border-left-color: #86efac; }
+.popup-content.cat-big-characteristic .popup-extra-block { border-left-color: #93c5fd; }
+
+.popup-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.06);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #475569;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.popup-close:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #0f172a;
+}
+
+.popup-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  align-items: start;
+}
+
+.popup-text {
+  min-width: 0;
+}
+
+.popup-title {
+  margin: 0 0 1rem 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.4;
+}
+
+.popup-description {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #334155;
+}
+
+.popup-meta {
+  margin: 0.4rem 0 0 0;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: #64748b;
+  text-align: right;
+}
+.popup-meta-big { font-weight: bold; }
+.popup-meta-big.cat-big-katsuyo { color: #dc2626; }
+.popup-meta-big.cat-big-appropriate { color: #16a34a; }
+.popup-meta-big.cat-big-characteristic { color: #2563eb; }
+
+.popup-extra {
+  margin-top: 1rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.popup-extra-block {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid #3b82f6;
+}
+
+.popup-extra-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  margin: 0 0 0.35rem 0;
+  letter-spacing: 0.02em;
+}
+
+.popup-extra-content {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #334155;
+  white-space: pre-line;
+}
+
+.popup-links {
+  margin-top: 1.5rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #eff6ff 0%, #e0f2fe 100%);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #1d4ed8;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 0.25rem;
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.popup-links p {
+  margin: 0;
+  white-space: normal;
+}
+
+.popup-links a {
+  color: #1d4ed8;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.popup-links a:hover {
+  color: #1e293b;
+  text-decoration: underline;
+}
+
+.popup-image-wrap {
+  position: sticky;
+  top: 1rem;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #f1f5f9;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.popup-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+.popup-no-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  padding: 1.5rem;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+/* 狭い画面では縦並び */
+@media (max-width: 600px) {
+  .popup-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .popup-image-wrap {
+    order: -1;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .gallery-item {
+    width: 100px;
+  }
+
+  .gallery-label {
+    font-size: 0.65rem;
+  }
+}
+
+/* 印刷カード選択ダイアログ */
+.print-select-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1300;
+  display: none;
+}
+.print-select-overlay.is-open {
+  display: block;
+}
+.print-select-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+}
+.print-select-dialog {
+  position: relative;
+  margin: 4vh auto;
+  max-width: 960px;
+  max-height: 90vh;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.3);
+  padding: 1.5rem 1.75rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+.print-select-title {
+  margin: 0 0 0.4rem 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+.print-select-desc {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.9rem;
+  color: #64748b;
+}
+.print-select-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+.print-select-all {
+  font-size: 0.9rem;
+  color: #334155;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.print-select-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+.print-select-btn {
+  border-radius: 999px;
+  font-size: 0.85rem;
+  padding: 0.45rem 1.1rem;
+  border: none;
+  cursor: pointer;
+}
+.print-select-btn.primary {
+  background: #2563eb;
+  color: #ffffff;
+}
+.print-select-btn.secondary {
+  background: #e5e7eb;
+  color: #374151;
+}
+.print-select-list {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0.25rem 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.5rem;
+}
+.print-select-group-title {
+  grid-column: 1 / -1;
+  margin: 0.25rem 0 0.15rem 0.1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.print-select-subgroup-title {
+  grid-column: 1 / -1;
+  margin: 0.35rem 0 0.1rem 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.02em;
+}
+.print-select-item {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #e5e7eb;
+}
+.print-select-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+.print-select-label input {
+  margin: 0;
+}
+.print-select-thumb {
+  width: 52px;
+  height: 40px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #e5e7eb;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  color: #64748b;
+}
+.print-select-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.print-select-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* マイカード置き場 */
+.planner {
+  margin: 0 0 2rem 0;
+  padding: 1rem 1.25rem 1.25rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #eff6ff 0%, #f9fafb 45%, #ecfdf5 100%);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+.planner-header-main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-bottom: 0.75rem;
+}
+.planner-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.planner-title {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+.planner-subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #475569;
+}
+.planner-balance-hint {
+  margin: 0.25rem 0 0 0;
+  font-size: 0.8rem;
+  color: #64748b;
+  font-style: italic;
+}
+.planner-color-legend {
+  margin: 0.35rem 0 0.6rem 0;
+  font-size: 0.7rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.5rem;
+}
+.planner-legend-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 0.15rem;
+}
+.planner-util-btn {
+  display: inline-block;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #334155;
+  cursor: pointer;
+}
+.planner-util-btn:hover {
+  background: #e5f2ff;
+}
+.planner-import-mode {
+  margin-top: 0.35rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 10px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  display: none;
+  gap: 0.35rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.planner-import-mode.is-open {
+  display: flex;
+}
+.planner-import-text {
+  font-size: 0.8rem;
+  color: #475569;
+}
+.planner-import-buttons {
+  display: flex;
+  gap: 0.35rem;
+}
+.planner-import-btn {
+  font-size: 0.8rem;
+  border-radius: 999px;
+  padding: 0.25rem 0.7rem;
+  border: none;
+  cursor: pointer;
+}
+.planner-import-btn.overwrite {
+  background: #ef4444;
+  color: #ffffff;
+}
+.planner-import-btn.append {
+  background: #10b981;
+  color: #ffffff;
+}
+.planner-import-btn.cancel {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+/* 一覧ギャラリーの分類切り替え */
+.gallery-controls {
+  margin-bottom: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.gallery-filter-label {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+.gallery-filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.gallery-filter-btn {
+  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.7rem;
+  cursor: pointer;
+}
+.gallery-filter-btn.is-active {
+  background: #3b82f6;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+.gallery-group {
+  margin-bottom: 1.25rem;
+}
+.gallery-group-title {
+  margin: 0.6rem 0 0.45rem 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #0f172a;
+  padding: 0.15rem 0.6rem;
+  border-left: 6px solid #3b82f6;
+  background: linear-gradient(90deg, #e0f2fe 0%, #e5e7ff 45%, #ffffff 100%);
+  border-radius: 0 999px 999px 0;
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+.gallery-group-title.cat-big-katsuyo {
+  color: #991b1b;
+  border-left-color: #fca5a5;
+  background: linear-gradient(90deg, #fff1f2 0%, #ffe4e6 45%, #ffffff 100%);
+}
+.gallery-group-title.cat-big-appropriate {
+  color: #14532d;
+  border-left-color: #86efac;
+  background: linear-gradient(90deg, #f0fdf4 0%, #dcfce7 45%, #ffffff 100%);
+}
+.gallery-group-title.cat-big-characteristic {
+  color: #1e3a8a;
+  border-left-color: #93c5fd;
+  background: linear-gradient(90deg, #eff6ff 0%, #dbeafe 45%, #ffffff 100%);
+}
+.gallery-group-inner {
+  margin-left: -0.25rem;
+  margin-right: -0.25rem;
+}
+.gallery-group-body {
+  margin-top: 0.25rem;
+}
+.gallery-subgroup {
+  margin-bottom: 0.9rem;
+}
+.gallery-subgroup:last-child {
+  margin-bottom: 0.35rem;
+}
+.gallery-subgroup-title {
+  margin: 0.4rem 0 0.35rem 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #475569;
+  padding: 0.2rem 0.45rem 0.2rem 0.5rem;
+  border-left: 3px solid #94a3b8;
+  background: #f8fafc;
+  border-radius: 0 6px 6px 0;
+}
+.planner-grades {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+.planner-grade {
+  flex: 1 1 100%;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+.planner-grade.is-secondary {
+  background: rgba(255, 255, 255, 0.95);
+}
+.planner-grade.is-collapsed {
+  flex: 0 0 auto;
+  background: transparent;
+  box-shadow: none;
+}
+.planner-grade-header {
+  width: 100%;
+  padding: 0.45rem 0.75rem;
+  border: none;
+  background: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.planner-grade.is-collapsed .planner-grade-header {
+  width: auto;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: #e0e7ff;
+}
+.planner-grade.is-secondary .planner-grade-header {
+  background: #dcfce7;
+}
+.planner-grade.is-collapsed.is-secondary .planner-grade-header {
+  background: #bbf7d0;
+}
+.planner-grade-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1d4ed8;
+}
+.planner-grade.is-secondary .planner-grade-title {
+  color: #15803d;
+}
+.planner-grade-toggle {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+.planner-grade-body {
+  padding: 0.5rem 0.75rem 0.75rem;
+}
+.planner-grade.is-collapsed .planner-grade-body {
+  display: none;
+}
+.planner-terms {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+.planner-term-title {
+  margin: 0 0 0.15rem 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #334155;
+}
+.planner-grade-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.25rem;
+}
+.planner-grade-print-btn {
+  font-size: 0.8rem;
+  border-radius: 999px;
+  padding: 0.25rem 0.8rem;
+  border: none;
+  background: #22c55e;
+  color: #ffffff;
+  cursor: pointer;
+}
+.planner-grade-print-btn:hover {
+  background: #16a34a;
+}
+.planner-dropzone {
+  min-height: 64px;
+  border-radius: 10px;
+  border: 1px dashed #cbd5e1;
+  background: #f8fafc;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  align-items: flex-start;
+}
+.planner-dropzone.is-over {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+/* 画面最下部の常時表示ドラッグエリア（折りたたみ可能） */
+.bottom-drag-area {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 500;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 -2px 12px rgba(15, 23, 42, 0.06);
+  border-top: 1px solid #e2e8f0;
+  border-radius: 12px 12px 0 0;
+}
+.bottom-drag-body {
+  padding: 0.4rem 1rem 0.75rem;
+  background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%);
+  border-radius: 12px 12px 0 0;
+}
+.bottom-drag-grade-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+.bottom-drag-grade-row:last-child {
+  margin-bottom: 0;
+}
+.bottom-drag-area.is-collapsed .bottom-drag-grade-row {
+  margin-bottom: 0;
+}
+.bottom-drag-grade-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+.bottom-drag-grade-buttons span {
+  font-family: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #0c4a6e;
+  margin-right: 0.2rem;
+}
+.bottom-drag-header-toggle {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 1px 3px rgba(12, 74, 110, 0.12);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+.bottom-drag-header-toggle:hover {
+  background: #fff;
+  box-shadow: 0 1px 5px rgba(12, 74, 110, 0.2);
+}
+.bottom-drag-header-toggle::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid #0ea5e9;
+  margin-top: 1px;
+  transition: transform 0.25s ease;
+}
+.bottom-drag-area.is-collapsed .bottom-drag-header-toggle::before {
+  margin-top: -1px;
+  border-top: none;
+  border-bottom: 5px solid #0ea5e9;
+}
+.bottom-drag-area.is-collapsed .bottom-drag-terms {
+  display: none;
+}
+.bottom-drag-terms {
+  border-top: 1px solid rgba(14, 165, 233, 0.2);
+  padding-top: 0.45rem;
+}
+.bottom-drag-grade-btn {
+  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.65rem;
+  cursor: pointer;
+}
+.bottom-drag-grade-btn:hover {
+  background: #e2e8f0;
+}
+.bottom-drag-grade-btn.is-active {
+  background: #3b82f6;
+  color: #fff;
+  border-color: #2563eb;
+}
+.bottom-drag-terms {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+.bottom-drag-term-title {
+  margin: 0 0 0.2rem 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #334155;
+}
+.bottom-drag-area .planner-dropzone {
+  min-height: 56px;
+}
+
+/* ポップアップ：イラスト下の登録パネル（かわいい系） */
+.popup-register-wrap {
+  margin-top: 0.5rem;
+  padding: 0 0.25rem 0.15rem;
+  text-align: right;
+}
+.popup-register-btn {
+  font-family: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif;
+  font-weight: 700;
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  color: #fff;
+  background: linear-gradient(180deg, #34d399 0%, #10b981 100%);
+  border: none;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.popup-register-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.35);
+}
+.popup-register-form {
+  margin-top: 0.5rem;
+  padding: 0.65rem 0.6rem 0.5rem;
+  background: linear-gradient(180deg, #f0fdf4 0%, #ecfdf5 100%);
+  border-radius: 14px;
+  border: 1px solid #a7f3d0;
+  box-shadow: 0 2px 10px rgba(16, 185, 129, 0.08);
+  display: none;
+}
+.popup-register-form.is-open {
+  display: block;
+}
+.popup-register-form p {
+  font-family: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  font-size: 0.8rem;
+  color: #047857;
+  letter-spacing: 0.02em;
+}
+.popup-register-form-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.55rem;
+}
+.popup-register-form-row label {
+  font-family: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif;
+  font-weight: 500;
+  font-size: 0.78rem;
+  color: #065f46;
+}
+.popup-register-form-row select {
+  font-family: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 10px;
+  border: 1px solid #a7f3d0;
+  background: #fff;
+  color: #065f46;
+  cursor: pointer;
+}
+.popup-register-form-row select:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+.popup-register-form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.4rem;
+}
+.popup-register-confirm-btn {
+  font-family: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif;
+  font-weight: 700;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.8rem;
+  color: #fff;
+  background: linear-gradient(180deg, #34d399 0%, #10b981 100%);
+  border: none;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.popup-register-confirm-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.35);
+}
+.popup-register-cancel-btn {
+  font-family: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif;
+  font-weight: 500;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.8rem;
+  background: #fff;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.popup-register-cancel-btn:hover {
+  background: #ecfdf5;
+}
+
+.planner-card {
+  flex: 0 0 auto;
+  width: 72px;
+  max-width: 80px;
+  border-radius: 6px;
+  border: 3px solid #e5e7eb;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+  padding: 0.2rem 0.15rem 0.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.1rem;
+  cursor: pointer;
+  position: relative;
+}
+
+/* 大項目（情報技術の活用/適切な利用/特性の理解）に合わせた枠線色（パステル） */
+.cat-big-katsuyo { border-color: #fca5a5 !important; }      /* パステル赤 */
+.cat-big-appropriate { border-color: #86efac !important; }  /* パステル緑 */
+.cat-big-characteristic { border-color: #93c5fd !important; } /* パステル青 */
+
+/* ミニカード背景にもカテゴリ色を薄く付与 */
+.planner-card.cat-big-katsuyo { background: #fff5f5; }
+.planner-card.cat-big-appropriate { background: #f3fff7; }
+.planner-card.cat-big-characteristic { background: #f3f9ff; }
+.gallery-item.cat-big-katsuyo { background: #fff5f5; }
+.gallery-item.cat-big-appropriate { background: #f3fff7; }
+.gallery-item.cat-big-characteristic { background: #f3f9ff; }
+
+/* 印刷カードは既存の border を上書き */
+.print-item.cat-big-katsuyo { border-color: #fca5a5 !important; }
+.print-item.cat-big-appropriate { border-color: #86efac !important; }
+.print-item.cat-big-characteristic { border-color: #93c5fd !important; }
+.planner-card-remove {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: none;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 0.7rem;
+  line-height: 1;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.25);
+}
+.planner-card-remove:hover {
+  background: #fecaca;
+}
+.planner-card.is-active .planner-card-remove {
+  display: flex;
+}
+.planner-card.animate-wiggle {
+  animation: planner-card-wiggle 1.4s ease-in-out infinite;
+}
+@keyframes planner-card-wiggle {
+  0% { transform: rotate(0deg); }
+  15% { transform: rotate(2deg); }
+  35% { transform: rotate(-2deg); }
+  55% { transform: rotate(1.5deg); }
+  75% { transform: rotate(-1.5deg); }
+  100% { transform: rotate(0deg); }
+}
+.planner-card-thumb {
+  width: 100%;
+  aspect-ratio: 1;
+  height: auto;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #e5e7eb;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  color: #64748b;
+}
+.planner-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.planner-card-title {
+  font-size: 0.6rem;
+  line-height: 1.3;
+  font-weight: 600;
+  color: #111827;
+  text-align: center;
+  padding: 0 0.05rem;
+  min-height: 2.6em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  word-break: break-all;
+}
+
+@media (max-width: 800px) {
+  .planner-terms {
+    grid-template-columns: 1fr;
+  }
+  .planner-card {
+    width: calc(50% - 0.125rem);
+  }
+}
+
+/* 印刷用（ポップアップと同じレイアウト・リンクは含めず、A4横で1ページに4項目） */
+.print-only { display: none !important; }
+@media print {
+  .no-print { display: none !important; }
+  .top-bar { display: none !important; }
+  .print-only { display: block !important; position: static; }
+}
+@page { size: A4 landscape; margin: 6mm; }
+.print-page { page-break-after: always; }
+.print-page:last-child { page-break-after: auto; }
+.print-page-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 4mm;
+  width: 100%;
+  height: 100%;
+}
+.print-item {
+  break-inside: avoid;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 3px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* 印刷時は各セル内でポップアップと同じレイアウト（左：テキスト、右：画像） */
+.print-item .popup-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  align-items: start;
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+.print-item .popup-text { min-width: 0; }
+.print-item .popup-title { margin: 0 0 0.35rem 0; font-size: 1rem; font-weight: 700; color: #0f172a; line-height: 1.3; }
+.print-item .popup-description { margin: 0; font-size: 0.8rem; line-height: 1.5; color: #334155; }
+.print-item .popup-extra { margin-top: 0.35rem; display: grid; gap: 0.35rem; }
+.print-item .popup-extra-block { background: #f8fafc; border-radius: 6px; padding: 0.4rem 0.5rem; border-left: 3px solid #e2e8f0; }
+.print-item.cat-big-katsuyo .popup-extra-block { border-left-color: #fca5a5; }
+.print-item.cat-big-appropriate .popup-extra-block { border-left-color: #86efac; }
+.print-item.cat-big-characteristic .popup-extra-block { border-left-color: #93c5fd; }
+.print-item .popup-extra-label { font-size: 0.65rem; font-weight: 700; color: #64748b; margin: 0 0 0.2rem 0; }
+.print-item .popup-extra-content { margin: 0; font-size: 0.7rem; line-height: 1.45; color: #334155; white-space: pre-line; }
+.print-item .popup-meta { margin-top: 0.3rem; font-size: 0.7rem; text-align: center; color: #64748b; }
+.print-item .popup-meta-big { font-weight: bold; }
+.print-item .popup-meta-big.cat-big-katsuyo { color: #dc2626; }
+.print-item .popup-meta-big.cat-big-appropriate { color: #16a34a; }
+.print-item .popup-meta-big.cat-big-characteristic { color: #2563eb; }
+.print-item .popup-image-wrap {
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f1f5f9;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+.print-item .popup-image-wrap .popup-image,
+.print-item .popup-image-wrap .popup-no-image { flex: 0 0 auto; }
+.print-item .popup-image-wrap .popup-meta {
+  flex: 0 0 auto;
+  margin-top: 0.25rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid #e2e8f0;
+  text-align: center;
+}
+.print-item .popup-image { display: block; width: 100%; height: auto; max-height: 100%; object-fit: contain; }
+.print-item .popup-no-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  padding: 0.5rem;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 0.75rem;
+  width: 100%;
+}
+
+.print-summary {
+  padding: 0.6rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  height: 100%;
+  box-sizing: border-box;
+}
+.print-summary-title {
+  margin: 0 0 0.35rem 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: left;
+}
+.print-summary-terms {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+.print-summary-term {
+  border-radius: 14px;
+  border: 2px solid #e5e7eb;
+  background: linear-gradient(135deg, #eff6ff 0%, #f9fafb 45%, #ecfdf5 100%);
+  padding: 0.5rem 0.55rem 0.55rem;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.print-summary-term-title {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+.print-summary-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: flex-start;
+}
+.print-summary-card {
+  flex: 0 0 auto;
+  width: 92px;
+  border-radius: 6px;
+  border: 3px solid #e5e7eb;
+  background: #ffffff;
+  padding: 0.25rem 0.22rem 0.28rem;
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.08);
+}
+.print-summary-card.cat-big-katsuyo { border-color: #fca5a5 !important; background: #fff5f5; }
+.print-summary-card.cat-big-appropriate { border-color: #86efac !important; background: #f3fff7; }
+.print-summary-card.cat-big-characteristic { border-color: #93c5fd !important; background: #f3f9ff; }
+.print-summary-thumb {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  color: #64748b;
+}
+.print-summary-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.print-summary-title-text {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #111827;
+  text-align: center;
+}
+
+@media print {
+  .print-page { height: 198mm; box-sizing: border-box; }
+  .print-page-inner { height: 100%; min-height: 198mm; }
+}
+
+  </style>
+</head>
+<body>
+  <div class="top-bar no-print">
+    <span class="top-bar-title">情報ブロック・ミニ探究ユニット</span>
+    <a href="joho_katsuyo_stepup_sheet.html">ステップアップシート</a>
+    <a href="joho_katsuyo_stepup_sheet.html#theme-skill">テーマ一覧</a>
+    <a href="joho_katsuyo_stepup_sheet.html#required-skills">必須スキルイラスト</a>
+    <a href="info_block_unit.html" class="is-current" aria-current="page">情報ブロック一覧</a>
+    <a href="school_joho_ichiran.html">各校一覧</a>
+    <a href="sougou_gakunen_framework.html">設計フレームワーク</a>
+  </div>
+
+  <header class="header no-print">
+    <h1>情報ブロック ミニ探究ユニット</h1>
+    <p class="subtitle">イラストをクリックすると説明が表示されます</p>
+    <div class="header-mode-row">
+      <button type="button" id="myCardPlacementToggle" class="header-placement-toggle" aria-pressed="false">単元計画（マイカード配置）</button>
+      <p class="header-mode-hint">マイカード置き場でのドラッグ配置は、上のボタンを押したときだけ使えます。</p>
+    </div>
+  </header>
+
+  <div id="printArea" class="print-only" aria-hidden="true"></div>
+
+  <main class="main no-print">
+    <section class="planner" id="planner">
+      <div class="planner-header-main">
+        <div class="planner-header-text">
+          <h2 class="planner-title">マイカード置き場</h2>
+          <p class="planner-subtitle">カードをドラッグして、学年・学期ごとのマイスケジュールに登録できます。</p>
+          <p class="planner-balance-hint">各学期にバランスよく配置してみましょう。</p>
+        </div>
+        <div class="planner-header-actions">
+          <button type="button" id="plannerExportCsv" class="planner-util-btn">CSV保存</button>
+          <button type="button" id="plannerImportCsvTrigger" class="planner-util-btn">CSV読み込み</button>
+          <button type="button" id="printBtn" class="print-btn">印刷</button>
+          <input type="file" id="plannerImportCsv" accept=".csv,text/csv" style="display:none">
+        </div>
+        <div id="plannerImportMode" class="planner-import-mode">
+          <p class="planner-import-text">CSV読み込み方法を選択してください：<br>「上書き」＝今あるマイカードをすべて消してCSVの内容に置き換えます。「追加」＝今あるマイカードは残したままCSVの内容を足します。</p>
+          <div class="planner-import-buttons">
+            <button type="button" id="plannerImportOverwrite" class="planner-import-btn overwrite">上書き</button>
+            <button type="button" id="plannerImportAppend" class="planner-import-btn append">追加</button>
+            <button type="button" id="plannerImportCancel" class="planner-import-btn cancel">キャンセル</button>
+          </div>
+        </div>
+      </div>
+      <p class="planner-color-legend" aria-hidden="true">枠の色：<span class="planner-legend-dot" style="background:#fca5a5;"></span>情報技術の活用　<span class="planner-legend-dot" style="background:#86efac;"></span>情報技術の適切な利用　<span class="planner-legend-dot" style="background:#93c5fd;"></span>特性の理解</p>
+      <div id="plannerGrades" class="planner-grades"></div>
+    </section>
+    <section class="gallery-controls no-print">
+      <span class="gallery-filter-label">一覧の整理:</span>
+      <div class="gallery-filter-buttons">
+        <button type="button" class="gallery-filter-btn" data-gallery-mode="all">すべて</button>
+        <button type="button" class="gallery-filter-btn is-active" data-gallery-mode="big">大分類</button>
+        <button type="button" class="gallery-filter-btn" data-gallery-mode="middle">中分類</button>
+        <button type="button" class="gallery-filter-btn" data-gallery-mode="small">小分類</button>
+        <button type="button" class="gallery-filter-btn" data-gallery-mode="view">見方・考え方</button>
+      </div>
+    </section>
+    <div id="gallery" class="gallery"></div>
+  </main>
+
+  <div id="printSelectOverlay" class="print-select-overlay no-print" aria-hidden="true">
+    <div class="print-select-backdrop" id="printSelectBackdrop"></div>
+    <div class="print-select-dialog" role="dialog" aria-modal="true" aria-labelledby="printSelectTitle">
+      <h2 id="printSelectTitle" class="print-select-title">印刷するカードを選択</h2>
+      <p class="print-select-desc">印刷したいカードにチェックを付けてください。</p>
+      <div class="print-select-controls">
+        <label class="print-select-all">
+          <input type="checkbox" id="printSelectAll">
+          <span>すべて選択</span>
+        </label>
+        <div class="print-select-buttons">
+          <button type="button" id="printSelectCancel" class="print-select-btn secondary">キャンセル</button>
+          <button type="button" id="printSelectOk" class="print-select-btn primary">選択したカードを印刷</button>
+        </div>
+      </div>
+      <div id="printSelectList" class="print-select-list"></div>
+    </div>
+  </div>
+
+  <div id="popup" class="popup no-print" aria-hidden="true">
+    <div class="popup-backdrop" id="popupBackdrop"></div>
+    <div class="popup-content" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
+      <button type="button" class="popup-close" id="popupClose" aria-label="閉じる">&times;</button>
+      <div class="popup-inner">
+        <div class="popup-text">
+          <h2 id="popupTitle" class="popup-title"></h2>
+          <p id="popupDescription" class="popup-description"></p>
+          <div id="popupExtra" class="popup-extra" style="display: none;">
+            <div id="popupVideoBlock" class="popup-extra-block" style="display: none;">
+              <p class="popup-extra-label">NHK等動画教材など</p>
+              <p id="popupVideo" class="popup-extra-content"></p>
+            </div>
+            <div id="popupLessonPlanBlock" class="popup-extra-block" style="display: none;">
+              <p class="popup-extra-label">授業展開案（15分習得＋30分実践）</p>
+              <p id="popupLessonPlan" class="popup-extra-content"></p>
+            </div>
+          </div>
+        </div>
+        <div class="popup-image-wrap">
+          <img id="popupImage" class="popup-image" src="" alt="">
+          <div id="popupNoImage" class="popup-no-image" style="display: none;">画像がありません</div>
+          <p id="popupMeta" class="popup-meta"></p>
+          <div class="popup-register-wrap">
+            <button type="button" id="popupRegisterBtn" class="popup-register-btn">マイカードに登録</button>
+            <div id="popupRegisterForm" class="popup-register-form" aria-hidden="true">
+              <p>何年生の何学期に登録しますか？</p>
+              <div class="popup-register-form-row">
+                <label for="popupRegisterGrade">学年</label>
+                <select id="popupRegisterGrade">
+                  <option value="1">1年</option>
+                  <option value="2">2年</option>
+                  <option value="3">3年</option>
+                  <option value="4">4年</option>
+                  <option value="5">5年</option>
+                  <option value="6">6年</option>
+                  <option value="7">7年（中１）</option>
+                  <option value="8">8年（中２）</option>
+                  <option value="9">9年（中３）</option>
+                </select>
+                <label for="popupRegisterTerm">学期</label>
+                <select id="popupRegisterTerm">
+                  <option value="term1">1学期</option>
+                  <option value="term2">2学期</option>
+                  <option value="term3">3学期</option>
+                </select>
+              </div>
+              <div class="popup-register-form-buttons">
+                <button type="button" id="popupRegisterCancel" class="popup-register-cancel-btn">キャンセル</button>
+                <button type="button" id="popupRegisterConfirm" class="popup-register-confirm-btn">登録する</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="popup-links">
+          <p>「授業展開案」は一例です。<a href="https://notebooklm.google.com/notebook/405e60db-af04-4fcb-bd3d-1a8d362d686e" target="_blank" rel="noopener noreferrer">授業設計ガイド（notebookLM）</a>でもっと提案がもらえます！！</p>
+          <p>NHK等の動画教材：<a href="https://www.nhk.or.jp/school/" target="_blank" rel="noopener noreferrer">NHK for School</a> など</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <aside id="bottomDragArea" class="bottom-drag-area no-print" aria-label="ドラッグエリア">
+    <div id="bottomDragBody" class="bottom-drag-body">
+      <div class="bottom-drag-grade-row">
+        <div class="bottom-drag-grade-buttons">
+          <span>学年:</span>
+          <div id="bottomDragGradeButtons"></div>
+        </div>
+        <button type="button" id="bottomDragToggle" class="bottom-drag-header-toggle" aria-expanded="true" aria-controls="bottomDragTerms" aria-label="折りたたむ"></button>
+      </div>
+      <div id="bottomDragTerms" class="bottom-drag-terms"></div>
+    </div>
+  </aside>
+
+  <script src="info_block_data.js?v=20260506-categories"></script>
+  <script>
+(function () {
+  var galleryEl = document.getElementById("gallery");
+  var plannerGrades = document.getElementById("plannerGrades");
+  var galleryFilterButtons = document.querySelectorAll(".gallery-filter-btn[data-gallery-mode]");
+  var popupEl = document.getElementById("popup");
+  var popupBackdrop = document.getElementById("popupBackdrop");
+  var popupClose = document.getElementById("popupClose");
+  var popupRegisterBtn = document.getElementById("popupRegisterBtn");
+  var popupRegisterForm = document.getElementById("popupRegisterForm");
+  var popupRegisterGrade = document.getElementById("popupRegisterGrade");
+  var popupRegisterTerm = document.getElementById("popupRegisterTerm");
+  var popupRegisterConfirm = document.getElementById("popupRegisterConfirm");
+  var popupRegisterCancel = document.getElementById("popupRegisterCancel");
+  var popupTitle = document.getElementById("popupTitle");
+  var popupMeta = document.getElementById("popupMeta");
+  var popupDescription = document.getElementById("popupDescription");
+  var popupImage = document.getElementById("popupImage");
+  var popupNoImage = document.getElementById("popupNoImage");
+  var popupExtra = document.getElementById("popupExtra");
+  var popupVideoBlock = document.getElementById("popupVideoBlock");
+  var popupVideo = document.getElementById("popupVideo");
+  var popupLessonPlanBlock = document.getElementById("popupLessonPlanBlock");
+  var popupLessonPlan = document.getElementById("popupLessonPlan");
+  var data = window.INFO_BLOCK_DATA || [];
+  /** false＝閲覧のみ（マイカード置き場非表示・ギャラリーからのDnD不可） */
+  var myCardPlacementMode = false;
+  var printBtn = document.getElementById("printBtn");
+  var printSelectOverlay = document.getElementById("printSelectOverlay");
+  var printSelectBackdrop = document.getElementById("printSelectBackdrop");
+  var printSelectList = document.getElementById("printSelectList");
+  var printSelectAll = document.getElementById("printSelectAll");
+  var printSelectOk = document.getElementById("printSelectOk");
+  var printSelectCancel = document.getElementById("printSelectCancel");
+  var plannerExportCsvBtn = document.getElementById("plannerExportCsv");
+  var plannerImportCsvTrigger = document.getElementById("plannerImportCsvTrigger");
+  var plannerImportCsvInput = document.getElementById("plannerImportCsv");
+  var plannerImportModeEl = document.getElementById("plannerImportMode");
+  var plannerImportOverwriteBtn = document.getElementById("plannerImportOverwrite");
+  var plannerImportAppendBtn = document.getElementById("plannerImportAppend");
+  var plannerImportCancelBtn = document.getElementById("plannerImportCancel");
+  var plannerImportAppendMode = false;
+  var currentGalleryMode = "big";
+  var myCardPlacementToggleBtn = document.getElementById("myCardPlacementToggle");
+
+  function normalizeBigCategory(v) {
+    var s = (v || "").trim();
+    if (!s) return "";
+    // 表記ゆれ・旧データ吸収
+    if (s === "適切な取扱い" || s === "適切な取り扱い") return "適切な利用";
+    return s;
+  }
+
+  /** 一覧・印刷選択には出さないプレースホルダー行（Excelの未設定・空欄） */
+  function isPlaceholderBrowseTitle(item) {
+    var t = (item && item.title || "").trim();
+    return t === "(空欄)" || t === "(要設定)" || t === "（空欄）" || t === "（要設定）";
+  }
+
+  function bigCategoryDisplayName(v) {
+    var s = normalizeBigCategory(v);
+    if (s === "活用") return "情報技術の活用";
+    if (s === "適切な利用") return "情報技術の適切な利用";
+    if (s === "特性の理解") return "情報技術の特性の理解";
+    return s;
+  }
+
+  function bigCategoryClassName(v) {
+    var s = normalizeBigCategory(v);
+    if (s === "活用") return "cat-big-katsuyo";
+    if (s === "適切な利用") return "cat-big-appropriate";
+    if (s === "特性の理解") return "cat-big-characteristic";
+    return "";
+  }
+
+  var MIDDLE_CATEGORY_SORT_ORDER = {
+    "基本操作": 1,
+    "情報の収集・検索": 2,
+    "整理・分析": 3,
+    "表現・発信": 4,
+    "問題解決": 5,
+    "デジタルの性質": 6,
+    "情報の4特性": 7,
+    "通信の仕組み": 8,
+    "AI・先端技術": 9,
+    "メディアの特性": 10,
+    "情報セキュリティ": 11,
+    "脅威と対策": 12,
+    "情報倫理・モラル": 13,
+    "法規と権利": 14,
+    "社会的問題": 15,
+    "課題の設定": 101,
+    "情報の収集": 102,
+    "まとめ・表現": 103,
+    "情報モラル・安全": 104
+  };
+
+  function middleCategorySortRank(name) {
+    var s = (name || "").trim();
+    if (!s || s === "（未分類）") return 997;
+    if (MIDDLE_CATEGORY_SORT_ORDER.hasOwnProperty(s)) return MIDDLE_CATEGORY_SORT_ORDER[s];
+    return 999;
+  }
+
+  function sortMiddleCategoryKeys(keys) {
+    keys.sort(function (a, b) {
+      var ra = middleCategorySortRank(a);
+      var rb = middleCategorySortRank(b);
+      if (ra !== rb) return ra - rb;
+      return a.localeCompare(b, "ja");
+    });
+    return keys;
+  }
+
+  /* タブレット用タッチドラッグの状態（イベント委譲で1セットだけ使用） */
+  var touchDragIndex = null;
+  var touchDragWrap = null;
+  var touchDragStartX = 0;
+  var touchDragStartY = 0;
+  var touchIsDragging = false;
+  var touchScrollIntent = false; /* 縦方向が支配的 → JSは手を離しブラウザのネイティブ縦スクロールに任せる */
+  var skipNextClick = false;
+  var TOUCH_DRAG_THRESHOLD = 15;
+  var isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+  var currentBottomGrade = 1;
+  var currentPopupItem = null;
+  var bottomBarDropzones = null;
+
+  function setMyCardPlacementMode(on) {
+    myCardPlacementMode = !!on;
+    document.body.classList.toggle("is-my-card-placement-mode", myCardPlacementMode);
+    if (myCardPlacementToggleBtn) {
+      myCardPlacementToggleBtn.setAttribute("aria-pressed", myCardPlacementMode ? "true" : "false");
+      myCardPlacementToggleBtn.textContent = myCardPlacementMode
+        ? "閲覧モードに戻る"
+        : "単元計画（マイカード配置）";
+    }
+    galleryEl.querySelectorAll(".gallery-item").forEach(function (el) {
+      if (isSafari) {
+        el.setAttribute("draggable", myCardPlacementMode ? "true" : "false");
+      } else {
+        el.draggable = myCardPlacementMode;
+      }
+    });
+    clearTouchDragState();
+  }
+
+  function openPopup(item) {
+    currentPopupItem = item;
+    var displayTitle = item.title || item.lesson_plan || "";
+    popupTitle.textContent = displayTitle;
+    var cats = [];
+    if (item.big_category) cats.push(bigCategoryDisplayName(item.big_category));
+    if (item.middle_category) cats.push(item.middle_category);
+    if (item.small_category) cats.push(item.small_category);
+    if (item.viewpoint) cats.push(item.viewpoint);
+    if (cats.length) {
+      popupMeta.style.display = "block";
+      popupMeta.textContent = "";
+      var metaBigCls = bigCategoryClassName(item.big_category);
+      if (metaBigCls && cats.length > 0) {
+        var bigSpan = document.createElement("span");
+        bigSpan.className = "popup-meta-big " + metaBigCls;
+        bigSpan.textContent = cats[0];
+        popupMeta.appendChild(bigSpan);
+        if (cats.length > 1) popupMeta.appendChild(document.createTextNode(" / " + cats.slice(1).join(" / ")));
+      } else {
+        popupMeta.textContent = cats.join(" / ");
+      }
+    } else {
+      popupMeta.style.display = "none";
+      popupMeta.textContent = "";
+    }
+    popupDescription.textContent = item.description || "";
+    var hasVideo = item.video && item.video.trim();
+    var hasLesson = item.lesson_plan && item.lesson_plan.trim();
+    if (hasVideo || hasLesson) {
+      popupExtra.style.display = "grid";
+      popupVideoBlock.style.display = hasVideo ? "block" : "none";
+      popupVideo.textContent = hasVideo ? item.video : "";
+      popupLessonPlanBlock.style.display = hasLesson ? "block" : "none";
+      popupLessonPlan.textContent = hasLesson ? item.lesson_plan : "";
+    } else {
+      popupExtra.style.display = "none";
+    }
+    if (item.image) {
+      popupImage.src = item.image;
+      popupImage.alt = displayTitle;
+      popupImage.style.display = "block";
+      popupNoImage.style.display = "none";
+    } else {
+      popupImage.src = "";
+      popupImage.style.display = "none";
+      popupNoImage.style.display = "flex";
+    }
+    var popupContent = popupEl.querySelector(".popup-content");
+    if (popupContent) {
+      popupContent.classList.remove("cat-big-katsuyo", "cat-big-appropriate", "cat-big-characteristic");
+      var popupCatCls = bigCategoryClassName(item.big_category);
+      if (popupCatCls) popupContent.classList.add(popupCatCls);
+    }
+    popupEl.classList.add("is-open");
+    popupEl.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    if (popupRegisterForm) {
+      popupRegisterForm.classList.remove("is-open");
+      popupRegisterForm.setAttribute("aria-hidden", "true");
+    }
+    popupClose.focus();
+  }
+
+  function closePopup() {
+    var popupContent = popupEl.querySelector(".popup-content");
+    if (popupContent) popupContent.classList.remove("cat-big-katsuyo", "cat-big-appropriate", "cat-big-characteristic");
+    popupEl.classList.remove("is-open");
+    popupEl.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  function escapeHtml(s) {
+    var div = document.createElement("div");
+    div.textContent = s;
+    return div.innerHTML;
+  }
+
+  function initPlanner() {
+    var grades = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    var terms = [
+      { key: "term1", label: "1学期" },
+      { key: "term2", label: "2学期" },
+      { key: "term3", label: "3学期" }
+    ];
+    grades.forEach(function (g) {
+      var gradeSection = document.createElement("section");
+      var isSecondary = g >= 7;
+      gradeSection.className = "planner-grade is-collapsed" + (isSecondary ? " is-secondary" : "");
+      var headerBtn = document.createElement("button");
+      headerBtn.type = "button";
+      headerBtn.className = "planner-grade-header";
+      var title = document.createElement("p");
+      title.className = "planner-grade-title";
+      if (g <= 6) {
+        title.textContent = g + "年生";
+      } else {
+        // 7〜9年生は中学校表記を追加
+        var jp = g + "年生";
+        var en;
+        if (g === 7) en = "（中１）";
+        else if (g === 8) en = "（中２）";
+        else if (g === 9) en = "（中３）";
+        else en = "";
+        title.textContent = jp + en;
+      }
+      headerBtn.appendChild(title);
+      var body = document.createElement("div");
+      body.className = "planner-grade-body";
+      var controls = document.createElement("div");
+      controls.className = "planner-grade-controls";
+      var gradePrintBtn = document.createElement("button");
+      gradePrintBtn.type = "button";
+      gradePrintBtn.className = "planner-grade-print-btn";
+      gradePrintBtn.textContent = "この学年のマイカードを印刷";
+      gradePrintBtn.addEventListener("click", function () {
+        var items = [];
+        var summaryTerms = [];
+        terms.forEach(function (t) {
+          var dz = gradeSection.querySelector('.planner-dropzone[data-term=\"' + t.key + '\"]');
+          if (!dz) return;
+          var cards = dz.querySelectorAll(".planner-card");
+          var termItems = [];
+          cards.forEach(function (c) {
+            if (c.__item) {
+              termItems.push(c.__item);
+              items.push(c.__item);
+            }
+          });
+          if (termItems.length) {
+            summaryTerms.push({ label: t.label, items: termItems });
+          }
+        });
+        if (!items.length) {
+          alert("この学年にはマイカードが登録されていません。");
+          return;
+        }
+        startPrintForItems(items, summaryTerms);
+      });
+      controls.appendChild(gradePrintBtn);
+      var termsRow = document.createElement("div");
+      termsRow.className = "planner-terms";
+      terms.forEach(function (t) {
+        var termCol = document.createElement("div");
+        var termTitle = document.createElement("p");
+        termTitle.className = "planner-term-title";
+        termTitle.textContent = t.label;
+        var drop = document.createElement("div");
+        drop.className = "planner-dropzone";
+        drop.dataset.grade = String(g);
+        drop.dataset.term = t.key;
+        termCol.appendChild(termTitle);
+        termCol.appendChild(drop);
+        termsRow.appendChild(termCol);
+      });
+      body.appendChild(controls);
+      body.appendChild(termsRow);
+      headerBtn.addEventListener("click", function () {
+        gradeSection.classList.toggle("is-collapsed");
+      });
+      gradeSection.appendChild(headerBtn);
+      gradeSection.appendChild(body);
+      plannerGrades.appendChild(gradeSection);
+    });
+
+    var dropzones = plannerGrades.querySelectorAll(".planner-dropzone");
+    dropzones.forEach(function (dz) {
+      dz.addEventListener("dragover", function (e) {
+        if (!myCardPlacementMode) return;
+        e.preventDefault();
+        dz.classList.add("is-over");
+      });
+      dz.addEventListener("dragleave", function () {
+        dz.classList.remove("is-over");
+      });
+      dz.addEventListener("drop", function (e) {
+        if (!myCardPlacementMode) return;
+        e.preventDefault();
+        dz.classList.remove("is-over");
+        var indexStr = e.dataTransfer && e.dataTransfer.getData("text/plain");
+        var idx = indexStr ? parseInt(indexStr, 10) : NaN;
+        if (isNaN(idx) || !data[idx]) return;
+        var item = data[idx];
+        var card = createPlannerCard(item);
+        dz.appendChild(card);
+        if (!dz.closest("#bottomDragArea") && bottomBarDropzones) {
+          var g = parseInt(dz.dataset.grade, 10);
+          if (g === currentBottomGrade) {
+            var termKey = dz.dataset.term;
+            if (bottomBarDropzones[termKey]) {
+              var barCard = createPlannerCard(item, function (it) {
+                removeCardFromAccordion(currentBottomGrade, termKey, it);
+              });
+              bottomBarDropzones[termKey].appendChild(barCard);
+            }
+          }
+        }
+      });
+    });
+  }
+
+  function clearDropzoneOverState() {
+    document.querySelectorAll(".planner-dropzone.is-over").forEach(function (dz) {
+      dz.classList.remove("is-over");
+    });
+  }
+
+  function getAccordionDropzone(grade, termKey) {
+    var gradeSection = null;
+    plannerGrades.querySelectorAll(".planner-grade").forEach(function (section) {
+      var t = section.querySelector(".planner-grade-title");
+      if (!t) return;
+      var m = (t.textContent || "").match(/^(\d+)/);
+      var g = m ? parseInt(m[1], 10) : NaN;
+      if (g === grade) gradeSection = section;
+    });
+    return gradeSection ? gradeSection.querySelector('.planner-dropzone[data-term="' + termKey + '"]') : null;
+  }
+
+  function removeCardFromAccordion(grade, termKey, item) {
+    var dz = getAccordionDropzone(grade, termKey);
+    if (!dz) return;
+    dz.querySelectorAll(".planner-card").forEach(function (c) {
+      if (c.__item === item) c.remove();
+    });
+  }
+
+  function syncBottomBar() {
+    if (!bottomBarDropzones) return;
+    var terms = [{ key: "term1", label: "1学期" }, { key: "term2", label: "2学期" }, { key: "term3", label: "3学期" }];
+    terms.forEach(function (t) {
+      var dz = bottomBarDropzones[t.key];
+      if (!dz) return;
+      dz.innerHTML = "";
+      var accordionDz = getAccordionDropzone(currentBottomGrade, t.key);
+      if (!accordionDz) return;
+      accordionDz.querySelectorAll(".planner-card").forEach(function (c) {
+        if (!c.__item) return;
+        var card = createPlannerCard(c.__item, function (item) {
+          removeCardFromAccordion(currentBottomGrade, t.key, item);
+        });
+        dz.appendChild(card);
+      });
+    });
+  }
+
+  function initBottomDragArea() {
+    var grades = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    var terms = [{ key: "term1", label: "1学期" }, { key: "term2", label: "2学期" }, { key: "term3", label: "3学期" }];
+    var btnContainer = document.getElementById("bottomDragGradeButtons");
+    var termsContainer = document.getElementById("bottomDragTerms");
+    if (!btnContainer || !termsContainer) return;
+    grades.forEach(function (g) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "bottom-drag-grade-btn" + (g === currentBottomGrade ? " is-active" : "");
+      btn.dataset.grade = String(g);
+      btn.textContent = g <= 6 ? g + "年" : g + "年" + (g === 7 ? "（中１）" : g === 8 ? "（中２）" : "（中３）");
+      btn.addEventListener("click", function () {
+        currentBottomGrade = g;
+        btnContainer.querySelectorAll(".bottom-drag-grade-btn").forEach(function (b) {
+          b.classList.toggle("is-active", parseInt(b.dataset.grade, 10) === g);
+        });
+        bottomBarDropzones.term1.dataset.grade = String(g);
+        bottomBarDropzones.term2.dataset.grade = String(g);
+        bottomBarDropzones.term3.dataset.grade = String(g);
+        syncBottomBar();
+      });
+      btnContainer.appendChild(btn);
+    });
+    bottomBarDropzones = {};
+    terms.forEach(function (t) {
+      var col = document.createElement("div");
+      var title = document.createElement("p");
+      title.className = "bottom-drag-term-title";
+      title.textContent = t.label;
+      var dz = document.createElement("div");
+      dz.className = "planner-dropzone";
+      dz.dataset.grade = String(currentBottomGrade);
+      dz.dataset.term = t.key;
+      col.appendChild(title);
+      col.appendChild(dz);
+      termsContainer.appendChild(col);
+      bottomBarDropzones[t.key] = dz;
+      dz.addEventListener("dragover", function (e) {
+        if (!myCardPlacementMode) return;
+        e.preventDefault();
+        dz.classList.add("is-over");
+      });
+      dz.addEventListener("dragleave", function () {
+        dz.classList.remove("is-over");
+      });
+      dz.addEventListener("drop", function (e) {
+        if (!myCardPlacementMode) return;
+        e.preventDefault();
+        dz.classList.remove("is-over");
+        var indexStr = e.dataTransfer && e.dataTransfer.getData("text/plain");
+        var idx = indexStr ? parseInt(indexStr, 10) : NaN;
+        if (isNaN(idx) || !data[idx]) return;
+        var item = data[idx];
+        var cardBar = createPlannerCard(item, function (it) {
+          removeCardFromAccordion(currentBottomGrade, t.key, it);
+        });
+        dz.appendChild(cardBar);
+        var accordionDz = getAccordionDropzone(currentBottomGrade, t.key);
+        if (accordionDz) accordionDz.appendChild(createPlannerCard(item));
+      });
+    });
+    syncBottomBar();
+  }
+
+  function getDropzoneAt(clientX, clientY) {
+    var el = document.elementFromPoint(clientX, clientY);
+    return el ? el.closest(".planner-dropzone") : null;
+  }
+
+  function addCardToDropzoneByIndex(dz, index) {
+    var idx = typeof index === "string" ? parseInt(index, 10) : index;
+    if (isNaN(idx) || !data[idx]) return;
+    var item = data[idx];
+    if (dz.closest("#bottomDragArea") && bottomBarDropzones) {
+      var termKey = dz.dataset.term;
+      var cardBar = createPlannerCard(item, function (it) {
+        removeCardFromAccordion(currentBottomGrade, termKey, it);
+      });
+      dz.appendChild(cardBar);
+      var accordionDz = getAccordionDropzone(currentBottomGrade, termKey);
+      if (accordionDz) accordionDz.appendChild(createPlannerCard(item));
+    } else {
+      dz.appendChild(createPlannerCard(item));
+    }
+  }
+
+  function clearTouchDragState() {
+    if (touchDragWrap) touchDragWrap.classList.remove("is-touch-dragging");
+    clearDropzoneOverState();
+    touchDragWrap = null;
+    touchDragIndex = null;
+    touchIsDragging = false;
+    touchScrollIntent = false;
+  }
+
+  /* タブレット用：一覧コンテナにタッチを1セットだけ委譲（PCでは呼ばず負荷ゼロ） */
+  /* touchstart で preventDefault しない（縦スクロールがネイティブで滑らかになる）。横方向のみドラッグ確定後に preventDefault。 */
+  function initTouchDelegation() {
+    galleryEl.addEventListener("touchstart", function (e) {
+      if (!myCardPlacementMode) return;
+      if (e.touches.length !== 1) return;
+      var wrap = e.target.closest(".gallery-item");
+      if (!wrap || wrap.dataset.index === undefined) return;
+      var t = e.touches[0];
+      clearTouchDragState();
+      touchDragWrap = wrap;
+      touchDragIndex = parseInt(wrap.dataset.index, 10);
+      touchDragStartX = t.clientX;
+      touchDragStartY = t.clientY;
+    }, { passive: true });
+    galleryEl.addEventListener("touchmove", function (e) {
+      if (e.touches.length !== 1 || touchDragIndex === null) return;
+      var t = e.touches[0];
+      if (touchScrollIntent) {
+        return;
+      }
+      if (!touchIsDragging) {
+        var dx = t.clientX - touchDragStartX;
+        var dy = t.clientY - touchDragStartY;
+        var distSq = dx * dx + dy * dy;
+        if (distSq > TOUCH_DRAG_THRESHOLD * TOUCH_DRAG_THRESHOLD) {
+          if (Math.abs(dy) > Math.abs(dx)) {
+            touchScrollIntent = true;
+            return;
+          }
+          touchIsDragging = true;
+          if (touchDragWrap) touchDragWrap.classList.add("is-touch-dragging");
+        }
+      }
+      if (touchIsDragging) {
+        e.preventDefault();
+        clearDropzoneOverState();
+        var dz = getDropzoneAt(t.clientX, t.clientY);
+        if (dz) dz.classList.add("is-over");
+      }
+    }, { passive: false });
+    galleryEl.addEventListener("touchend", function (e) {
+      if (e.changedTouches.length !== 1) return;
+      var t = e.changedTouches[0];
+      var wasDrag = touchIsDragging && touchDragIndex !== null;
+      if (wasDrag) {
+        var dz = getDropzoneAt(t.clientX, t.clientY);
+        if (dz) {
+          addCardToDropzoneByIndex(dz, touchDragIndex);
+          skipNextClick = true;
+        }
+        e.preventDefault();
+      } else if (!touchScrollIntent && touchDragIndex !== null && data[touchDragIndex]) {
+        openPopup(data[touchDragIndex]);
+        skipNextClick = true;
+        e.preventDefault();
+      }
+      clearTouchDragState();
+    }, { passive: false });
+    galleryEl.addEventListener("touchcancel", function () {
+      clearTouchDragState();
+    }, { passive: true });
+  }
+
+  function getPlannerState() {
+    var state = [];
+    var gradeSections = plannerGrades.querySelectorAll(".planner-grade");
+    gradeSections.forEach(function (gradeSection) {
+      var gradeTitleEl = gradeSection.querySelector(".planner-grade-title");
+      if (!gradeTitleEl) return;
+      var gradeText = gradeTitleEl.textContent || "";
+      var gradeMatch = gradeText.match(/^(\d+)/);
+      var grade = gradeMatch ? parseInt(gradeMatch[1], 10) : NaN;
+      if (!grade) return;
+      var termCols = gradeSection.querySelectorAll(".planner-terms > div");
+      termCols.forEach(function (col) {
+        var dz = col.querySelector(".planner-dropzone");
+        if (!dz) return;
+        var termKey = dz.dataset.term;
+        var cards = dz.querySelectorAll(".planner-card");
+        cards.forEach(function (c) {
+          var item = c.__item;
+          if (!item) return;
+          var row = typeof item.row === "number" ? item.row : "";
+          state.push({
+            grade: grade,
+            term: termKey,
+            row: row,
+            title: item.title || ""
+          });
+        });
+      });
+    });
+    return state;
+  }
+
+  function clearPlanner() {
+    plannerGrades.querySelectorAll(".planner-dropzone").forEach(function (dz) {
+      dz.innerHTML = "";
+    });
+    if (bottomBarDropzones) {
+      if (bottomBarDropzones.term1) bottomBarDropzones.term1.innerHTML = "";
+      if (bottomBarDropzones.term2) bottomBarDropzones.term2.innerHTML = "";
+      if (bottomBarDropzones.term3) bottomBarDropzones.term3.innerHTML = "";
+    }
+  }
+
+  function setPlannerState(state, append) {
+    if (!append) {
+      clearPlanner();
+    }
+    if (!state || !state.length) return;
+    state.forEach(function (entry) {
+      var grade = entry.grade;
+      var term = entry.term;
+      if (!grade || !term) return;
+      var selector = '.planner-grade .planner-grade-title';
+      var titles = plannerGrades.querySelectorAll(selector);
+      var gradeSection = null;
+      titles.forEach(function (t) {
+        if (gradeSection) return;
+        var txt = t.textContent || "";
+        var m = txt.match(/^(\d+)/);
+        var g = m ? parseInt(m[1], 10) : NaN;
+        if (g === grade) {
+          gradeSection = t.closest(".planner-grade");
+        }
+      });
+      if (!gradeSection) return;
+      var dz = gradeSection.querySelector('.planner-dropzone[data-term=\"' + term + '\"]');
+      if (!dz) return;
+      var item = null;
+      if (entry.row) {
+        item = data.find(function (d) { return d.row === entry.row; }) || null;
+      }
+      if (!item && entry.title) {
+        item = data.find(function (d) { return d.title === entry.title; }) || null;
+      }
+      if (!item) return;
+      var card = createPlannerCard(item);
+      dz.appendChild(card);
+    });
+    if (bottomBarDropzones) syncBottomBar();
+  }
+
+  function createPlannerCard(item, onRemoveFromOther) {
+    var card = document.createElement("div");
+    card.className = "planner-card";
+    var bigCls = bigCategoryClassName(item.big_category);
+    if (bigCls) card.classList.add(bigCls);
+    card.__item = item;
+    var thumb = document.createElement("div");
+    thumb.className = "planner-card-thumb";
+    if (item.image) {
+      var img = document.createElement("img");
+      img.src = item.image;
+      img.alt = "";
+      thumb.appendChild(img);
+    } else {
+      thumb.textContent = "画像なし";
+    }
+    var title = document.createElement("span");
+    title.className = "planner-card-title";
+    title.textContent = item.title || item.lesson_plan || "";
+    var remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "planner-card-remove";
+    remove.setAttribute("aria-label", "このカードをマイカードから外す");
+    remove.textContent = "×";
+    remove.addEventListener("click", function (e) {
+      e.stopPropagation();
+      if (typeof onRemoveFromOther === "function") onRemoveFromOther(item);
+      card.remove();
+    });
+    card.appendChild(remove);
+    card.appendChild(thumb);
+    card.appendChild(title);
+    card.addEventListener("click", function () {
+      var isAlreadyActive = card.classList.contains("is-active");
+      // まず他のカードのアクティブ状態を解除
+      var activeCards = plannerGrades.querySelectorAll(".planner-card.is-active");
+      activeCards.forEach(function (c) {
+        if (c !== card) c.classList.remove("is-active");
+      });
+      if (!isAlreadyActive) {
+        // 1回目のタップ：選択状態にして削除ボタンを表示、ゆっくり振動開始
+        card.classList.add("is-active");
+        card.classList.remove("animate-wiggle");
+        void card.offsetWidth; // アニメーションをリプレイするための再フロー
+        card.classList.add("animate-wiggle");
+        return;
+      }
+      // 2回目以降のタップ：ポップアップを開く（振動は選択中ずっと継続）
+      openPopup(item);
+    });
+    return card;
+  }
+
+  function createGalleryButton(item, index) {
+      var wrap = document.createElement(isSafari ? "div" : "button");
+      wrap.className = "gallery-item" + (isSafari ? " gallery-item-draggable-div" : "");
+      var bigCls = bigCategoryClassName(item.big_category);
+      if (bigCls) wrap.classList.add(bigCls);
+      var displayTitle = item.title || item.lesson_plan || "";
+      wrap.setAttribute("aria-label", displayTitle + "の説明を見る");
+      if (isSafari) {
+        wrap.setAttribute("role", "button");
+        wrap.setAttribute("tabindex", "0");
+        wrap.setAttribute("draggable", myCardPlacementMode ? "true" : "false");
+      } else {
+        wrap.type = "button";
+        wrap.draggable = myCardPlacementMode;
+      }
+      if (item.image) {
+        wrap.innerHTML = "<img class=\"gallery-thumb\" src=\"" + item.image + "\" alt=\"\" loading=\"lazy\"" + (isSafari ? " draggable=\"false\"" : "") + "><span class=\"gallery-label\">" + escapeHtml(displayTitle) + "</span>";
+      } else {
+        wrap.innerHTML = "<div class=\"gallery-thumb gallery-thumb-placeholder\">画像がありません</div><span class=\"gallery-label\">" + escapeHtml(displayTitle) + "</span>";
+      }
+      wrap.dataset.index = String(index);
+      wrap.addEventListener("mousedown", function () {
+        if (!myCardPlacementMode) return;
+        wrap.classList.add("gallery-item-drag-pending");
+        var cleanup = function () {
+          wrap.classList.remove("gallery-item-drag-pending");
+          document.removeEventListener("mouseup", cleanup);
+          wrap._dragPendingCleanup = null;
+        };
+        wrap._dragPendingCleanup = cleanup;
+        document.addEventListener("mouseup", cleanup);
+      });
+      wrap.addEventListener("dragstart", function (e) {
+        if (!myCardPlacementMode) {
+          e.preventDefault();
+          return;
+        }
+        wrap.classList.remove("gallery-item-drag-pending");
+        if (wrap._dragPendingCleanup) {
+          document.removeEventListener("mouseup", wrap._dragPendingCleanup);
+          wrap._dragPendingCleanup = null;
+        }
+        if (e.dataTransfer) {
+          e.dataTransfer.effectAllowed = "copy";
+          e.dataTransfer.setData("text/plain", String(index));
+          var ghost = wrap.cloneNode(true);
+          ghost.classList.add("gallery-item-drag-ghost");
+          ghost.style.width = wrap.offsetWidth + "px";
+          document.body.appendChild(ghost);
+          var rect = wrap.getBoundingClientRect();
+          var offsetX = e.clientX - rect.left;
+          var offsetY = e.clientY - rect.top;
+          e.dataTransfer.setDragImage(ghost, offsetX, offsetY);
+          setTimeout(function () { ghost.remove(); }, 0);
+        }
+      });
+      wrap.addEventListener("dragend", function () {
+        wrap.classList.remove("gallery-item-drag-pending");
+        if (wrap._dragPendingCleanup) {
+          document.removeEventListener("mouseup", wrap._dragPendingCleanup);
+          wrap._dragPendingCleanup = null;
+        }
+      });
+      wrap.addEventListener("click", function (e) {
+        if (skipNextClick) {
+          skipNextClick = false;
+          e.preventDefault();
+          return;
+        }
+        openPopup(item);
+      });
+      if (isSafari) {
+        wrap.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openPopup(item);
+          }
+        });
+      }
+      return wrap;
+  }
+
+  function renderGallery() {
+    galleryEl.innerHTML = "";
+    var items = data.slice();
+    if (currentGalleryMode === "all") {
+      items.forEach(function (item, index) {
+        if (isPlaceholderBrowseTitle(item)) return;
+        galleryEl.appendChild(createGalleryButton(item, index));
+      });
+      return;
+    }
+    var fieldName;
+    if (currentGalleryMode === "big") fieldName = "big_category";
+    else if (currentGalleryMode === "middle") fieldName = "middle_category";
+    else if (currentGalleryMode === "small") fieldName = "small_category";
+    else if (currentGalleryMode === "view") fieldName = "viewpoint";
+    var groups = {};
+    items.forEach(function (item, index) {
+      if (isPlaceholderBrowseTitle(item)) return;
+      var rawKey = (item[fieldName] || "").trim();
+      if (!rawKey) rawKey = "（未分類）";
+      if (fieldName === "big_category") rawKey = normalizeBigCategory(rawKey);
+      if (!groups[rawKey]) groups[rawKey] = [];
+      groups[rawKey].push({ item: item, index: index });
+    });
+    var groupKeys = Object.keys(groups);
+    if (fieldName === "big_category") {
+      var order = { "活用": 1, "適切な利用": 2, "特性の理解": 3 };
+      groupKeys.sort(function (a, b) {
+        var ak = normalizeBigCategory(a);
+        var bk = normalizeBigCategory(b);
+        var ai = order[ak] || 999;
+        var bi = order[bk] || 999;
+        if (ai !== bi) return ai - bi;
+        return a.localeCompare(b, "ja");
+      });
+    } else if (fieldName === "middle_category") {
+      sortMiddleCategoryKeys(groupKeys);
+    } else {
+      groupKeys.sort(function (a, b) { return a.localeCompare(b, "ja"); });
+    }
+    groupKeys.forEach(function (rawKey) {
+      var section = document.createElement("section");
+      section.className = "gallery-group";
+      var title = document.createElement("h3");
+      title.className = "gallery-group-title";
+      if (fieldName === "big_category") {
+        var titleBigCls = bigCategoryClassName(rawKey);
+        if (titleBigCls) title.classList.add(titleBigCls);
+      }
+      title.textContent = fieldName === "big_category" ? bigCategoryDisplayName(rawKey) : rawKey;
+      section.appendChild(title);
+
+      if (fieldName === "big_category") {
+        var entriesBig = groups[rawKey];
+        var byMiddle = {};
+        entriesBig.forEach(function (entry) {
+          var mk = (entry.item.middle_category || "").trim();
+          if (!mk) mk = "（未分類）";
+          if (!byMiddle[mk]) byMiddle[mk] = [];
+          byMiddle[mk].push(entry);
+        });
+        var middleKeys = sortMiddleCategoryKeys(Object.keys(byMiddle));
+        var bodyWrap = document.createElement("div");
+        bodyWrap.className = "gallery-group-body";
+        var anyCard = false;
+        middleKeys.forEach(function (mk) {
+          var innerMid = document.createElement("div");
+          innerMid.className = "gallery gallery-group-inner";
+          byMiddle[mk].forEach(function (entry) {
+            innerMid.appendChild(createGalleryButton(entry.item, entry.index));
+          });
+          if (!innerMid.firstElementChild) return;
+          anyCard = true;
+          var sub = document.createElement("div");
+          sub.className = "gallery-subgroup";
+          var subTitle = document.createElement("h4");
+          subTitle.className = "gallery-subgroup-title";
+          subTitle.textContent = mk;
+          sub.appendChild(subTitle);
+          sub.appendChild(innerMid);
+          bodyWrap.appendChild(sub);
+        });
+        if (!anyCard) return;
+        section.appendChild(bodyWrap);
+        galleryEl.appendChild(section);
+        return;
+      }
+
+      var inner = document.createElement("div");
+      inner.className = "gallery gallery-group-inner";
+      groups[rawKey].forEach(function (entry) {
+        inner.appendChild(createGalleryButton(entry.item, entry.index));
+      });
+      if (!inner.firstElementChild) return;
+      section.appendChild(inner);
+      galleryEl.appendChild(section);
+    });
+  }
+
+  function buildPrintSelectList() {
+    printSelectList.innerHTML = "";
+    var items = data.slice();
+    if (currentGalleryMode === "all") {
+      items.forEach(function (item, index) {
+        if (isPlaceholderBrowseTitle(item)) return;
+        var itemEl = document.createElement("div");
+        itemEl.className = "print-select-item";
+        var label = document.createElement("label");
+        label.className = "print-select-label";
+        var cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.className = "print-select-checkbox";
+        cb.dataset.index = String(index);
+        var thumb = document.createElement("div");
+        thumb.className = "print-select-thumb";
+        if (item.image) {
+          var img = document.createElement("img");
+          img.src = item.image;
+          img.alt = "";
+          thumb.appendChild(img);
+        } else {
+          thumb.textContent = "画像なし";
+        }
+        var titleSpan = document.createElement("span");
+        titleSpan.className = "print-select-title";
+        titleSpan.textContent = item.title || item.lesson_plan || "";
+        label.appendChild(cb);
+        label.appendChild(thumb);
+        label.appendChild(titleSpan);
+        itemEl.appendChild(label);
+        printSelectList.appendChild(itemEl);
+      });
+    } else {
+      var fieldName;
+      if (currentGalleryMode === "big") fieldName = "big_category";
+      else if (currentGalleryMode === "middle") fieldName = "middle_category";
+      else if (currentGalleryMode === "small") fieldName = "small_category";
+      else if (currentGalleryMode === "view") fieldName = "viewpoint";
+      var groups = {};
+      items.forEach(function (item, index) {
+        if (isPlaceholderBrowseTitle(item)) return;
+        var rawKey = (item[fieldName] || "").trim();
+        if (!rawKey) rawKey = "（未分類）";
+        if (fieldName === "big_category") rawKey = normalizeBigCategory(rawKey);
+        if (!groups[rawKey]) groups[rawKey] = [];
+        groups[rawKey].push({ item: item, index: index });
+      });
+      var groupKeys = Object.keys(groups);
+      if (fieldName === "big_category") {
+        var order = { "活用": 1, "適切な利用": 2, "特性の理解": 3 };
+        groupKeys.sort(function (a, b) {
+          var ak = normalizeBigCategory(a);
+          var bk = normalizeBigCategory(b);
+          var ai = order[ak] || 999;
+          var bi = order[bk] || 999;
+          if (ai !== bi) return ai - bi;
+          return a.localeCompare(b, "ja");
+        });
+      } else if (fieldName === "middle_category") {
+        sortMiddleCategoryKeys(groupKeys);
+      } else {
+        groupKeys.sort(function (a, b) { return a.localeCompare(b, "ja"); });
+      }
+      groupKeys.forEach(function (rawKey) {
+        if (!groups[rawKey] || !groups[rawKey].length) return;
+        // グループ見出し（チェック付き）
+        var titleEl = document.createElement("label");
+        titleEl.className = "print-select-group-title";
+        titleEl.dataset.group = rawKey;
+        var groupCb = document.createElement("input");
+        groupCb.type = "checkbox";
+        groupCb.className = "print-select-group-checkbox";
+        groupCb.dataset.group = rawKey;
+        groupCb.checked = true;
+        var titleSpan = document.createElement("span");
+        titleSpan.textContent = fieldName === "big_category" ? bigCategoryDisplayName(rawKey) : rawKey;
+        titleEl.appendChild(groupCb);
+        titleEl.appendChild(titleSpan);
+        printSelectList.appendChild(titleEl);
+
+        function appendPrintItem(entry, groupKey) {
+          var item = entry.item;
+          var index = entry.index;
+          var itemEl = document.createElement("div");
+          itemEl.className = "print-select-item";
+          itemEl.dataset.group = groupKey;
+          var label = document.createElement("label");
+          label.className = "print-select-label";
+          var cb = document.createElement("input");
+          cb.type = "checkbox";
+          cb.className = "print-select-checkbox";
+          cb.dataset.index = String(index);
+          cb.dataset.group = groupKey;
+          var thumb = document.createElement("div");
+          thumb.className = "print-select-thumb";
+          if (item.image) {
+            var img = document.createElement("img");
+            img.src = item.image;
+            img.alt = "";
+            thumb.appendChild(img);
+          } else {
+            thumb.textContent = "画像なし";
+          }
+          var titleSpanItem = document.createElement("span");
+          titleSpanItem.className = "print-select-title";
+          titleSpanItem.textContent = item.title || item.lesson_plan || "";
+          label.appendChild(cb);
+          label.appendChild(thumb);
+          label.appendChild(titleSpanItem);
+          itemEl.appendChild(label);
+          printSelectList.appendChild(itemEl);
+        }
+
+        if (fieldName === "big_category") {
+          var entriesP = groups[rawKey];
+          var byMiddleP = {};
+          entriesP.forEach(function (entry) {
+            var mk = (entry.item.middle_category || "").trim();
+            if (!mk) mk = "（未分類）";
+            if (!byMiddleP[mk]) byMiddleP[mk] = [];
+            byMiddleP[mk].push(entry);
+          });
+          var middleKeysP = sortMiddleCategoryKeys(Object.keys(byMiddleP));
+          middleKeysP.forEach(function (mk) {
+            var subHead = document.createElement("div");
+            subHead.className = "print-select-subgroup-title";
+            subHead.textContent = mk;
+            printSelectList.appendChild(subHead);
+            byMiddleP[mk].forEach(function (entry) {
+              appendPrintItem(entry, rawKey);
+            });
+          });
+        } else {
+          groups[rawKey].forEach(function (entry) {
+            appendPrintItem(entry, rawKey);
+          });
+        }
+      });
+    }
+    var boxes = printSelectList.querySelectorAll(".print-select-checkbox");
+    printSelectAll.checked = boxes.length > 0;
+    boxes.forEach(function (box) { box.checked = true; });
+  }
+
+  function openPrintSelect() {
+    buildPrintSelectList();
+    printSelectOverlay.classList.add("is-open");
+    printSelectOverlay.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closePrintSelect() {
+    printSelectOverlay.classList.remove("is-open");
+    printSelectOverlay.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  function buildPrintArea(items, summaryTerms) {
+    var area = document.getElementById("printArea");
+    area.innerHTML = "";
+    if (summaryTerms && summaryTerms.length) {
+      var summaryPage = document.createElement("div");
+      summaryPage.className = "print-page";
+      var summaryInner = document.createElement("div");
+      summaryInner.className = "print-summary";
+      var summaryTitle = document.createElement("h2");
+      summaryTitle.className = "print-summary-title";
+      summaryTitle.textContent = "学期別マイカード一覧";
+      summaryInner.appendChild(summaryTitle);
+      var summaryTermsEl = document.createElement("div");
+      summaryTermsEl.className = "print-summary-terms";
+      summaryTerms.forEach(function (term) {
+        var termWrap = document.createElement("div");
+        termWrap.className = "print-summary-term";
+        var termTitle = document.createElement("p");
+        termTitle.className = "print-summary-term-title";
+        termTitle.textContent = term.label;
+        var cardsWrap = document.createElement("div");
+        cardsWrap.className = "print-summary-cards";
+        term.items.forEach(function (it) {
+          cardsWrap.appendChild(createSummaryCard(it));
+        });
+        termWrap.appendChild(termTitle);
+        termWrap.appendChild(cardsWrap);
+        summaryTermsEl.appendChild(termWrap);
+      });
+      summaryInner.appendChild(summaryTermsEl);
+      summaryPage.appendChild(summaryInner);
+      area.appendChild(summaryPage);
+    }
+    if (!items || !items.length) return;
+    for (var i = 0; i < items.length; i += 4) {
+      var page = document.createElement("div");
+      page.className = "print-page";
+      var inner = document.createElement("div");
+      inner.className = "print-page-inner";
+      for (var j = 0; j < 4 && i + j < items.length; j++) {
+        inner.appendChild(createPrintItem(items[i + j]));
+      }
+      page.appendChild(inner);
+      area.appendChild(page);
+    }
+  }
+
+  function createSummaryCard(item) {
+    var card = document.createElement("div");
+    card.className = "print-summary-card";
+    var bigCls = bigCategoryClassName(item.big_category);
+    if (bigCls) card.classList.add(bigCls);
+    var thumb = document.createElement("div");
+    thumb.className = "print-summary-thumb";
+    if (item.image) {
+      var img = document.createElement("img");
+      img.src = item.image;
+      img.alt = "";
+      thumb.appendChild(img);
+    } else {
+      thumb.textContent = "画像なし";
+    }
+    var title = document.createElement("span");
+    title.className = "print-summary-title-text";
+    title.textContent = item.title || item.lesson_plan || "";
+    card.appendChild(thumb);
+    card.appendChild(title);
+    return card;
+  }
+
+  function createPrintItem(item) {
+    var wrap = document.createElement("div");
+    wrap.className = "print-item";
+    var bigCls = bigCategoryClassName(item.big_category);
+    if (bigCls) wrap.classList.add(bigCls);
+    var inner = document.createElement("div");
+    inner.className = "popup-inner";
+    var displayTitle = item.title || item.lesson_plan || "";
+    var textDiv = document.createElement("div");
+    textDiv.className = "popup-text";
+    var titleEl = document.createElement("h2");
+    titleEl.className = "popup-title";
+    titleEl.textContent = displayTitle;
+    var descEl = document.createElement("p");
+    descEl.className = "popup-description";
+    descEl.textContent = item.description || "";
+    textDiv.appendChild(titleEl);
+    textDiv.appendChild(descEl);
+    var hasVideo = item.video && item.video.trim();
+    var hasLesson = item.lesson_plan && item.lesson_plan.trim();
+    if (hasVideo || hasLesson) {
+      var extraDiv = document.createElement("div");
+      extraDiv.className = "popup-extra";
+      if (hasVideo) {
+        var vBlock = document.createElement("div");
+        vBlock.className = "popup-extra-block";
+        var vLabel = document.createElement("p");
+        vLabel.className = "popup-extra-label";
+        vLabel.textContent = "NHK等動画教材など";
+        var vContent = document.createElement("p");
+        vContent.className = "popup-extra-content";
+        vContent.textContent = item.video;
+        vBlock.appendChild(vLabel);
+        vBlock.appendChild(vContent);
+        extraDiv.appendChild(vBlock);
+      }
+      if (hasLesson) {
+        var lBlock = document.createElement("div");
+        lBlock.className = "popup-extra-block";
+        var lLabel = document.createElement("p");
+        lLabel.className = "popup-extra-label";
+        lLabel.textContent = "授業展開案（15分習得＋30分実践）";
+        var lContent = document.createElement("p");
+        lContent.className = "popup-extra-content";
+        lContent.textContent = item.lesson_plan;
+        lBlock.appendChild(lLabel);
+        lBlock.appendChild(lContent);
+        extraDiv.appendChild(lBlock);
+      }
+      textDiv.appendChild(extraDiv);
+    }
+    var imgWrap = document.createElement("div");
+    imgWrap.className = "popup-image-wrap";
+    if (item.image) {
+      var img = document.createElement("img");
+      img.className = "popup-image";
+      img.src = item.image;
+      img.alt = displayTitle;
+      imgWrap.appendChild(img);
+    } else {
+      var noImg = document.createElement("div");
+      noImg.className = "popup-no-image";
+      noImg.textContent = "画像がありません";
+      imgWrap.appendChild(noImg);
+    }
+    var cats = [];
+    if (item.big_category) cats.push(bigCategoryDisplayName(item.big_category));
+    if (item.middle_category) cats.push(item.middle_category);
+    if (item.small_category) cats.push(item.small_category);
+    if (item.viewpoint) cats.push(item.viewpoint);
+    if (cats.length) {
+      var metaEl = document.createElement("p");
+      metaEl.className = "popup-meta";
+      if (bigCls && cats.length > 0) {
+        var metaBigSpan = document.createElement("span");
+        metaBigSpan.className = "popup-meta-big " + bigCls;
+        metaBigSpan.textContent = cats[0];
+        metaEl.appendChild(metaBigSpan);
+        if (cats.length > 1) metaEl.appendChild(document.createTextNode(" / " + cats.slice(1).join(" / ")));
+      } else {
+        metaEl.textContent = cats.join(" / ");
+      }
+      imgWrap.appendChild(metaEl);
+    }
+    inner.appendChild(textDiv);
+    inner.appendChild(imgWrap);
+    wrap.appendChild(inner);
+    return wrap;
+  }
+
+  function startPrintForItems(items, summaryTerms) {
+    buildPrintArea(items, summaryTerms);
+    var area = document.getElementById("printArea");
+    var imgs = area.querySelectorAll("img");
+    if (!imgs.length) {
+      window.print();
+      return;
+    }
+    var remaining = imgs.length;
+    var printed = false;
+    function tryPrint() {
+      if (printed) return;
+      printed = true;
+      window.print();
+    }
+    function onDone() {
+      remaining--;
+      if (remaining <= 0) {
+        tryPrint();
+      }
+    }
+    imgs.forEach(function (img) {
+      if (img.complete) {
+        onDone();
+      } else {
+        img.addEventListener("load", onDone);
+        img.addEventListener("error", onDone);
+      }
+    });
+    setTimeout(tryPrint, 2000);
+  }
+
+  // カード以外の場所をクリックしたらマイカードの選択状態を解除
+  document.addEventListener("click", function (e) {
+    var target = e.target;
+    if (!target.closest(".planner-card")) {
+      var activeCards = plannerGrades.querySelectorAll(".planner-card.is-active");
+      activeCards.forEach(function (c) {
+        c.classList.remove("is-active", "animate-wiggle");
+      });
+    }
+  });
+
+  // 一覧ギャラリーの分類切り替え
+  galleryFilterButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var mode = btn.getAttribute("data-gallery-mode") || "all";
+      currentGalleryMode = mode;
+      galleryFilterButtons.forEach(function (b) {
+        b.classList.toggle("is-active", b === btn);
+      });
+      renderGallery();
+    });
+  });
+
+  printBtn.addEventListener("click", function () {
+    openPrintSelect();
+  });
+
+  plannerExportCsvBtn.addEventListener("click", function () {
+    var state = getPlannerState();
+    if (!state.length) {
+      alert("マイカード置き場にカードが登録されていません。");
+      return;
+    }
+    var lines = ["grade,term,row,title"];
+    state.forEach(function (s) {
+      var cols = [
+        String(s.grade),
+        s.term || "",
+        s.row !== undefined && s.row !== null ? String(s.row) : "",
+        (s.title || "").replace(/\"/g, '\"\"')
+      ];
+      cols[3] = "\"" + cols[3] + "\"";
+      lines.push(cols.join(","));
+    });
+    var csv = lines.join("\r\n");
+    var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    var now = new Date();
+    var y = now.getFullYear();
+    var m = ("0" + (now.getMonth() + 1)).slice(-2);
+    var d = ("0" + now.getDate()).slice(-2);
+    a.download = "mycards_" + y + m + d + ".csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  plannerImportCsvTrigger.addEventListener("click", function () {
+    var existing = getPlannerState();
+    if (!existing.length) {
+      // 何も登録されていなければ、そのまま追加扱いで読み込む
+      plannerImportAppendMode = true;
+      plannerImportCsvInput.value = "";
+      plannerImportCsvInput.click();
+      return;
+    }
+    // 既存カードがある場合は、画面上にモード選択パネルを表示
+    plannerImportModeEl.classList.add("is-open");
+  });
+
+  plannerImportOverwriteBtn.addEventListener("click", function () {
+    plannerImportAppendMode = false; // 上書きモード
+    plannerImportModeEl.classList.remove("is-open");
+    plannerImportCsvInput.value = "";
+    plannerImportCsvInput.click();
+  });
+
+  plannerImportAppendBtn.addEventListener("click", function () {
+    plannerImportAppendMode = true; // 追加モード
+    plannerImportModeEl.classList.remove("is-open");
+    plannerImportCsvInput.value = "";
+    plannerImportCsvInput.click();
+  });
+
+  plannerImportCancelBtn.addEventListener("click", function () {
+    plannerImportModeEl.classList.remove("is-open");
+  });
+
+  plannerImportCsvInput.addEventListener("change", function (e) {
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function (evt) {
+      var text = evt.target && evt.target.result;
+      if (typeof text !== "string") return;
+      var lines = text.split(/\r?\n/).filter(function (l) { return l.trim(); });
+      if (!lines.length) return;
+      if (/grade\s*,\s*term\s*,\s*row\s*,\s*title/i.test(lines[0])) {
+        lines.shift();
+      }
+      var state = [];
+      lines.forEach(function (line) {
+        // 形式: grade,term,row,"title(,含んでもOK)"
+        var m = line.match(/^(\d+)\s*,\s*([^,]+)\s*,\s*([^,]*)\s*,\s*(.*)$/);
+        if (!m) return;
+        var grade = parseInt(m[1], 10);
+        var term = m[2];
+        var rowVal = m[3];
+        var title = m[4] || "";
+        title = title.replace(/^\"|\"$/g, "").replace(/\"\"/g, "\"");
+        var row = rowVal ? parseInt(rowVal, 10) : null;
+        if (!grade || !term) return;
+        state.push({ grade: grade, term: term, row: row, title: title });
+      });
+      if (!state.length) {
+        alert("CSVから読み込めるマイカードが見つかりませんでした。");
+        return;
+      }
+      setPlannerState(state, plannerImportAppendMode);
+      alert("CSVからマイカードを読み込みました。\n（" + (plannerImportAppendMode ? "追加モード" : "置き換えモード") + "）");
+    };
+    reader.readAsText(file, "utf-8");
+  });
+
+  printSelectBackdrop.addEventListener("click", closePrintSelect);
+  printSelectCancel.addEventListener("click", closePrintSelect);
+
+  printSelectAll.addEventListener("change", function () {
+    var boxes = printSelectList.querySelectorAll(".print-select-checkbox");
+    boxes.forEach(function (box) {
+      box.checked = printSelectAll.checked;
+    });
+    // グループ単位のチェック状態も同期
+    var groupBoxes = printSelectList.querySelectorAll(".print-select-group-checkbox");
+    groupBoxes.forEach(function (gb) {
+      gb.checked = printSelectAll.checked;
+    });
+  });
+
+  printSelectList.addEventListener("change", function (e) {
+    var target = e.target;
+    if (!target || !target.classList) return;
+
+    // グループ見出しのチェックボックス → そのグループの項目を一括オン/オフ
+    if (target.classList.contains("print-select-group-checkbox")) {
+      var group = target.dataset.group || "";
+      var groupItems = printSelectList.querySelectorAll('.print-select-checkbox[data-group="' + group + '"]');
+      groupItems.forEach(function (box) {
+        box.checked = target.checked;
+      });
+    }
+
+    // 個々のチェック変更に応じて「すべて選択」とグループ見出しを更新
+    if (target.classList.contains("print-select-checkbox") || target.classList.contains("print-select-group-checkbox")) {
+      var boxes = printSelectList.querySelectorAll(".print-select-checkbox");
+      var checked = printSelectList.querySelectorAll(".print-select-checkbox:checked");
+      printSelectAll.checked = boxes.length > 0 && checked.length === boxes.length;
+
+      // 各グループの状態を更新
+      var groupHeaders = printSelectList.querySelectorAll(".print-select-group-checkbox");
+      groupHeaders.forEach(function (gh) {
+        var g = gh.dataset.group || "";
+        var gBoxes = printSelectList.querySelectorAll('.print-select-checkbox[data-group="' + g + '"]');
+        if (!gBoxes.length) return;
+        var gChecked = printSelectList.querySelectorAll('.print-select-checkbox[data-group="' + g + '"]:checked');
+        gh.checked = gChecked.length === gBoxes.length;
+      });
+    }
+  });
+
+  printSelectOk.addEventListener("click", function () {
+    var boxes = printSelectList.querySelectorAll(".print-select-checkbox:checked");
+    if (!boxes.length) {
+      alert("印刷するカードにチェックを入れてください。");
+      return;
+    }
+    var selected = [];
+    boxes.forEach(function (box) {
+      var idx = parseInt(box.dataset.index, 10);
+      if (!isNaN(idx) && data[idx]) {
+        selected.push(data[idx]);
+      }
+    });
+    closePrintSelect();
+    startPrintForItems(selected, null);
+  });
+
+  popupBackdrop.addEventListener("click", closePopup);
+  popupClose.addEventListener("click", closePopup);
+  if (popupRegisterBtn) {
+    popupRegisterBtn.addEventListener("click", function () {
+      if (!currentPopupItem) return;
+      if (popupRegisterForm && popupRegisterGrade && popupRegisterTerm) {
+        popupRegisterGrade.value = String(currentBottomGrade);
+        popupRegisterTerm.value = "term1";
+        popupRegisterForm.classList.add("is-open");
+        popupRegisterForm.setAttribute("aria-hidden", "false");
+      }
+    });
+  }
+  if (popupRegisterConfirm && popupRegisterGrade && popupRegisterTerm) {
+    popupRegisterConfirm.addEventListener("click", function () {
+      if (!currentPopupItem) return;
+      var grade = parseInt(popupRegisterGrade.value, 10);
+      var termKey = popupRegisterTerm.value;
+      if (!grade || !termKey) return;
+      var accordionDz = getAccordionDropzone(grade, termKey);
+      if (accordionDz) accordionDz.appendChild(createPlannerCard(currentPopupItem));
+      if (bottomBarDropzones && grade === currentBottomGrade && bottomBarDropzones[termKey]) {
+        var barCard = createPlannerCard(currentPopupItem, function (it) {
+          removeCardFromAccordion(grade, termKey, it);
+        });
+        bottomBarDropzones[termKey].appendChild(barCard);
+      }
+      if (popupRegisterForm) {
+        popupRegisterForm.classList.remove("is-open");
+        popupRegisterForm.setAttribute("aria-hidden", "true");
+      }
+    });
+  }
+  if (popupRegisterCancel && popupRegisterForm) {
+    popupRegisterCancel.addEventListener("click", function () {
+      popupRegisterForm.classList.remove("is-open");
+      popupRegisterForm.setAttribute("aria-hidden", "true");
+    });
+  }
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && popupEl.classList.contains("is-open")) closePopup();
+  });
+
+  var bottomDragAreaEl = document.getElementById("bottomDragArea");
+  var bottomDragToggleBtn = document.getElementById("bottomDragToggle");
+  if (bottomDragToggleBtn && bottomDragAreaEl) {
+    bottomDragToggleBtn.addEventListener("click", function () {
+      var collapsed = bottomDragAreaEl.classList.toggle("is-collapsed");
+      bottomDragToggleBtn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+    });
+  }
+
+  if (myCardPlacementToggleBtn) {
+    myCardPlacementToggleBtn.addEventListener("click", function () {
+      setMyCardPlacementMode(!myCardPlacementMode);
+    });
+  }
+  function openFromUrlRow() {
+    var params = new URLSearchParams(window.location.search);
+    var rowParam = params.get("row");
+    if (!rowParam) return;
+    var rowNum = parseInt(rowParam, 10);
+    if (!rowNum) return;
+    var item = data.find(function (d) { return d.row === rowNum; });
+    if (!item) return;
+    openPopup(item);
+    var idx = data.indexOf(item);
+    if (idx >= 0) {
+      var el = galleryEl.querySelector('.gallery-item[data-index="' + idx + '"]');
+      if (el && el.scrollIntoView) {
+        setTimeout(function () { el.scrollIntoView({ behavior: "smooth", block: "center" }); }, 200);
+      }
+    }
+  }
+
+  if (data.length > 0) {
+    initPlanner();
+    initBottomDragArea();
+    renderGallery();
+    if ("ontouchstart" in window || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0)) {
+      initTouchDelegation();
+    }
+    openFromUrlRow();
+  } else {
+    galleryEl.innerHTML = "<p style=\"text-align:center;color:#64748b;\">データがありません。</p>";
+  }
+})();
+  </script>
+</body>
+</html>

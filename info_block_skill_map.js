@@ -1,5 +1,5 @@
-/** 統合ステップアップ表⑥・スキル蓄積マップ ↔ 情報ブロックミニ探究ユニット（data.js の row） */
-const INFO_BLOCK_BASE = '情報ブロックミニ探究ユニット/';
+/** 統合ステップアップ表⑥・スキル蓄積マップ ↔ 情報ブロック（info_block_data.js の row） */
+const INFO_BLOCK_BASE = '';
 
 const GRADE_REQUIRED_SKILLS = {
   g3: [
@@ -75,5 +75,5 @@ function illustPath(item) {
 }
 
 function infoBlockLink(row) {
-  return INFO_BLOCK_BASE + 'index.html?row=' + row;
+  return INFO_BLOCK_BASE + 'info_block_unit.html?row=' + row;
 }

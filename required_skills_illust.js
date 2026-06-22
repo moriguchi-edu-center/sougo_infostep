@@ -63,7 +63,7 @@
   function renderBlockIllustForGrade(gradeKey) {
     const html = renderGradeIllustStrip(gradeKey);
     if (!html) return '';
-    return '<p class="modal-block-illust-caption">連動イラスト（<a href="' + INFO_BLOCK_BASE + 'index.html" target="_blank" rel="noopener">情報ブロック一覧</a>）</p>' +
+    return '<p class="modal-block-illust-caption">連動イラスト（<a href="' + INFO_BLOCK_BASE + 'info_block_unit.html" target="_blank" rel="noopener">情報ブロック一覧</a>）</p>' +
       '<div class="req-illust-row">' + html + '</div>';
   }
 
