@@ -47,18 +47,25 @@ body {
   position: sticky; top: 0; z-index: 100;
   background: #e8f4f0;
   border-bottom: 1.5px solid #9dd0c0;
-  padding: 0 2rem;
-  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 1.25rem;
+  display: flex; align-items: center; gap: 1rem;
+  flex-wrap: wrap;
 }
 .top-bar-title {
   font-family: var(--serif);
   font-size: 12px; font-weight: 600; color: #2a6b58;
-  padding: 14px 0;
+  padding: 12px 0;
+  margin-right: .25rem;
 }
 .top-bar a {
   font-size: 11px; color: #3a8a72; text-decoration: none;
+  white-space: nowrap;
 }
 .top-bar a:hover { color: var(--teal); }
+.top-bar a.is-current {
+  font-weight: 700; color: var(--teal);
+  pointer-events: none;
+}
 
 .cover {
   background: linear-gradient(135deg, #d4eee6 0%, #c8e6f0 60%, #ddeaf8 100%);
@@ -695,8 +702,12 @@ body.modal-open { overflow: hidden; }
 }
 .skill-map-table .skill-name {
   text-align: left; font-weight: 500;
-  background: var(--bg2); white-space: nowrap;
-  font-size: 10px;
+  background: var(--bg2);
+  white-space: normal;
+  min-width: 11em;
+  font-size: 11px;
+  line-height: 1.45;
+  vertical-align: top;
 }
 .skill-map-table .lv-prep { background: #f0faf4; color: #1a6b4a; font-weight: 600; }
 .skill-map-table .lv-new  { background: var(--amber-l); color: var(--amber); font-weight: 700; }
@@ -716,6 +727,122 @@ body.modal-open { overflow: hidden; }
 .skill-map-legend .sym.lv-new  { background: var(--amber-l); color: var(--amber); }
 .skill-map-legend .sym.lv-use  { background: var(--teal-l);  color: var(--teal); }
 .skill-map-legend .sym.lv-none { background: var(--bg3); color: var(--ink3); }
+
+/* ── 必須スキル × 情報ブロックイラスト ── */
+.req-grade-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 14px;
+  margin-bottom: 1rem;
+}
+.req-grade-panel {
+  border: 0.5px solid var(--rule);
+  border-radius: 8px;
+  padding: .85rem 1rem;
+  background: var(--bg2);
+}
+.req-grade-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--teal);
+  margin: 0 0 .55rem;
+  padding-bottom: .35rem;
+  border-bottom: 0.5px solid var(--rule);
+}
+.req-skill-group { margin-bottom: .65rem; }
+.req-skill-group:last-child { margin-bottom: 0; }
+.req-skill-tag {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: .35rem;
+}
+.req-illust-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.req-illust-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 92px;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 6px;
+  border: 0.5px solid var(--rule);
+  background: #fff;
+  padding: 5px;
+  transition: box-shadow .15s, transform .15s;
+}
+.req-illust-card:hover {
+  box-shadow: 0 3px 10px rgba(0,0,0,.1);
+  transform: translateY(-2px);
+}
+.req-illust-card img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+.req-illust-card .req-illust-ph {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--ink3);
+  background: var(--bg3);
+  border-radius: 4px;
+}
+.req-illust-label {
+  font-size: 11px;
+  line-height: 1.35;
+  text-align: center;
+  color: var(--ink2);
+  margin-top: 4px;
+  max-width: 88px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.skill-area-illust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+  padding-top: 4px;
+  border-top: 0.5px dashed var(--rule);
+}
+.skill-area-illust .req-illust-card { width: 76px; padding: 4px; }
+.skill-area-illust .req-illust-card img,
+.skill-area-illust .req-illust-card .req-illust-ph {
+  width: 66px;
+  height: 66px;
+}
+.skill-area-illust .req-illust-label {
+  font-size: 10px;
+  max-width: 72px;
+  -webkit-line-clamp: 2;
+}
+.modal-block-illust { margin-top: .65rem; }
+.modal-block-illust-caption {
+  font-size: 12px;
+  color: var(--ink2);
+  margin: 0 0 .45rem;
+}
+.modal-block-illust .req-illust-card { width: 88px; padding: 5px; }
+.modal-block-illust .req-illust-card img,
+.modal-block-illust .req-illust-card .req-illust-ph {
+  width: 76px;
+  height: 76px;
+}
+.modal-block-illust .req-illust-label {
+  font-size: 11px;
+  max-width: 84px;
+}
 
 /* ── 三分野対応表 ── */
 .dim-badge {
@@ -779,9 +906,12 @@ body.modal-open { overflow: hidden; }
 
 <div class="top-bar no-print">
   <span class="top-bar-title">情報活用能力育成ステップアップシート（統合版）</span>
+  <a href="joho_katsuyo_stepup_sheet.html" class="is-current" aria-current="page">ステップアップシート</a>
   <a href="#theme-skill">テーマ一覧</a>
+  <a href="#required-skills">必須スキルイラスト</a>
+  <a href="情報ブロックミニ探究ユニット/index.html">情報ブロック一覧</a>
   <a href="school_joho_ichiran.html">各校一覧</a>
-  <a href="sougou_gakunen_framework.html">← 設計フレームワークへ</a>
+  <a href="sougou_gakunen_framework.html">設計フレームワーク</a>
 </div>
 
 <div class="cover">
@@ -1104,7 +1234,7 @@ body.modal-open { overflow: hidden; }
 <h2 class="section page-break" id="theme-skill">総合的な学習の時間　テーマと探究スキル水準一覧</h2>
 
 <p class="lead">
-  統合ステップアップ表（学年軸）とは別に、<strong>よく扱われるテーマ分類</strong>ごとに、各学年でどのような<strong>学習例</strong>があり、どの<strong>探究深度・探究サイクル</strong>が求められるかをまとめた表である。同じテーマ分野は学年を重ねて深めていく。<strong>守口実例</strong>は守口市内17校の全体計画（2026年度）から抽出した取組の一例。各校の年間系列・テーマ名はそのまま当てはまるとは限らない。
+  統合ステップアップ表（学年軸）とは別に、<strong>よく扱われるテーマ分類</strong>ごとに、各学年でどのような<strong>学習例</strong>があり、どの<strong>探究深度・探究サイクル</strong>が求められるかをまとめた表である。同じテーマ分野は学年を重ねて深めていく。<strong>守口実例</strong>は守口市内20校の全体計画（2026年度）から抽出した取組の一例。各校の年間系列・テーマ名はそのまま当てはまるとは限らない。
 </p>
 
 <div class="moriguchi-series">
@@ -1114,7 +1244,7 @@ body.modal-open { overflow: hidden; }
   <div class="ms-row"><span class="ms-grade">小4</span><span>学ぼう私たちの町2（施設見学・社会見学）／日本全国旅物語</span></div>
   <div class="ms-row"><span class="ms-grade">小5</span><span>環境にやさしいまち物語（SDGs）／つながる・つなげる（社会とつながろう）</span></div>
   <div class="ms-row"><span class="ms-grade">小6</span><span>学ぼう私たちの町3／人にやさしいまち物語（福祉・バリアフリー）／紡いで繋いで（キャリア）</span></div>
-  <p style="font-size:9px;color:var(--ink3);margin-top:.4rem">ほか守口小型（小3地域→小4福祉→小5環境→小6平和）、さつき「ふるさと学×SDGs」など各校で系列名は異なるが、<strong>テーマの縦断深化</strong>の考え方は共通。</p>
+  <p style="font-size:9px;color:var(--ink3);margin-top:.4rem">ほか守口小型（小3地域→小4福祉→小5環境→小6平和）、さつき学園「ふるさと学×SDGs」など各校で系列名は異なるが、<strong>テーマの縦断深化</strong>の考え方は共通。</p>
 </div>
 
 <div class="cycle-legend" style="margin-bottom:.5rem">
@@ -1149,7 +1279,7 @@ body.modal-open { overflow: hidden; }
       </td>
       <td class="skill-cell">
         <div class="theme-example">例：伝統・産業・農</div>
-        <div class="theme-moriguchi">さくら小「学ぼう私たちの町2」施設見学／さつき 土居商店街応援隊</div>
+        <div class="theme-moriguchi">さくら小「学ぼう私たちの町2」施設見学／さつき学園 土居商店街応援隊</div>
         <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>調べることを決める</div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>取材・Web・聞き取り</div>
@@ -1158,7 +1288,7 @@ body.modal-open { overflow: hidden; }
       </td>
       <td class="skill-cell">
         <div class="theme-example">例：地域資源・まちの魅力</div>
-        <div class="theme-moriguchi">守口小 郷土のよさと人々の願い／さつき 今昔物語・米作り</div>
+        <div class="theme-moriguchi">守口小 郷土のよさと人々の願い／さつき学園 今昔物語・米作り</div>
         <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>データ・資料収集</div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>比較・グラフ化</div>
@@ -1175,7 +1305,7 @@ body.modal-open { overflow: hidden; }
       </td>
       <td class="skill-cell jhs-col">
         <div class="theme-example">例：地域PR・魅力発信</div>
-        <div class="theme-moriguchi">さつき 地域盆踊りプロジェクト／さつき 応援隊CM作成・披露</div>
+        <div class="theme-moriguchi">さつき学園 地域盆踊りプロジェクト／さつき学園 応援隊CM作成・披露</div>
         <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>相手・目的</div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>取材・観察</div>
@@ -1192,7 +1322,7 @@ body.modal-open { overflow: hidden; }
       </td>
       <td class="skill-cell jhs-col">
         <div class="theme-example">例：地域課題の解決・実行</div>
-        <div class="theme-moriguchi">さつき「For our future」／八雲中 校外学習・地域連携</div>
+        <div class="theme-moriguchi">さつき学園「For our future」／八雲中 校外学習・地域連携</div>
         <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>問い直し</div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>立場・根拠構築</div>
@@ -1211,7 +1341,7 @@ body.modal-open { overflow: hidden; }
       </td>
       <td class="skill-cell">
         <div class="theme-example">例：身近な環境・ごみ</div>
-        <div class="theme-moriguchi">さつき ふるさと学×SDGs「水×SDGs」「ごみ×SDGs」</div>
+        <div class="theme-moriguchi">さつき学園 ふるさと学×SDGs「水×SDGs」「ごみ×SDGs」</div>
         <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>観察・調査</div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>原因を整理</div>
@@ -1235,7 +1365,7 @@ body.modal-open { overflow: hidden; }
       </td>
       <td class="skill-cell jhs-col">
         <div class="theme-example">例：防災・地域安全</div>
-        <div class="theme-moriguchi">さくら小「紡いで繋いで」防災・防災バッグ／さつき「防災×SDGs」</div>
+        <div class="theme-moriguchi">さくら小「紡いで繋いで」防災・防災バッグ／さつき学園「防災×SDGs」</div>
         <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>行政データ・調査</div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>リスク分析</div>
@@ -1277,7 +1407,7 @@ body.modal-open { overflow: hidden; }
       </td>
       <td class="skill-cell">
         <div class="theme-example">例：多様性・共生</div>
-        <div class="theme-moriguchi">さつき ふるさと学×SDGs「福祉×SDGs」／さくら小「人にやさしいまち物語」</div>
+        <div class="theme-moriguchi">さつき学園 ふるさと学×SDGs「福祉×SDGs」／さくら小「人にやさしいまち物語」</div>
         <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>事例・データ</div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>比較・考察</div>
@@ -1293,7 +1423,7 @@ body.modal-open { overflow: hidden; }
       </td>
       <td class="skill-cell jhs-col">
         <div class="theme-example">例：共生社会の発信</div>
-        <div class="theme-moriguchi">さつき・八雲中 障がい理解学習／錦中 福祉体験実習</div>
+        <div class="theme-moriguchi">さつき学園・八雲中 障がい理解学習／錦中 福祉体験実習</div>
         <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>取材・事例</div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>編集・構成</div>
@@ -1350,7 +1480,7 @@ body.modal-open { overflow: hidden; }
       </td>
       <td class="skill-cell jhs-col">
         <div class="theme-example">例：グローバルな友人</div>
-        <div class="theme-moriguchi">さつき 国際理解・大阪FW・多文化共生</div>
+        <div class="theme-moriguchi">さつき学園 国際理解・大阪FW・多文化共生</div>
         <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>交流・調査</div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>文化比較</div>
@@ -1366,7 +1496,7 @@ body.modal-open { overflow: hidden; }
       </td>
       <td class="skill-cell jhs-col">
         <div class="theme-example">例：グローバル課題と自己</div>
-        <div class="theme-moriguchi">さつき For our future（国際理解・交流の振り返り）</div>
+        <div class="theme-moriguchi">さつき学園 For our future（国際理解・交流の振り返り）</div>
         <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>問い直し</div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>立場構築</div>
@@ -1414,7 +1544,7 @@ body.modal-open { overflow: hidden; }
       </td>
       <td class="skill-cell jhs-col">
         <div class="theme-example">例：職場体験・働く</div>
-        <div class="theme-moriguchi">さつき 職場体験・キャリア探究学習／八雲中 職場体験学習</div>
+        <div class="theme-moriguchi">さつき学園 職場体験・キャリア探究学習／八雲中 職場体験学習</div>
         <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>倫理取材</div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>分析</div>
@@ -1454,7 +1584,7 @@ body.modal-open { overflow: hidden; }
       </td>
       <td class="skill-cell">
         <div class="theme-example">例：社会の課題</div>
-        <div class="theme-moriguchi">守口小 戦争の惨禍・核兵器・世界平和／さつき 平和学習・広島修学旅行</div>
+        <div class="theme-moriguchi">守口小 戦争の惨禍・核兵器・世界平和／さつき学園 平和学習・広島修学旅行</div>
         <div class="theme-depth"><span class="depth-badge d2">Ⅱ</span></div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-2">収集</span>ニュース・調査</div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>多面的視点</div>
@@ -1535,7 +1665,7 @@ body.modal-open { overflow: hidden; }
       </td>
       <td class="skill-cell jhs-col">
         <div class="theme-example">例：AI・メディアリテラシー</div>
-        <div class="theme-moriguchi">八雲中 いのちの学習（LGBTQ+・性の多様性）と情報倫理／さつき 性の多様性</div>
+        <div class="theme-moriguchi">八雲中 いのちの学習（LGBTQ+・性の多様性）と情報倫理／さつき学園 性の多様性</div>
         <div class="theme-depth"><span class="depth-badge d3">Ⅲ</span></div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-1">課題</span>問い直し</div>
         <div class="theme-skill-line"><span class="cyc-mini cyc-3">整理</span>AI出力検証</div>
@@ -1590,6 +1720,7 @@ body.modal-open { overflow: hidden; }
         <div class="modal-step-head">情報ブロック — ミニ探究内の情報提供部分（⑦）</div>
         <p id="modal-block"></p>
         <p id="modal-block-use"></p>
+        <div id="modal-block-illust"></div>
       </section>
       <p id="modal-trans-1" class="modal-step-transition"></p>
       <section class="modal-section modal-step-card step-mini">
@@ -1739,6 +1870,19 @@ body.modal-open { overflow: hidden; }
 </div>
 
 
+<!-- ══ 必須スキル × 情報ブロックイラスト ══ -->
+<h2 class="section page-break" id="required-skills">必須スキルと情報ブロックイラスト</h2>
+
+<p class="lead">
+  統合ステップアップ表の<strong>⑥④に連動して必要となる情報活用スキル</strong>を、<a href="情報ブロックミニ探究ユニット/index.html">情報ブロック・ミニ探究ユニット</a>のイラスト一覧と対応づけたもの。各イラストをクリックするとミニ探究ユニット一覧で詳細（説明・授業展開案）を開ける。
+</p>
+
+<div id="required-skills-illust"></div>
+
+<p style="font-size:12px;color:var(--ink3);margin-bottom:1rem">
+  下の<strong>スキル蓄積マップ</strong>の各行名の下にも、同じ連動イラストを表示している（表内はコンパクト表示）。
+</p>
+
 <!-- ══ スキル蓄積マップ ══ -->
 <h2 class="section">スキル蓄積マップ　— 小1〜中3の段階的習得</h2>
 
@@ -1754,7 +1898,7 @@ body.modal-open { overflow: hidden; }
   <span class="skill-map-legend-item"><span class="sym lv-none">—</span>＝未着手</span>
 </div>
 
-<table class="skill-map-table">
+<table class="skill-map-table" id="skill-map-with-illust">
   <thead>
     <tr>
       <th style="text-align:left">スキル領域</th>
@@ -1833,6 +1977,7 @@ body.modal-open { overflow: hidden; }
   ②<a href="#theme-skill">テーマと探究スキル水準一覧</a>で、よく扱うテーマごとの学年別要求水準を確認する。
   ③本校の本探究テーマに合わせてミニ探究の助走テーマを具体化する（テーマ例は各校で置き換え可）。
   ④スキル蓄積マップと三分野対応表で、①②③のどこをいつ育てるかを年間計画に記述する。
+  ⑥必須スキルのイラスト対応は<a href="#required-skills">必須スキルと情報ブロックイラスト</a>を参照。
   ⑤テーマ別の詳細単元例は「設計フレームワーク」第3章を参照。
 </div>
 
@@ -1841,15 +1986,19 @@ body.modal-open { overflow: hidden; }
 <footer class="footer container">
   <p>
     情報活用能力育成ステップアップシート（統合版）<br>
-    関連資料：<a href="sougou_gakunen_framework.html" style="color:var(--teal)">総合的な学習の時間　設計フレームワーク</a><br>
+    関連資料：<a href="sougou_gakunen_framework.html" style="color:var(--teal)">総合的な学習の時間　設計フレームワーク</a>
+    ／ <a href="情報ブロックミニ探究ユニット/index.html" style="color:var(--teal)">情報ブロック・ミニ探究ユニット</a><br>
     参考：令和7年10月・11月　中教審教育課程部会 生活・総合的な学習探究の時間WG／情報技術WG合同資料
   </p>
 </footer>
 
 <button class="print-btn no-print" onclick="window.print()">印刷・PDF保存</button>
 
+<script src="情報ブロックミニ探究ユニット/data.js"></script>
+<script src="info_block_skill_map.js"></script>
 <script src="theme_popup_data.js"></script>
 <script src="hon_inquiry_data.js"></script>
+<script src="required_skills_illust.js"></script>
 <script src="theme_popup.js"></script>
 </body>
 </html>

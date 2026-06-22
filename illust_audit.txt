@@ -1,0 +1,22 @@
+PNG total: 191 referenced: 183 orphan: 8
+ORPHAN: img_respect_presentation.png
+ORPHAN: img_row46_レポート.png
+ORPHAN: img_row51_レイアウト.png
+ORPHAN: img_メディアの特性.png
+ORPHAN: img_撮影時の注意.png
+ORPHAN: img_責任.png
+ORPHAN: row97_著作権(1).png
+ORPHAN: row98_学習目的での利用(1).png
+skill map rows checked: 54 invalid: []
+PLACEHOLDER entries: 8
+PLACEHOLDER row77 title=(空欄) img=img/row132_要設定.png
+PLACEHOLDER row82 title=(空欄) img=img/row132_要設定.png
+PLACEHOLDER row83 title=(空欄) img=img/row132_要設定.png
+PLACEHOLDER row84 title=(空欄) img=img/row132_要設定.png
+PLACEHOLDER row85 title=(空欄) img=img/row132_要設定.png
+PLACEHOLDER row166 title=(空欄) img=img/row132_要設定.png
+PLACEHOLDER row170 title=(空欄) img=img/row136_要設定.png
+PLACEHOLDER row171 title=(空欄) img=img/row137_要設定.png
+Shared placeholder images:
+  img/row132_要設定.png used 6 times rows=[77, 82, 83, 84, 85, 166]
+--- row_mapping_suggested.csv exists ---

@@ -195,6 +195,11 @@
     cycleEl.innerHTML = renderCycle(d, key);
     blockEl.textContent = d.block;
     blockUseEl.textContent = d.blockUse;
+    const blockIllustMount = document.getElementById('modal-block-illust');
+    if (blockIllustMount && typeof renderBlockIllustForGrade === 'function') {
+      const gk = gradeToKey(d.grade);
+      blockIllustMount.innerHTML = gk ? renderBlockIllustForGrade(gk) : '';
+    }
     miniEl.innerHTML = renderMini(d);
     modal.hidden = false;
     document.body.classList.add('modal-open');
